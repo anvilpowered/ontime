@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'org.spongepowered.plugin' version '0.9.0'
+}
+
+group modGroup
+version modVersion
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spongepowered.org/maven' }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation project(':api')
+    implementation project(':common')
+    implementation project(':MSRepository:msr-api')
+    implementation project(':MSRepository:msr-api:api-config')
+    implementation project(':MSRepository:msr-api:api-repository')
+    implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+    implementation project(':MSRepository:msr-common:common-config')
+    implementation project(':MSRepository:msr-common:common-repository')
+    implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+    implementation project(':MSRepository:msr-sponge')
+
+    implementation guice
+    implementation bson
+    implementation mongo_java_driver
+
+    compileOnly('org.spongepowered:spongeapi:7.2.0-SNAPSHOT') {
+        exclude(module: 'configurate-gson')
+        exclude(module: 'configurate-yaml')
+    }
+}
+
+shadowJar {
+    archiveName = "${modBaseName}-Sponge-${modVersion}.jar"
+
+    dependencies {
+        include project(':api')
+        include project(':common')
+        include project(':MSRepository:msr-api')
+        include project(':MSRepository:msr-api:api-config')
+        include project(':MSRepository:msr-api:api-repository')
+        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+
+        include project(':MSRepository:msr-common:common-config')
+        include project(':MSRepository:msr-common:common-repository')
+        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
+        include project(':MSRepository:msr-sponge')
+
+        include dependency(bson)
+        include dependency(mongo_java_driver)
+        include dependency(morphia)
+        include dependency(reflections)
+
+        relocate 'org.reflections', 'relocated.org.reflections'
+        relocate 'org.bson', 'relocated.org.bson'
+        relocate 'org.dizitart', 'relocated.org.dizitart'
+        relocate 'org.mongodb', 'relocated.org.mongodb'
+        relocate 'com.mongodb', 'relocated.com.mongodb'
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

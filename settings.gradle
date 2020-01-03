@@ -1,5 +1,8 @@
 rootProject.name = 'MSOnTime'
 
+include 'api'
+include 'common'
+
 include 'MSRepository'
 
 include 'MSRepository:msr-api'
@@ -25,3 +28,5 @@ include 'MSRepository:msr-common:common-repository:common-repository-xodus'
 
 include 'MSRepository:msr-sponge'
 include 'MSRepository:msr-sponge:sponge-repository'
+include 'sponge'
+
