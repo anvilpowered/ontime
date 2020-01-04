@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
-import rocks.milspecsg.msontime.api.ConfigKeys;
+import rocks.milspecsg.msontime.api.config.ConfigKeys;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
 import rocks.milspecsg.msontime.service.common.config.MSOnTimeConfigurationService;

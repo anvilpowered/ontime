@@ -8,8 +8,11 @@ import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface MongoMemberRepository extends MemberRepository<ObjectId, Datastore, MongoConfig> {
+
+    CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
 
     Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID);
 }

@@ -1,6 +1,8 @@
-package rocks.milspecsg.msontime.api;
+package rocks.milspecsg.msontime.api.config;
 
 public interface ConfigKeys extends rocks.milspecsg.msrepository.api.config.ConfigKeys {
+
+    int RANKS = 50;
 
     int MONGODB_HOSTNAME = 100;
     int MONGODB_PORT = 101;

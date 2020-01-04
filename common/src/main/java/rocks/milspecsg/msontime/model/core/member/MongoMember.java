@@ -10,6 +10,7 @@ import java.util.UUID;
 public class MongoMember extends MongoDbo implements Member<ObjectId> {
 
     private UUID userUUID;
+    private int playTime;
 
     @Override
     public UUID getUserUUID() {
@@ -19,5 +20,15 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
     @Override
     public void setUserUUID(UUID userUUID) {
         this.userUUID = userUUID;
+    }
+
+    @Override
+    public int getPlayTime() {
+        return playTime;
+    }
+
+    @Override
+    public void setPlayTime(int playTime) {
+        this.playTime = playTime;
     }
 }

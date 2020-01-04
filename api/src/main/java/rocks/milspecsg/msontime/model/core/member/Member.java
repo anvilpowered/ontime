@@ -8,4 +8,7 @@ public interface Member<TKey> extends ObjectWithId<TKey> {
 
     UUID getUserUUID();
     void setUserUUID(UUID userUUID);
+
+    int getPlayTime();
+    void setPlayTime(int playTime);
 }

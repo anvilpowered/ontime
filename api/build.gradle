@@ -18,5 +18,6 @@ dependencies {
     implementation project(':MSRepository:msr-api:api-repository')
     implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
 
+    implementation guice
     implementation morphia
 }

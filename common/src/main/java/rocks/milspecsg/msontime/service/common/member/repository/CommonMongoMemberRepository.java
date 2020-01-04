@@ -32,6 +32,21 @@ public class CommonMongoMemberRepository
     }
 
     @Override
+    public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
+        return CompletableFuture.supplyAsync(() ->
+            getDataStoreContext().getDataStore()
+                .flatMap(dataStore -> inc("playTime")
+                    .map(u -> dataStore.update(query, u).getUpdatedCount() > 0)
+                ).orElse(false)
+        ).exceptionally(e -> false);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> addMinuteForUser(UUID userUUID) {
+        return asQuery(userUUID).map(this::addMinute).orElse(CompletableFuture.completedFuture(false));
+    }
+
+    @Override
     public Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID) {
         return asQuery().map(q -> q.field("userUUID").equal(userUUID));
     }

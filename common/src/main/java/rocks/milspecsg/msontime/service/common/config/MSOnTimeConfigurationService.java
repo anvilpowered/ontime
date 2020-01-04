@@ -4,17 +4,15 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import rocks.milspecsg.msontime.api.ConfigKeys;
+import rocks.milspecsg.msontime.api.config.ConfigKeys;
+import rocks.milspecsg.msontime.api.config.ConfigTypes;
 import rocks.milspecsg.msrepository.service.common.config.CommonConfigurationService;
 
-public class MSOnTimeConfigurationService extends CommonConfigurationService {
+import java.util.HashMap;
+import java.util.Map;
 
-    private static TypeToken<String> stringTypeToken = new TypeToken<String>() {
-    };
-    private static TypeToken<Integer> integerTypeToken = new TypeToken<Integer>() {
-    };
-    private static TypeToken<Boolean> booleanTypeToken = new TypeToken<Boolean>() {
-    };
+@SuppressWarnings("UnstableApiUsage")
+public class MSOnTimeConfigurationService extends CommonConfigurationService {
 
     @Inject
     public MSOnTimeConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
@@ -23,13 +21,14 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
 
     @Override
     protected void initNodeTypeMap() {
-        nodeTypeMap.put(ConfigKeys.MONGODB_HOSTNAME, stringTypeToken);
-        nodeTypeMap.put(ConfigKeys.MONGODB_PORT, integerTypeToken);
-        nodeTypeMap.put(ConfigKeys.MONGODB_DBNAME, stringTypeToken);
-        nodeTypeMap.put(ConfigKeys.MONGODB_USERNAME, stringTypeToken);
-        nodeTypeMap.put(ConfigKeys.MONGODB_PASSWORD, stringTypeToken);
-        nodeTypeMap.put(ConfigKeys.MONGODB_USE_AUTH, booleanTypeToken);
-        nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, stringTypeToken);
+        nodeTypeMap.put(ConfigKeys.MONGODB_HOSTNAME, ConfigTypes.MONGODB_HOSTNAME);
+        nodeTypeMap.put(ConfigKeys.MONGODB_PORT, ConfigTypes.MONGODB_PORT);
+        nodeTypeMap.put(ConfigKeys.MONGODB_DBNAME, ConfigTypes.MONGODB_DBNAME);
+        nodeTypeMap.put(ConfigKeys.MONGODB_USERNAME, ConfigTypes.MONGODB_USERNAME);
+        nodeTypeMap.put(ConfigKeys.MONGODB_PASSWORD, ConfigTypes.MONGODB_PASSWORD);
+        nodeTypeMap.put(ConfigKeys.MONGODB_USE_AUTH, ConfigTypes.MONGODB_USE_AUTH);
+        nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, TypeToken.of(String.class));
+        nodeTypeMap.put(ConfigKeys.RANKS, ConfigTypes.RANKS);
     }
 
     @Override
@@ -46,6 +45,14 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         defaultStringMap.put(ConfigKeys.MONGODB_PASSWORD, "password");
         defaultBooleanMap.put(ConfigKeys.MONGODB_USE_AUTH, false);
         defaultStringMap.put(ConfigKeys.DATA_STORE_NAME, "mongodb");
+
+        Map<String, Integer> defaultRankMap = new HashMap<>();
+
+        defaultRankMap.put("pv1", 3);
+        defaultRankMap.put("pv2", 5);
+        defaultRankMap.put("pfc", 7);
+
+        defaultMapMap.put(ConfigKeys.RANKS, defaultRankMap);
     }
 
     @Override
@@ -57,6 +64,7 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         nodeNameMap.put(ConfigKeys.MONGODB_PASSWORD, "datastore.mongodb.password");
         nodeNameMap.put(ConfigKeys.MONGODB_USE_AUTH, "datastore.mongodb.useAuth");
         nodeNameMap.put(ConfigKeys.DATA_STORE_NAME, "datastore.dataStoreName");
+        nodeNameMap.put(ConfigKeys.RANKS, "ranks");
     }
 
     @Override
@@ -68,5 +76,6 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PASSWORD, "\nMongoDB password");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_USE_AUTH, "\nWhether to use authentication (username/password) for MongoDB connection");
         nodeDescriptionMap.put(ConfigKeys.DATA_STORE_NAME, "\nData store name");
+        nodeDescriptionMap.put(ConfigKeys.RANKS, "\nRank time definitions");
     }
 }

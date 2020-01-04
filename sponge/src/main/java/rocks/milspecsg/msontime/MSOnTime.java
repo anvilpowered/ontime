@@ -13,7 +13,9 @@ import org.spongepowered.api.event.game.state.GameStoppingEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import rocks.milspecsg.msontime.api.tasks.SyncTaskService;
 import rocks.milspecsg.msontime.commands.OnTimeCommandManager;
+import rocks.milspecsg.msontime.listeners.PlayerListener;
 import rocks.milspecsg.msrepository.ApiSpongeModule;
 import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
@@ -53,6 +55,8 @@ public class MSOnTime {
         }));
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.AQUA, "Loading..."));
         initCommands();
+        injector.getInstance(SyncTaskService.class);
+        Sponge.getEventManager().registerListeners(this, injector.getInstance(PlayerListener.class));
         loadConfig();
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.AQUA, "Done"));
     }
