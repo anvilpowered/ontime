@@ -4,14 +4,19 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.service.permission.PermissionService;
+import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msontime.MSOnTime;
+import rocks.milspecsg.msontime.api.config.ConfigKeys;
+import rocks.milspecsg.msontime.api.config.ConfigTypes;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.service.common.tasks.CommonSyncTaskService;
 import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
@@ -23,11 +28,14 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
     @Inject
     PluginInfo<Text> pluginInfo;
 
+    PermissionService permissionService;
+
     private Task task;
 
     @Inject
     public SpongeSyncTaskService(ConfigurationService configurationService) {
         super(configurationService);
+        permissionService = Sponge.getServiceManager().provide(PermissionService.class).orElseThrow(() -> new IllegalStateException("Missing PermissionService"));
     }
 
     @Override
@@ -43,10 +51,28 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
 
     @Override
     public Runnable getSyncTask() {
-        return () -> Sponge.getServer().getOnlinePlayers().forEach(player ->
-            memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank ->
-                Sponge.getServer().getConsole().sendMessage(Text.of(TextColors.GREEN, player.getName(), " : ", optionalRank.orElse("null")))
-            )
-        );
+        return () -> {
+            Collection<Subject> allGroups = permissionService.getGroupSubjects().getLoadedSubjects();
+            Set<String> configRanks = configurationService.getConfigMap(ConfigKeys.RANKS, ConfigTypes.RANKS).keySet();
+            Sponge.getServer().getOnlinePlayers().forEach(player ->
+                    memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
+                        if (!optionalRank.isPresent()) {
+                            return;
+                        }
+                        String rank = optionalRank.get();
+                        boolean hasNewRank = false;
+                        for (Subject subject : allGroups) {
+                            if (subject.getIdentifier().equals(rank)) {
+                                player.getSubjectData().addParent(Collections.emptySet(), subject.asSubjectReference());
+                                hasNewRank = true;
+                            } else if (hasNewRank && player.getParents().size() == 1) {
+                                break;
+                            } else if (configRanks.contains(subject.getIdentifier())) {
+                                player.getSubjectData().removeParent(Collections.emptySet(), subject.asSubjectReference());
+                            }
+                        }
+                    })
+            );
+        };
     }
 }
