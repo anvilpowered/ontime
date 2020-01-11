@@ -46,4 +46,24 @@ public abstract class CommonMemberRepository<
             }
         });
     }
+
+    @Override
+    public CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, int playTime) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
+                if(optionalMember.isPresent()) return optionalMember;
+                //If the user doens't exist in the db, create it from the values
+                //Specified in the config
+                Member<TKey> member = generateEmpty();
+                member.setBonusTime(0);
+                member.setPlayTime(playTime);
+                member.setUserUUID(userUUID);
+                return insertOne(member).join();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Optional.empty();
+            }
+        });
+    }
 }

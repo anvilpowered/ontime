@@ -17,6 +17,8 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
+    CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, int playTime);
+
     CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
     CompletableFuture<Boolean> addMinuteForUser(UUID userUUID);
