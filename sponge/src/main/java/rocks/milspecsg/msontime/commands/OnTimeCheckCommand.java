@@ -9,6 +9,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import rocks.milspecsg.msontime.PluginPermissions;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msrepository.PluginInfo;
 
@@ -26,12 +27,23 @@ public class OnTimeCheckCommand implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext context) {
         Optional<User> optionalUser = context.getOne(Text.of("user"));
 
-        if (optionalUser.isPresent()) {
-            memberManager.info(optionalUser.get().getUniqueId()).thenAcceptAsync(source::sendMessage);
-        } else if (source instanceof Player) {
-            memberManager.info(((Player) source).getUniqueId()).thenAcceptAsync(source::sendMessage);
+        if (source.hasPermission(PluginPermissions.INFO_EXTENDED)) {
+            if (optionalUser.isPresent()) {
+                memberManager.infoExtended(optionalUser.get().getUniqueId()).thenAcceptAsync(source::sendMessage);
+            } else if (source instanceof Player) {
+                memberManager.infoExtended(((Player) source).getUniqueId()).thenAcceptAsync(source::sendMessage);
+            } else {
+                source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "You must either supply a valid username or run this command as player!"));
+            }
         } else {
-            source.sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.RED, "You must supply a player name or run this command as a player"));
+
+            if (source.hasPermission(PluginPermissions.INFO) && (!source.hasPermission(PluginPermissions.INFO_EXTENDED))) {
+                if (optionalUser.isPresent()) {
+                    memberManager.info(optionalUser.get().getUniqueId()).thenAcceptAsync(source::sendMessage);
+                } else if (source instanceof Player) {
+                    memberManager.info(((Player) source).getUniqueId()).thenAcceptAsync(source::sendMessage);
+                }
+            }
         }
 
         return CommandResult.success();

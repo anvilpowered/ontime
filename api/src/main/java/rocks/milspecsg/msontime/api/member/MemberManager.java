@@ -31,5 +31,13 @@ public interface MemberManager<TString> extends Manager<MemberRepository<?, ?, ?
 
     CompletableFuture<TString> info(UUID userUUID);
 
+    CompletableFuture<TString> infoExtended(UUID userUUID);
+
     CompletableFuture<Optional<String>> sync(UUID userUUID);
+
+    CompletableFuture<TString> setBonusTime(UUID userUUID, int bonusTime);
+
+    CompletableFuture<TString> addBonusTime(UUID userUUID, int bonusTime);
+
+    CompletableFuture<TString> getNextGroup(UUID userUUID);
 }

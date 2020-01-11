@@ -36,6 +36,8 @@ public abstract class CommonMemberRepository<
                 if (optionalMember.isPresent()) return optionalMember;
                 // if there isn't one already, create a new one
                 Member<TKey> member = generateEmpty();
+                member.setBonusTime(0);
+                member.setPlayTime(0);
                 member.setUserUUID(userUUID);
                 return insertOne(member).join();
             } catch (Exception e) {

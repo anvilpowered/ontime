@@ -9,5 +9,6 @@ public interface ConfigKeys extends rocks.milspecsg.msrepository.api.config.Conf
     int MONGODB_DBNAME = 102;
     int MONGODB_USERNAME = 103;
     int MONGODB_PASSWORD = 104;
-    int MONGODB_USE_AUTH = 105;
+    int MONGODB_AUTH_DB = 105;
+    int MONGODB_USE_AUTH = 106;
 }

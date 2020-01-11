@@ -11,4 +11,7 @@ public interface Member<TKey> extends ObjectWithId<TKey> {
 
     int getPlayTime();
     void setPlayTime(int playTime);
+
+    int getBonusTime();
+    void setBonusTime(int bonusTime);
 }

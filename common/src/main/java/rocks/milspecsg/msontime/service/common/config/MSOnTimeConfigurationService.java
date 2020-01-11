@@ -26,6 +26,7 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         nodeTypeMap.put(ConfigKeys.MONGODB_DBNAME, ConfigTypes.MONGODB_DBNAME);
         nodeTypeMap.put(ConfigKeys.MONGODB_USERNAME, ConfigTypes.MONGODB_USERNAME);
         nodeTypeMap.put(ConfigKeys.MONGODB_PASSWORD, ConfigTypes.MONGODB_PASSWORD);
+        nodeTypeMap.put(ConfigKeys.MONGODB_AUTH_DB, ConfigTypes.MONGODB_AUTH_DB);
         nodeTypeMap.put(ConfigKeys.MONGODB_USE_AUTH, ConfigTypes.MONGODB_USE_AUTH);
         nodeTypeMap.put(ConfigKeys.DATA_STORE_NAME, TypeToken.of(String.class));
         nodeTypeMap.put(ConfigKeys.RANKS, ConfigTypes.RANKS);
@@ -43,6 +44,7 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         defaultStringMap.put(ConfigKeys.MONGODB_DBNAME, "msontime");
         defaultStringMap.put(ConfigKeys.MONGODB_USERNAME, "admin");
         defaultStringMap.put(ConfigKeys.MONGODB_PASSWORD, "password");
+        defaultStringMap.put(ConfigKeys.MONGODB_AUTH_DB, "admin");
         defaultBooleanMap.put(ConfigKeys.MONGODB_USE_AUTH, false);
         defaultStringMap.put(ConfigKeys.DATA_STORE_NAME, "mongodb");
 
@@ -62,6 +64,7 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
         nodeNameMap.put(ConfigKeys.MONGODB_DBNAME, "datastore.mongodb.dbName");
         nodeNameMap.put(ConfigKeys.MONGODB_USERNAME, "datastore.mongodb.username");
         nodeNameMap.put(ConfigKeys.MONGODB_PASSWORD, "datastore.mongodb.password");
+        nodeNameMap.put(ConfigKeys.MONGODB_AUTH_DB, "datastore.mongodb.authdb");
         nodeNameMap.put(ConfigKeys.MONGODB_USE_AUTH, "datastore.mongodb.useAuth");
         nodeNameMap.put(ConfigKeys.DATA_STORE_NAME, "datastore.dataStoreName");
         nodeNameMap.put(ConfigKeys.RANKS, "ranks");
@@ -69,13 +72,14 @@ public class MSOnTimeConfigurationService extends CommonConfigurationService {
 
     @Override
     protected void initNodeDescriptionMap() {
+        nodeDescriptionMap.put(ConfigKeys.DATA_STORE_NAME, "\nData store name");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_HOSTNAME, "\nMongoDB hostname");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PORT, "\nMongoDB port");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_DBNAME, "\nMongoDB database name");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_USERNAME, "\nMongoDB username");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_PASSWORD, "\nMongoDB password");
+        nodeDescriptionMap.put(ConfigKeys.MONGODB_AUTH_DB, "\nDatabase to use for authentication");
         nodeDescriptionMap.put(ConfigKeys.MONGODB_USE_AUTH, "\nWhether to use authentication (username/password) for MongoDB connection");
-        nodeDescriptionMap.put(ConfigKeys.DATA_STORE_NAME, "\nData store name");
         nodeDescriptionMap.put(ConfigKeys.RANKS, "\nRank time definitions");
     }
 }

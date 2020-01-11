@@ -20,4 +20,8 @@ public interface MemberRepository<
     CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
     CompletableFuture<Boolean> addMinuteForUser(UUID userUUID);
+
+    CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, int bonusTime);
+
+    CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, int bonusTime);
 }

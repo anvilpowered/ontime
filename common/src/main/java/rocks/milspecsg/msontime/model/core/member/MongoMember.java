@@ -11,6 +11,7 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
 
     private UUID userUUID;
     private int playTime;
+    private int bonusTime;
 
     @Override
     public UUID getUserUUID() {
@@ -31,4 +32,15 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
     public void setPlayTime(int playTime) {
         this.playTime = playTime;
     }
+
+    @Override
+    public int getBonusTime() {
+        return bonusTime;
+    }
+
+    @Override
+    public void setBonusTime(int bonusTime) {
+        this.bonusTime = bonusTime;
+    }
+
 }

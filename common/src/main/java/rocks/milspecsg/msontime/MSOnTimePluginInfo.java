@@ -10,12 +10,12 @@ public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<T
     public static final String version = "$modVersion";
     public static final String description = "Playtime tracker";
     public static final String url = "https://github.com/MilSpecSG/MSOnTime";
-    public static final String authors = "Cableguy20";
+    public static final String authors = "Cableguy20, STG_Allen";
     public TString pluginPrefix;
 
     @Inject
     public void setPluginPrefix(StringResult<TString, TCommandSource> stringResult) {
-        pluginPrefix = stringResult.builder().aqua().append("[", name, "] ").build();
+        pluginPrefix = stringResult.builder().gold().append("[", name, "] ").build();
     }
 
     @Override

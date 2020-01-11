@@ -21,12 +21,12 @@ import rocks.milspecsg.msrepository.PluginInfo;
 import rocks.milspecsg.msrepository.api.config.ConfigurationService;
 
 @Plugin(
-    id = MSOnTimePluginInfo.id,
-    name = MSOnTimePluginInfo.name,
-    version = MSOnTimePluginInfo.version,
-    description = MSOnTimePluginInfo.description,
-    authors = MSOnTimePluginInfo.authors,
-    url = MSOnTimePluginInfo.url
+        id = MSOnTimePluginInfo.id,
+        name = MSOnTimePluginInfo.name,
+        version = MSOnTimePluginInfo.version,
+        description = MSOnTimePluginInfo.description,
+        authors = MSOnTimePluginInfo.authors,
+        url = MSOnTimePluginInfo.url
 )
 public class MSOnTime {
 
