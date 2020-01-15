@@ -9,21 +9,20 @@ import org.mongodb.morphia.query.UpdateOperations;
 import rocks.milspecsg.msontime.api.member.repository.MongoMemberRepository;
 import rocks.milspecsg.msontime.model.core.member.Member;
 import rocks.milspecsg.msrepository.api.cache.CacheService;
-import rocks.milspecsg.msrepository.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.datastore.mongodb.MongoConfig;
-import rocks.milspecsg.msrepository.service.common.repository.CommonMongoRepository;
+import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoMemberRepository
-        extends CommonMemberRepository<ObjectId, Datastore, MongoConfig>
-        implements CommonMongoRepository<Member<ObjectId>, CacheService<ObjectId, Member<ObjectId>, Datastore, MongoConfig>>,
+        extends CommonMemberRepository<ObjectId, Datastore>
+        implements CommonMongoRepository<Member<ObjectId>, CacheService<ObjectId, Member<ObjectId>, Datastore>>,
         MongoMemberRepository {
 
     @Inject
-    public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore, MongoConfig> dataStoreContext) {
+    public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
         super(dataStoreContext);
     }
 
@@ -46,14 +45,10 @@ public class CommonMongoMemberRepository
     public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
         return CompletableFuture.supplyAsync(() -> {
             Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", bonusTime));
-            if (updateOperations
-                    .map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                            .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0 ).orElse(false)
-                    ).orElse(false)) {
-                return true;
-            } else {
-                return false;
-            }
+            return updateOperations
+                .map(memberUpdateOperations -> getDataStoreContext().getDataStore()
+                    .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)
+                ).orElse(false);
         });
     }
 
@@ -61,11 +56,8 @@ public class CommonMongoMemberRepository
     public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
         return CompletableFuture.supplyAsync(() -> {
             Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", query.get().getBonusTime() + bonusTime));
-            if(updateOperations.map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-            .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)).orElse(false)) {
-                return true;
-            }
-            return false;
+            return updateOperations.map(memberUpdateOperations -> getDataStoreContext().getDataStore()
+                .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)).orElse(false);
         });
     }
 

@@ -1,8 +1,8 @@
 package rocks.milspecsg.msontime;
 
 import com.google.inject.Inject;
-import rocks.milspecsg.msrepository.PluginInfo;
-import rocks.milspecsg.msrepository.api.tools.resultbuilder.StringResult;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.util.StringResult;
 
 public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
     public static final String id = "msontime";

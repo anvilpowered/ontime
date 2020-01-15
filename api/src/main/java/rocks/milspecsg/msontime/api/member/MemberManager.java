@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface MemberManager<TString> extends Manager<MemberRepository<?, ?, ?>> {
+public interface MemberManager<TString> extends Manager<MemberRepository<?, ?>> {
 
     @Override
     default String getDefaultIdentifierSingularUpper() {
@@ -35,7 +35,7 @@ public interface MemberManager<TString> extends Manager<MemberRepository<?, ?, ?
 
     CompletableFuture<Optional<String>> sync(UUID userUUID);
 
-    CompletableFuture<TString> setBonusTime(UUID userUUID, int bonusTime);
+    void setBonusTime(UUID userUUID, int bonusTime);
 
     CompletableFuture<TString> addBonusTime(UUID userUUID, int bonusTime);
 

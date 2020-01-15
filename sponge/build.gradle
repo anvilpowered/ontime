@@ -38,6 +38,7 @@ dependencies {
         exclude(module: 'configurate-gson')
         exclude(module: 'configurate-yaml')
     }
+    annotationProcessor 'org.spongepowered:spongeapi:7.2.0-SNAPSHOT'
 }
 
 shadowJar {
@@ -46,28 +47,6 @@ shadowJar {
     dependencies {
         include project(':api')
         include project(':common')
-        include project(':MSRepository:msr-api')
-        include project(':MSRepository:msr-api:api-config')
-        include project(':MSRepository:msr-api:api-repository')
-        include project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-
-        include project(':MSRepository:msr-common')
-        include project(':MSRepository:msr-common:common-config')
-        include project(':MSRepository:msr-common:common-repository')
-        include project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
-        include project(':MSRepository:msr-sponge')
-
-        include dependency(bson)
-        include dependency(javasisst)
-        include dependency(mongo_java_driver)
-        include dependency(morphia)
-        include dependency(reflections)
-
-        relocate 'org.reflections', 'relocated.org.reflections'
-        relocate 'org.bson', 'relocated.org.bson'
-        relocate 'org.dizitart', 'relocated.org.dizitart'
-        relocate 'org.mongodb', 'relocated.org.mongodb'
-        relocate 'com.mongodb', 'relocated.com.mongodb'
     }
 }
 

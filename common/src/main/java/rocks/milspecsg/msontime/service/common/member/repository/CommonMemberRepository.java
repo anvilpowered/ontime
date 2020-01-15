@@ -3,9 +3,8 @@ package rocks.milspecsg.msontime.service.common.member.repository;
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
 import rocks.milspecsg.msontime.model.core.member.Member;
 import rocks.milspecsg.msrepository.api.cache.CacheService;
-import rocks.milspecsg.msrepository.datastore.DataStoreConfig;
-import rocks.milspecsg.msrepository.datastore.DataStoreContext;
-import rocks.milspecsg.msrepository.service.common.repository.CommonRepository;
+import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
+import rocks.milspecsg.msrepository.common.repository.CommonRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -13,12 +12,11 @@ import java.util.concurrent.CompletableFuture;
 
 public abstract class CommonMemberRepository<
     TKey,
-    TDataStore,
-    TDataStoreConfig extends DataStoreConfig>
-    extends CommonRepository<TKey, Member<TKey>, CacheService<TKey, Member<TKey>, TDataStore, TDataStoreConfig>, TDataStore, TDataStoreConfig>
-    implements MemberRepository<TKey, TDataStore, TDataStoreConfig> {
+    TDataStore>
+    extends CommonRepository<TKey, Member<TKey>, CacheService<TKey, Member<TKey>, TDataStore>, TDataStore>
+    implements MemberRepository<TKey, TDataStore> {
 
-    protected CommonMemberRepository(DataStoreContext<TKey, TDataStore, TDataStoreConfig> dataStoreContext) {
+    protected CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
         super(dataStoreContext);
     }
 
@@ -52,7 +50,7 @@ public abstract class CommonMemberRepository<
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
-                if(optionalMember.isPresent()) return optionalMember;
+                if (optionalMember.isPresent()) return optionalMember;
                 //If the user doens't exist in the db, create it from the values
                 //Specified in the config
                 Member<TKey> member = generateEmpty();

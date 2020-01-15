@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.config.DefaultConfig;
-import rocks.milspecsg.msontime.service.common.config.MSOnTimeConfigurationService;
+import rocks.milspecsg.msontime.service.common.data.config.MSOnTimeConfigurationService;
 
 @Singleton
 public class MSOnTimeSpongeConfigurationService extends MSOnTimeConfigurationService {

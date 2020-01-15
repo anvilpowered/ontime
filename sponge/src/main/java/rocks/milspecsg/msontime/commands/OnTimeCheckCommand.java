@@ -11,7 +11,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msontime.PluginPermissions;
 import rocks.milspecsg.msontime.api.member.MemberManager;
-import rocks.milspecsg.msrepository.PluginInfo;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
 import java.util.Optional;
 

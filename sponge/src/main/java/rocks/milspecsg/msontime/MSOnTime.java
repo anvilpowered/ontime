@@ -10,23 +10,25 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStoppingEvent;
+import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msontime.api.tasks.SyncTaskService;
 import rocks.milspecsg.msontime.commands.OnTimeCommandManager;
 import rocks.milspecsg.msontime.listeners.PlayerListener;
-import rocks.milspecsg.msrepository.ApiSpongeModule;
-import rocks.milspecsg.msrepository.PluginInfo;
-import rocks.milspecsg.msrepository.api.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.data.registry.Registry;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
 
 @Plugin(
-        id = MSOnTimePluginInfo.id,
-        name = MSOnTimePluginInfo.name,
-        version = MSOnTimePluginInfo.version,
-        description = MSOnTimePluginInfo.description,
-        authors = MSOnTimePluginInfo.authors,
-        url = MSOnTimePluginInfo.url
+    id = MSOnTimePluginInfo.id,
+    name = MSOnTimePluginInfo.name,
+    version = MSOnTimePluginInfo.version,
+    description = MSOnTimePluginInfo.description,
+    authors = MSOnTimePluginInfo.authors,
+    url = MSOnTimePluginInfo.url,
+    dependencies = @Dependency(id = "mscore")
 )
 public class MSOnTime {
 
@@ -57,13 +59,13 @@ public class MSOnTime {
         initCommands();
         injector.getInstance(SyncTaskService.class);
         Sponge.getEventManager().registerListeners(this, injector.getInstance(PlayerListener.class));
-        loadConfig();
+        loadRegistry();
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.AQUA, "Done"));
     }
 
     @Listener
     public void reload(GameReloadEvent event) {
-        loadConfig();
+        loadRegistry();
         logger.info("Reloaded successfully!");
     }
 
@@ -72,8 +74,8 @@ public class MSOnTime {
         Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.AQUA, "Stopping"));
     }
 
-    private void loadConfig() {
-        injector.getInstance(ConfigurationService.class).load(this);
+    private void loadRegistry() {
+        injector.getInstance(Registry.class).load(this);
     }
 
     private void initCommands() {

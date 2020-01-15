@@ -3,7 +3,7 @@ package rocks.milspecsg.msontime;
 import com.google.inject.Inject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import rocks.milspecsg.msrepository.PluginInfo;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
 public class PluginMessages {
 

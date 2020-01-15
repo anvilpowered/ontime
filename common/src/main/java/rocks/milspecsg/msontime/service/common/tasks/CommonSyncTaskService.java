@@ -1,18 +1,18 @@
 package rocks.milspecsg.msontime.service.common.tasks;
 
 import rocks.milspecsg.msontime.api.tasks.SyncTaskService;
-import rocks.milspecsg.msrepository.api.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.data.registry.Registry;
 
 public abstract class CommonSyncTaskService implements SyncTaskService {
 
-    protected ConfigurationService configurationService;
+    protected Registry registry;
 
-    protected CommonSyncTaskService(ConfigurationService configurationService) {
-        this.configurationService = configurationService;
-        this.configurationService.addConfigLoadedListener(this::loadConfig);
+    protected CommonSyncTaskService(Registry registry) {
+        this.registry = registry;
+        this.registry.addRegistryLoadedListener(this::registryLoaded);
     }
 
-    private void loadConfig(Object plugin) {
+    private void registryLoaded(Object plugin) {
         stopSyncTask();
         startSyncTask();
     }

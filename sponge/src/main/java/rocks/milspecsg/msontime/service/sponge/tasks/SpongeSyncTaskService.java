@@ -9,14 +9,15 @@ import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msontime.MSOnTime;
-import rocks.milspecsg.msontime.api.config.ConfigKeys;
-import rocks.milspecsg.msontime.api.config.ConfigTypes;
+import rocks.milspecsg.msontime.api.data.key.MSOnTimeKeys;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.service.common.tasks.CommonSyncTaskService;
-import rocks.milspecsg.msrepository.PluginInfo;
-import rocks.milspecsg.msrepository.api.config.ConfigurationService;
+import rocks.milspecsg.msrepository.api.data.registry.Registry;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
@@ -33,8 +34,8 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
     private Task task;
 
     @Inject
-    public SpongeSyncTaskService(ConfigurationService configurationService) {
-        super(configurationService);
+    public SpongeSyncTaskService(Registry registry) {
+        super(registry);
         permissionService = Sponge.getServiceManager().provide(PermissionService.class).orElseThrow(() -> new IllegalStateException("Missing PermissionService"));
     }
 
@@ -53,7 +54,7 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
     public Runnable getSyncTask() {
         return () -> {
             Collection<Subject> allGroups = permissionService.getGroupSubjects().getLoadedSubjects();
-            Set<String> configRanks = configurationService.getConfigMap(ConfigKeys.RANKS, ConfigTypes.RANKS).keySet();
+            Set<String> configRanks = registry.getOrDefault(MSOnTimeKeys.RANKS).keySet();
             Sponge.getServer().getOnlinePlayers().forEach(player ->
                     memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
                         if (!optionalRank.isPresent()) {
