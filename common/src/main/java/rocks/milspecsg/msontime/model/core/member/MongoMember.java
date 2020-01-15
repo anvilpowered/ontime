@@ -2,7 +2,7 @@ package rocks.milspecsg.msontime.model.core.member;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import rocks.milspecsg.msrepository.model.data.dbo.MongoDbo;
+import rocks.milspecsg.msrepository.common.model.MongoDbo;
 
 import java.util.UUID;
 
