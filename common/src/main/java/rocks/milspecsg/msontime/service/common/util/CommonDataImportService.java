@@ -26,6 +26,7 @@ public class CommonDataImportService<TString> implements DataImportService {
 
                 String key = (String) objKey;
                 String ontime = root.getNode("playerData", key, "TimePlayed").getString();
+                String joinDate = root.getNode("playerData", key, "JoinDate").getString();
 
                 if (ontime == null) {
                     continue;

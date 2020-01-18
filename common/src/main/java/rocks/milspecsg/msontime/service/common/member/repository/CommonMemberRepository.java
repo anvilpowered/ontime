@@ -2,7 +2,6 @@ package rocks.milspecsg.msontime.service.common.member.repository;
 
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
 import rocks.milspecsg.msontime.model.core.member.Member;
-import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonRepository;
 
@@ -13,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class CommonMemberRepository<
     TKey,
     TDataStore>
-    extends CommonRepository<TKey, Member<TKey>, CacheService<TKey, Member<TKey>, TDataStore>, TDataStore>
+    extends CommonRepository<TKey, Member<TKey>, TDataStore>
     implements MemberRepository<TKey, TDataStore> {
 
     protected CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {

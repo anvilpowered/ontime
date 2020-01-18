@@ -8,7 +8,6 @@ import org.mongodb.morphia.query.QueryResults;
 import org.mongodb.morphia.query.UpdateOperations;
 import rocks.milspecsg.msontime.api.member.repository.MongoMemberRepository;
 import rocks.milspecsg.msontime.model.core.member.Member;
-import rocks.milspecsg.msrepository.api.cache.CacheService;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
 import rocks.milspecsg.msrepository.common.repository.CommonMongoRepository;
 
@@ -17,9 +16,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoMemberRepository
-        extends CommonMemberRepository<ObjectId, Datastore>
-        implements CommonMongoRepository<Member<ObjectId>, CacheService<ObjectId, Member<ObjectId>, Datastore>>,
-        MongoMemberRepository {
+    extends CommonMemberRepository<ObjectId, Datastore>
+    implements CommonMongoRepository<Member<ObjectId>>,
+    MongoMemberRepository {
 
     @Inject
     public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
@@ -34,10 +33,10 @@ public class CommonMongoMemberRepository
     @Override
     public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
         return CompletableFuture.supplyAsync(() ->
-                getDataStoreContext().getDataStore()
-                        .flatMap(dataStore -> inc("playTime")
-                                .map(u -> dataStore.update(query, u).getUpdatedCount() > 0)
-                        ).orElse(false)
+            getDataStoreContext().getDataStore()
+                .flatMap(dataStore -> inc("playTime")
+                    .map(u -> dataStore.update(query, u).getUpdatedCount() > 0)
+                ).orElse(false)
         ).exceptionally(e -> false);
     }
 

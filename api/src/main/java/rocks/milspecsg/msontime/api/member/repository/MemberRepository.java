@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 public interface MemberRepository<
     TKey,
     TDataStore>
-    extends Repository<TKey, Member<TKey>, CacheService<TKey, Member<TKey>, TDataStore>, TDataStore> {
+    extends Repository<TKey, Member<TKey>, TDataStore> {
 
     CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
