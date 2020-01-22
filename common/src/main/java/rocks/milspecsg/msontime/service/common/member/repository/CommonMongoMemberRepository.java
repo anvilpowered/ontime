@@ -16,9 +16,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoMemberRepository
-    extends CommonMemberRepository<ObjectId, Datastore>
-    implements CommonMongoRepository<Member<ObjectId>>,
-    MongoMemberRepository {
+        extends CommonMemberRepository<ObjectId, Datastore>
+        implements CommonMongoRepository<Member<ObjectId>>,
+        MongoMemberRepository {
 
     @Inject
     public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
@@ -32,31 +32,22 @@ public class CommonMongoMemberRepository
 
     @Override
     public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
-        return CompletableFuture.supplyAsync(() ->
-            getDataStoreContext().getDataStore()
-                .flatMap(dataStore -> inc("playTime")
-                    .map(u -> dataStore.update(query, u).getUpdatedCount() > 0)
-                ).orElse(false)
-        ).exceptionally(e -> false);
+        return CompletableFuture.supplyAsync(() -> getDataStoreContext().getDataStore().update(query, inc("playTime")).getUpdatedExisting());
     }
 
     @Override
     public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
         return CompletableFuture.supplyAsync(() -> {
-            Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", bonusTime));
-            return updateOperations
-                .map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                    .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)
-                ).orElse(false);
+            UpdateOperations<Member<ObjectId>> updateOperations = createUpdateOperations().set("bonusTime", bonusTime);
+            return getDataStoreContext().getDataStore().update(query, updateOperations).getUpdatedExisting();
         });
     }
 
     @Override
     public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
         return CompletableFuture.supplyAsync(() -> {
-            Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", query.get().getBonusTime() + bonusTime));
-            return updateOperations.map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)).orElse(false);
+            UpdateOperations<Member<ObjectId>> updateOperations = createUpdateOperations().set("bonusTime", query.get().getBonusTime() + bonusTime);
+            return getDataStoreContext().getDataStore().update(query, updateOperations).getUpdatedExisting();
         });
     }
 
@@ -77,6 +68,6 @@ public class CommonMongoMemberRepository
 
     @Override
     public Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID) {
-        return asQuery().map(q -> q.field("userUUID").equal(userUUID));
+        return asQuery(userUUID);
     }
 }

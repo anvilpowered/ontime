@@ -1,4 +1,4 @@
-package rocks.milspecsg.msontime;
+package rocks.milspecsg.msontime.plugin;
 
 import com.google.inject.Inject;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;

@@ -17,6 +17,7 @@ import org.spongepowered.api.text.format.TextColors;
 import rocks.milspecsg.msontime.api.tasks.SyncTaskService;
 import rocks.milspecsg.msontime.commands.OnTimeCommandManager;
 import rocks.milspecsg.msontime.listeners.PlayerListener;
+import rocks.milspecsg.msontime.plugin.MSOnTimePluginInfo;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.util.PluginInfo;
 import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
@@ -30,7 +31,7 @@ import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
     url = MSOnTimePluginInfo.url,
     dependencies = @Dependency(id = "mscore")
 )
-public class MSOnTime {
+public class  MSOnTime {
 
     @Override
     public String toString() {

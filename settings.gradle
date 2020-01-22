@@ -36,3 +36,5 @@ include 'MSRepository:msr-core:core-velocity'
 include 'MSRepository:msr-sponge'
 
 include 'MSRepository:msr-velocity'
+include 'velocity'
+

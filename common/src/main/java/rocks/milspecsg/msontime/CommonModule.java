@@ -7,12 +7,15 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
+import rocks.milspecsg.msontime.api.plugin.PluginMessages;
 import rocks.milspecsg.msontime.api.util.DataImportService;
+import rocks.milspecsg.msontime.plugin.MSOnTimePluginInfo;
 import rocks.milspecsg.msontime.service.common.data.config.MSOnTimeConfigurationService;
 import rocks.milspecsg.msontime.service.common.data.registry.MSOnTimeRegistry;
 import rocks.milspecsg.msontime.service.common.member.CommonMemberManager;
 import rocks.milspecsg.msontime.service.common.member.repository.CommonMongoMemberRepository;
 import rocks.milspecsg.msontime.service.common.util.CommonDataImportService;
+import rocks.milspecsg.msontime.plugin.CommonPluginMessages;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
@@ -48,7 +51,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<MemberManager<TString>>(getClass()) {
             },
-            new TypeToken<CommonMemberManager<TUser, TPlayer,TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonMemberManager<TUser, TPlayer, TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -63,6 +66,13 @@ public class CommonModule<
             new TypeToken<DataImportService>(getClass()) {
             },
             new TypeToken<CommonDataImportService<TString>>(getClass()) {
+            }
+        );
+
+        be.bind(
+            new TypeToken<PluginMessages<TString>>(getClass()) {
+            },
+            new TypeToken<CommonPluginMessages<TString, TCommandSource>>(getClass()) {
             }
         );
 

@@ -56,23 +56,23 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
             Collection<Subject> allGroups = permissionService.getGroupSubjects().getLoadedSubjects();
             Set<String> configRanks = registry.getOrDefault(MSOnTimeKeys.RANKS).keySet();
             Sponge.getServer().getOnlinePlayers().forEach(player ->
-                    memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
-                        if (!optionalRank.isPresent()) {
-                            return;
+                memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
+                    if (!optionalRank.isPresent()) {
+                        return;
+                    }
+                    String rank = optionalRank.get();
+                    boolean hasNewRank = false;
+                    for (Subject subject : allGroups) {
+                        if (subject.getIdentifier().equals(rank)) {
+                            player.getSubjectData().addParent(Collections.emptySet(), subject.asSubjectReference());
+                            hasNewRank = true;
+                        } else if (hasNewRank && player.getParents().size() == 1) {
+                            break;
+                        } else if (configRanks.contains(subject.getIdentifier())) {
+                            player.getSubjectData().removeParent(Collections.emptySet(), subject.asSubjectReference());
                         }
-                        String rank = optionalRank.get();
-                        boolean hasNewRank = false;
-                        for (Subject subject : allGroups) {
-                            if (subject.getIdentifier().equals(rank)) {
-                                player.getSubjectData().addParent(Collections.emptySet(), subject.asSubjectReference());
-                                hasNewRank = true;
-                            } else if (hasNewRank && player.getParents().size() == 1) {
-                                break;
-                            } else if (configRanks.contains(subject.getIdentifier())) {
-                                player.getSubjectData().removeParent(Collections.emptySet(), subject.asSubjectReference());
-                            }
-                        }
-                    })
+                    }
+                })
             );
         };
     }

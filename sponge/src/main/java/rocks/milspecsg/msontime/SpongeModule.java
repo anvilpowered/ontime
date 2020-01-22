@@ -9,7 +9,11 @@ import rocks.milspecsg.msontime.service.common.data.config.MSOnTimeConfiguration
 import rocks.milspecsg.msontime.service.sponge.config.MSOnTimeSpongeConfigurationService;
 import rocks.milspecsg.msontime.service.sponge.tasks.SpongeSyncTaskService;
 
-public class SpongeModule extends CommonModule<User, Player, Text, CommandSource> {
+public class SpongeModule extends CommonModule<
+    User,
+    Player,
+    Text,
+    CommandSource> {
 
     @Override
     protected void configure() {
