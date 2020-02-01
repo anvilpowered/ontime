@@ -1,3 +1,21 @@
+/*
+ *     MSOnTime - MilSpecSG
+ *     Copyright (C) 2019 Cableguy20
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package rocks.milspecsg.msontime.sponge.commands;
 
 import com.google.inject.Inject;
@@ -5,13 +23,20 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
+import rocks.milspecsg.msontime.api.data.key.MSOnTimeKeys;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class OnTimeCommandManager {
+
+    public static Map<List<String>, CommandSpec> subCommands = new HashMap<>();
+
+    @Inject
+    OnTimeAddCommand onTimeAddCommand;
 
     @Inject
     OnTimeBaseCommand onTimeBaseCommand;
@@ -20,37 +45,20 @@ public class OnTimeCommandManager {
     OnTimeCheckCommand onTimeCheckCommand;
 
     @Inject
-    OnTimeSetCommand onTimeSetCommand;
-
-    @Inject
-    OnTimeAddCommand onTimeAddCommand;
-
-    @Inject
     OnTimeImportCommand onTimeImportCommand;
+
+    @Inject
+    OnTimeSetBonusCommand onTimeSetBonusCommand;
+
+    @Inject
+    OnTimeSetCommand onTimeSetCommand;
 
     public void register(Object plugin) {
         Map<List<String>, CommandSpec> subCommands = new HashMap<>();
 
-        subCommands.put(Arrays.asList("check", "c", "info", "i"), CommandSpec.builder()
-            .description(Text.of("Check play time"))
-            .arguments(
-                GenericArguments.optional(GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))))
-            )
-            .executor(onTimeCheckCommand)
-            .build()
-        );
-
-        subCommands.put(Arrays.asList("set"), CommandSpec.builder()
-            .description(Text.of("Set bonus playtime"))
-            .arguments(
-                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.integer(Text.of("time"))
-            )
-            .executor(onTimeSetCommand)
-            .build()
-        );
-        subCommands.put(Arrays.asList("add"), CommandSpec.builder()
+        subCommands.put(Arrays.asList("add", "a"), CommandSpec.builder()
             .description(Text.of("Add bonus time to a player"))
+            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.integer(Text.of("time"))
@@ -59,11 +67,49 @@ public class OnTimeCommandManager {
             .build()
         );
 
-        subCommands.put(Arrays.asList("convert-from-rankup"), CommandSpec.builder()
-            .description(Text.of("Print out all uuids from playerstats.conf"))
+        subCommands.put(Arrays.asList("check", "c", "info", "i"), CommandSpec.builder()
+            .description(Text.of("Check play time"))
+            .permission(MSOnTimeKeys.CHECK_PERMISSION.getFallbackValue())
+            .arguments(
+                GenericArguments.optional(
+                    GenericArguments.requiringPermission(
+                        GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
+                        MSOnTimeKeys.CHECK_EXTENDED_PERMISSION.getFallbackValue()
+                    )
+                )
+            )
+            .executor(onTimeCheckCommand)
+            .build()
+        );
+
+        subCommands.put(Collections.singletonList("import"), CommandSpec.builder()
+            .description(Text.of("Import data from rankupper"))
+            .permission(MSOnTimeKeys.IMPORT_PERMISSION.getFallbackValue())
             .arguments(GenericArguments.string(Text.of("path")))
             .executor(onTimeImportCommand)
             .build());
+
+        subCommands.put(Arrays.asList("setbonus", "sb"), CommandSpec.builder()
+            .description(Text.of("Set bonus playtime"))
+            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+            .arguments(
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
+                GenericArguments.integer(Text.of("time"))
+            )
+            .executor(onTimeSetBonusCommand)
+            .build()
+        );
+
+        subCommands.put(Arrays.asList("set", "s", "settotal", "st"), CommandSpec.builder()
+            .description(Text.of("Set total playtime"))
+            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+            .arguments(
+                GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
+                GenericArguments.integer(Text.of("time"))
+            )
+            .executor(onTimeSetCommand)
+            .build()
+        );
 
         CommandSpec mainCommand = CommandSpec.builder()
             .description(Text.of("Base command"))
@@ -72,5 +118,6 @@ public class OnTimeCommandManager {
             .build();
 
         Sponge.getCommandManager().register(plugin, mainCommand, "msontime", "ontime", "ot", "playtime");
+        OnTimeCommandManager.subCommands = subCommands;
     }
 }

@@ -80,13 +80,11 @@ public class CommonMemberManager<
             optionalMember.isPresent()
                 ? stringResult.builder()
                 .append(stringResult.builder().dark_gray().append("========= ").gold().append(userService.getUserName(userUUID).orElse("null")).dark_gray().append(" ========="))
-                .append("\n")
-                .gray().append("\nPlay Time: ").aqua().append(optionalMember.get().getPlayTime())
+                .gray().append("\n\nPlay Time: ").aqua().append(optionalMember.get().getPlayTime())
                 .gray().append("\nBonus Time: ").aqua().append(optionalMember.get().getBonusTime())
                 .gray().append("\nEffective Time: ").aqua().append(optionalMember.get().getPlayTime() + optionalMember.get().getBonusTime())
-                .append("\n").append(getNextGroup(optionalMember.get().getUserUUID()).join())
-                .append("\n")
-                .append(stringResult.builder().dark_gray().append("\n========= ").gold().append(pluginInfo.getPrefix()).dark_gray().append(" ========="))
+                .append("\n", getNextGroup(optionalMember.get().getUserUUID()).join())
+                .append(stringResult.builder().dark_gray().append("\n\n========= ").gold().append(pluginInfo.getPrefix()).dark_gray().append(" ========="))
                 .build()
                 : stringResult.builder()
                 .append(pluginInfo.getPrefix())
@@ -121,30 +119,40 @@ public class CommonMemberManager<
     }
 
     @Override
-    public void setBonusTime(UUID userUUID, int bonusTime) {
-        getPrimaryComponent().setBonusTimeForUser(userUUID, bonusTime).thenApplyAsync(result -> {
-            if (!result) {
-                return stringResult.fail("Invalid user");
+    public CompletableFuture<TString> addBonusTime(UUID userUUID, int time) {
+        return getPrimaryComponent().addBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            if (result) {
+                return stringResult.success("Added " + time + " to " + userService.getUserName(userUUID).orElse("null"));
             }
-
-            return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
-                if (!optionalMember.isPresent()) {
-                    return stringResult.fail("Invalid user");
-                }
-
-                int effectiveTime = optionalMember.get().getPlayTime() + optionalMember.get().getBonusTime();
-                return stringResult.success("Set bonus play time to " + effectiveTime);
-            }).join();
+            return stringResult.fail("Invalid user");
         });
     }
 
     @Override
-    public CompletableFuture<TString> addBonusTime(UUID userUUID, int bonusTime) {
-        return getPrimaryComponent().addBonusTimeForUser(userUUID, bonusTime).thenApplyAsync(result -> {
-            if (!result) {
-                return stringResult.fail("Invalid user");
+    public CompletableFuture<TString> setBonusTime(UUID userUUID, int time) {
+        return getPrimaryComponent().setBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            if (result) {
+                return stringResult.builder()
+                    .append(pluginInfo.getPrefix())
+                    .green().append("Successfully updated ", userService.getUserName(userUUID).orElse("null"), "'s bonus time to ")
+                    .gold().append(time)
+                    .build();
             }
-            return stringResult.success("Added " + bonusTime + " to " + userService.getUserName(userUUID));
+            return stringResult.fail("Invalid user");
+        });
+    }
+
+    @Override
+    public CompletableFuture<TString> setTotalTime(UUID userUUID, int time) {
+        return getPrimaryComponent().setTotalTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            if (result) {
+                return stringResult.builder()
+                    .append(pluginInfo.getPrefix())
+                    .green().append("Successfully updated ", userService.getUserName(userUUID).orElse("null"), "'s total time to ")
+                    .gold().append(time)
+                    .build();
+            }
+            return stringResult.fail("Invalid user");
         });
     }
 
@@ -157,13 +165,13 @@ public class CommonMemberManager<
                 String[] nextRankPrefix = new String[]{"N/A"};
                 int[] nextRankMinutes = new int[]{-1};
                 ranks.forEach((k, v) -> {
-                    if (v > effectiveTime && nextRankMinutes[0] < 0) {
+                    if (v > effectiveTime && (nextRankMinutes[0] < 0 || v < nextRankMinutes[0])) {
                         nextRankPrefix[0] = k;
                         nextRankMinutes[0] = v;
                     }
                 });
                 return stringResult.builder().gray().append("Next Rank: ").aqua().append(nextRankPrefix[0] + " (" + nextRankMinutes[0] + " minutes) ")
-                    .gray().append("\nTime Remaining: ").aqua().append(nextRankMinutes[0] - effectiveTime).build();
+                    .gray().append("\nTime Remaining: ").aqua().append(nextRankMinutes[0] > 0 ? nextRankMinutes[0] - effectiveTime : -1).build();
             } else {
                 return stringResult.fail("Couldn't find data for " + userService.getUserName(userUUID));
             }

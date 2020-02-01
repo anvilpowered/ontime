@@ -23,7 +23,6 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import rocks.milspecsg.msontime.api.model.member.Member;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,9 +30,11 @@ public interface MongoMemberRepository extends MemberRepository<ObjectId, Datast
 
     CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
 
-    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int bonusTime);
+    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int time);
 
-    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int bonusTime);
+    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int time);
 
-    Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID);
+    CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, int time);
+
+    Query<Member<ObjectId>> asQuery(UUID userUUID);
 }

@@ -18,16 +18,34 @@
 
 package rocks.milspecsg.msontime.sponge.commands;
 
+import com.google.inject.Inject;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.text.Text;
+import rocks.milspecsg.msontime.api.member.MemberManager;
+import rocks.milspecsg.msrepository.api.util.PluginInfo;
 
-public class OnTimeBaseCommand implements CommandExecutor {
+public class OnTimeSetBonusCommand implements CommandExecutor {
+
+    @Inject
+    private MemberManager<Text> memberManager;
+
+    @Inject
+    private PluginInfo<Text> pluginInfo;
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+        memberManager.setBonusTime(
+            context.<User>getOne(Text.of("user"))
+                .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing user")))
+                .getUniqueId(),
+            context.<Integer>getOne(Text.of("time"))
+                .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing time")))
+        ).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
 }

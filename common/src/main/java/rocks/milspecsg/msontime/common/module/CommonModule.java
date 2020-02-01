@@ -23,7 +23,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
-import rocks.milspecsg.msontime.common.plugin.MSOnTimePluginInfo;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
 import rocks.milspecsg.msontime.api.util.DataImportService;
@@ -31,6 +30,7 @@ import rocks.milspecsg.msontime.common.data.config.MSOnTimeConfigurationService;
 import rocks.milspecsg.msontime.common.data.registry.MSOnTimeRegistry;
 import rocks.milspecsg.msontime.common.member.CommonMemberManager;
 import rocks.milspecsg.msontime.common.member.repository.CommonMongoMemberRepository;
+import rocks.milspecsg.msontime.common.plugin.MSOnTimePluginInfo;
 import rocks.milspecsg.msontime.common.util.CommonDataImportService;
 import rocks.milspecsg.msrepository.api.data.config.ConfigurationService;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
@@ -67,7 +67,7 @@ public class CommonModule<
         be.bind(
             new TypeToken<MemberManager<TString>>(getClass()) {
             },
-            new TypeToken<CommonMemberManager<TUser, TPlayer,TString, TCommandSource>>(getClass()) {
+            new TypeToken<CommonMemberManager<TUser, TPlayer, TString, TCommandSource>>(getClass()) {
             }
         );
 

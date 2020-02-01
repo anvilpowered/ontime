@@ -63,7 +63,7 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, int playTime) {
+    public CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, int time) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
@@ -72,7 +72,7 @@ public abstract class CommonMemberRepository<
                 //Specified in the config
                 Member<TKey> member = generateEmpty();
                 member.setBonusTime(0);
-                member.setPlayTime(playTime);
+                member.setPlayTime(time);
                 member.setUserUUID(userUUID);
                 return insertOne(member).join();
             } catch (Exception e) {

@@ -22,8 +22,6 @@ import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
-import org.mongodb.morphia.query.QueryResults;
-import org.mongodb.morphia.query.UpdateOperations;
 import rocks.milspecsg.msontime.api.member.repository.MongoMemberRepository;
 import rocks.milspecsg.msontime.api.model.member.Member;
 import rocks.milspecsg.msrepository.api.datastore.DataStoreContext;
@@ -45,56 +43,60 @@ public class CommonMongoMemberRepository
 
     @Override
     public CompletableFuture<Optional<Member<ObjectId>>> getOneForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> asQuery(userUUID).map(QueryResults::get));
+        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(asQuery(userUUID).get()));
     }
 
     @Override
     public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
-        return CompletableFuture.supplyAsync(() ->
-            getDataStoreContext().getDataStore()
-                .flatMap(dataStore -> inc("playTime")
-                    .map(u -> dataStore.update(query, u).getUpdatedCount() > 0)
-                ).orElse(false)
-        ).exceptionally(e -> false);
+        return update(query, inc("playTime"));
     }
 
     @Override
-    public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
-        return CompletableFuture.supplyAsync(() -> {
-            Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", bonusTime));
-            return updateOperations
-                .map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                    .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)
-                ).orElse(false);
-        });
+    public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int time) {
+        return update(query, inc("bonusTime", time));
     }
 
     @Override
-    public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int bonusTime) {
+    public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int time) {
+        return update(query, set("bonusTime", time));
+    }
+
+    @Override
+    public CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, int time) {
         return CompletableFuture.supplyAsync(() -> {
-            Optional<UpdateOperations<Member<ObjectId>>> updateOperations = createUpdateOperations().map(u -> u.set("bonusTime", query.get().getBonusTime() + bonusTime));
-            return updateOperations.map(memberUpdateOperations -> getDataStoreContext().getDataStore()
-                .map(datastore -> datastore.update(query, memberUpdateOperations).getUpdatedCount() > 0).orElse(false)).orElse(false);
+            Member<ObjectId> member = query.project("playTime", true).get();
+            if (member == null) {
+                return false;
+            }
+            return getDataStoreContext()
+                .getDataStore()
+                .update(query, set("bonusTime", time - member.getPlayTime()))
+                .getUpdatedCount() > 0;
         });
     }
 
     @Override
     public CompletableFuture<Boolean> addMinuteForUser(UUID userUUID) {
-        return asQuery(userUUID).map(this::addMinute).orElse(CompletableFuture.completedFuture(false));
+        return addMinute(asQuery(userUUID));
+    }
+
+    @Override
+    public CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, int time) {
+        return addBonusTime(asQuery(userUUID), time);
     }
 
     @Override
     public CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, int bonusTime) {
-        return asQuery(userUUID).map(q -> setBonusTime(q, bonusTime)).orElse(CompletableFuture.completedFuture(false));
+        return setBonusTime(asQuery(userUUID), bonusTime);
     }
 
     @Override
-    public CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, int bonusTime) {
-        return asQuery(userUUID).map(q -> addBonusTime(q, bonusTime)).orElse(CompletableFuture.completedFuture(false));
+    public CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, int time) {
+        return setTotalTime(asQuery(userUUID), time);
     }
 
     @Override
-    public Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID) {
-        return asQuery().map(q -> q.field("userUUID").equal(userUUID));
+    public Query<Member<ObjectId>> asQuery(UUID userUUID) {
+        return asQuery().field("userUUID").equal(userUUID);
     }
 }
