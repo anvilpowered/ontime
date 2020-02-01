@@ -16,24 +16,50 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package rocks.milspecsg.msontime.api.member.repository;
+package rocks.milspecsg.msontime.common.model.member;
 
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.annotations.Entity;
 import rocks.milspecsg.msontime.api.model.member.Member;
+import rocks.milspecsg.msrepository.common.model.MongoDbo;
 
-import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
-public interface MongoMemberRepository extends MemberRepository<ObjectId, Datastore> {
+@Entity("members")
+public class MongoMember extends MongoDbo implements Member<ObjectId> {
 
-    CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
+    private UUID userUUID;
+    private int playTime;
+    private int bonusTime;
 
-    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int bonusTime);
+    @Override
+    public UUID getUserUUID() {
+        return userUUID;
+    }
 
-    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int bonusTime);
+    @Override
+    public void setUserUUID(UUID userUUID) {
+        this.userUUID = userUUID;
+    }
 
-    Optional<Query<Member<ObjectId>>> asQuery(UUID userUUID);
+    @Override
+    public int getPlayTime() {
+        return playTime;
+    }
+
+    @Override
+    public void setPlayTime(int playTime) {
+        this.playTime = playTime;
+    }
+
+    @Override
+    public int getBonusTime() {
+        return bonusTime;
+    }
+
+    @Override
+    public void setBonusTime(int bonusTime) {
+        this.bonusTime = bonusTime;
+    }
+
 }
