@@ -29,5 +29,6 @@ public class MSOnTimeRegistry extends CommonExtendedRegistry {
     @Inject
     public MSOnTimeRegistry() {
         defaultMap.put(Keys.BASE_SCAN_PACKAGE, "rocks.milspecsg.msontime.common.model");
+        defaultMap.put(Keys.DATA_DIRECTORY, "msontime");
     }
 }
