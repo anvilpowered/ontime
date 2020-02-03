@@ -27,7 +27,7 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 import rocks.milspecsg.msontime.api.member.MemberManager;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 public class OnTimeSetBonusCommand implements CommandExecutor {
 

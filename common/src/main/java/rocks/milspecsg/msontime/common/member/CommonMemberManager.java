@@ -23,7 +23,7 @@ import rocks.milspecsg.msontime.api.data.key.MSOnTimeKeys;
 import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.api.member.repository.MemberRepository;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
 import rocks.milspecsg.msrepository.api.util.UserService;
 import rocks.milspecsg.msrepository.common.manager.CommonManager;

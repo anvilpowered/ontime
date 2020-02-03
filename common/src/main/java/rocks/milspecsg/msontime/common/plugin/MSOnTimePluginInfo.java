@@ -19,7 +19,7 @@
 package rocks.milspecsg.msontime.common.plugin;
 
 import com.google.inject.Inject;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.api.util.StringResult;
 
 public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
@@ -28,7 +28,9 @@ public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<T
     public static final String version = "$modVersion";
     public static final String description = "Playtime tracker";
     public static final String url = "https://github.com/MilSpecSG/MSOnTime";
-    public static final String authors = "Cableguy20, STG_Allen";
+    public static final String[] authors = {"Cableguy20", "STG_Allen"};
+    public static final String organizationName = "MilSpecSG";
+    public static final String buildDate = "$buildDate";
     public TString pluginPrefix;
 
     @Inject
@@ -56,13 +58,24 @@ public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<T
         return description;
     }
 
-    public String getURL() {
+    @Override
+    public String getUrl() {
         return url;
     }
 
     @Override
-    public String getAuthors() {
+    public String[] getAuthors() {
         return authors;
+    }
+
+    @Override
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    @Override
+    public String getBuildDate() {
+        return buildDate;
     }
 
     public TString getPrefix() {

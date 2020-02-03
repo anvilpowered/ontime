@@ -38,7 +38,7 @@ import rocks.milspecsg.msontime.sponge.commands.OnTimeCommandManager;
 import rocks.milspecsg.msontime.sponge.listeners.PlayerListener;
 import rocks.milspecsg.msontime.sponge.module.SpongeModule;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
 
 @Plugin(
@@ -46,7 +46,7 @@ import rocks.milspecsg.msrepository.sponge.module.ApiSpongeModule;
     name = MSOnTimePluginInfo.name,
     version = MSOnTimePluginInfo.version,
     description = MSOnTimePluginInfo.description,
-    authors = MSOnTimePluginInfo.authors,
+    authors = {"Cableguy20", "STG_Allen"},
     url = MSOnTimePluginInfo.url,
     dependencies = @Dependency(id = "mscore")
 )
@@ -95,7 +95,7 @@ public class MSOnTime {
     }
 
     private void loadRegistry() {
-        injector.getInstance(Registry.class).load(this);
+        injector.getInstance(Registry.class).load();
     }
 
     private void initCommands() {

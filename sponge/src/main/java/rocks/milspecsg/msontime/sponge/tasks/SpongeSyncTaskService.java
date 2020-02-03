@@ -31,7 +31,7 @@ import rocks.milspecsg.msontime.api.member.MemberManager;
 import rocks.milspecsg.msontime.common.tasks.CommonSyncTaskService;
 import rocks.milspecsg.msontime.sponge.plugin.MSOnTime;
 import rocks.milspecsg.msrepository.api.data.registry.Registry;
-import rocks.milspecsg.msrepository.api.util.PluginInfo;
+import rocks.milspecsg.msrepository.api.plugin.PluginInfo;
 
 import java.util.Collection;
 import java.util.Collections;

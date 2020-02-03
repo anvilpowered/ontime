@@ -30,7 +30,7 @@ public abstract class CommonSyncTaskService implements SyncTaskService {
         this.registry.addRegistryLoadedListener(this::registryLoaded);
     }
 
-    private void registryLoaded(Object plugin) {
+    private void registryLoaded() {
         stopSyncTask();
         startSyncTask();
     }
