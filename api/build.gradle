@@ -9,9 +9,8 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    implementation project(':MSRepository:msr-api')
-    implementation project(':MSRepository:msr-api:api-repository')
-    implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
+    implementation project(':Anvil:anvil-api')
+    implementation project(':Anvil:anvil-api:anvil-api-mongodb')
 
     implementation guice
     implementation morphia

@@ -15,15 +15,11 @@ dependencies {
 
     implementation project(':api')
 
-    implementation project(':MSRepository:msr-api')
-    implementation project(':MSRepository:msr-api:api-repository')
-    implementation project(':MSRepository:msr-api:api-repository:api-repository-mongodb')
-    implementation project(':MSRepository:msr-api:api-config')
+    implementation project(':Anvil:anvil-api')
+    implementation project(':Anvil:anvil-api:anvil-api-mongodb')
 
-    implementation project(':MSRepository:msr-common')
-    implementation project(':MSRepository:msr-common:common-repository')
-    implementation project(':MSRepository:msr-common:common-repository:common-repository-mongodb')
-    implementation project(':MSRepository:msr-common:common-config')
+    implementation project(':Anvil:anvil-common')
+    implementation project(':Anvil:anvil-common:anvil-common-mongodb')
 
     implementation configurate_core
     implementation configurate_hocon
