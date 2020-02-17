@@ -20,18 +20,21 @@ package org.anvilpowered.ontime.sponge.tasks;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.anvilpowered.anvil.api.Environment;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.plugin.Plugin;
+import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.common.tasks.CommonSyncTaskService;
+import org.anvilpowered.ontime.sponge.plugin.OnTimeSponge;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
-import org.anvilpowered.ontime.api.member.MemberManager;
-import org.anvilpowered.ontime.common.tasks.CommonSyncTaskService;
-import org.anvilpowered.ontime.sponge.plugin.MSOnTime;
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.anvil.api.plugin.PluginInfo;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -45,7 +48,7 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
     MemberManager<Text> memberManager;
 
     @Inject
-    PluginInfo<Text> pluginInfo;
+    Environment environment;
 
     PermissionService permissionService;
 
@@ -59,8 +62,8 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
 
     @Override
     public void startSyncTask() {
-        Sponge.getServer().getConsole().sendMessage(Text.of(pluginInfo.getPrefix(), TextColors.AQUA, "Starting playtime sync task"));
-        task = Task.builder().async().interval(1, TimeUnit.MINUTES).execute(getSyncTask()).submit(MSOnTime.plugin);
+        Sponge.getServer().getConsole().sendMessage(Text.of(environment.getPluginInfo().getPrefix(), TextColors.AQUA, "Starting playtime sync task"));
+        task = Task.builder().async().interval(1, TimeUnit.MINUTES).execute(getSyncTask()).submit(environment.getPlugin());
     }
 
     @Override

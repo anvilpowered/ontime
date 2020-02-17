@@ -21,14 +21,13 @@ package org.anvilpowered.ontime.common.data.registry;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.key.Keys;
-import org.anvilpowered.anvil.common.data.registry.CommonExtendedRegistry;
+import org.anvilpowered.anvil.base.data.registry.BaseExtendedRegistry;
 
 @Singleton
-public class MSOnTimeRegistry extends CommonExtendedRegistry {
+public class MSOnTimeRegistry extends BaseExtendedRegistry {
 
     @Inject
     public MSOnTimeRegistry() {
-        defaultMap.put(Keys.BASE_SCAN_PACKAGE, "rocks.milspecsg.msontime.common.model");
-        defaultMap.put(Keys.DATA_DIRECTORY, "msontime");
+        defaultMap.put(Keys.BASE_SCAN_PACKAGE, "org.anvilpowered.ontime.common.model");
     }
 }

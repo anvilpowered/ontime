@@ -22,14 +22,14 @@ import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.StringResult;
 
-public class MSOnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
-    public static final String id = "msontime";
-    public static final String name = "MSOnTime";
+public class OnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
+    public static final String id = "ontime";
+    public static final String name = "OnTime";
     public static final String version = "$modVersion";
     public static final String description = "Playtime tracker";
-    public static final String url = "https://github.com/MilSpecSG/MSOnTime";
+    public static final String url = "https://github.com/AnvilPowered/OnTime";
     public static final String[] authors = {"Cableguy20", "STG_Allen"};
-    public static final String organizationName = "MilSpecSG";
+    public static final String organizationName = "AnvilPowered";
     public static final String buildDate = "$buildDate";
     public TString pluginPrefix;
 

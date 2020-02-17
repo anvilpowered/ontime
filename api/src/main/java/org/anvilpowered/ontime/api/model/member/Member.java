@@ -27,9 +27,9 @@ public interface Member<TKey> extends ObjectWithId<TKey> {
     UUID getUserUUID();
     void setUserUUID(UUID userUUID);
 
-    int getPlayTime();
-    void setPlayTime(int playTime);
+    long getPlayTime();
+    void setPlayTime(long playTime);
 
-    int getBonusTime();
-    void setBonusTime(int bonusTime);
+    long getBonusTime();
+    void setBonusTime(long bonusTime);
 }

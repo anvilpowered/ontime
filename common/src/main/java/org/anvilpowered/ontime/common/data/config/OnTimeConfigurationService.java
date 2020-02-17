@@ -22,26 +22,28 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
 import org.anvilpowered.anvil.api.data.key.Keys;
-import org.anvilpowered.anvil.common.data.config.CommonConfigurationService;
+import org.anvilpowered.anvil.base.data.config.BaseConfigurationService;
+import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class MSOnTimeConfigurationService extends CommonConfigurationService {
+public class OnTimeConfigurationService extends BaseConfigurationService {
 
     @Inject
-    public MSOnTimeConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
+    public OnTimeConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
         super(configLoader);
+        defaultMap.put(Keys.DATA_DIRECTORY, OnTimePluginInfo.id);
+        defaultMap.put(Keys.MONGODB_DBNAME, OnTimePluginInfo.id);
 
         Map<String, Integer> defaultRankMap = new HashMap<>();
         defaultRankMap.put("player", 5);
         defaultRankMap.put("member", 60);
 
         defaultMap.put(MSOnTimeKeys.RANKS, defaultRankMap);
-        defaultMap.put(Keys.MONGODB_DBNAME, "msontime");
     }
 
     @Override

@@ -11,20 +11,16 @@ include 'Anvil:anvil-api:anvil-api-mariadb'
 include 'Anvil:anvil-api:anvil-api-mongodb'
 include 'Anvil:anvil-api:anvil-api-xodus'
 
+include 'Anvil:anvil-api-core'
+
+include 'Anvil:anvil-base'
+include 'Anvil:anvil-base:anvil-base-mariadb'
+include 'Anvil:anvil-base:anvil-base-mongodb'
+include 'Anvil:anvil-base:anvil-base-xodus'
+
+include 'Anvil:anvil-bungee'
 include 'Anvil:anvil-common'
-include 'Anvil:anvil-common:anvil-common-mariadb'
-include 'Anvil:anvil-common:anvil-common-mongodb'
-include 'Anvil:anvil-common:anvil-common-xodus'
-
-include 'Anvil:anvil-core'
-include 'Anvil:anvil-core:anvil-core-api'
-include 'Anvil:anvil-core:anvil-core-common'
-include 'Anvil:anvil-core:anvil-core-spigot'
-include 'Anvil:anvil-core:anvil-core-sponge'
-include 'Anvil:anvil-core:anvil-core-velocity'
-
+include 'Anvil:anvil-md5'
 include 'Anvil:anvil-spigot'
-
 include 'Anvil:anvil-sponge'
-
 include 'Anvil:anvil-velocity'

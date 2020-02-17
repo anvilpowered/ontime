@@ -19,13 +19,13 @@
 package org.anvilpowered.ontime.common.member.repository;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.datastore.DataStoreContext;
+import org.anvilpowered.anvil.base.repository.BaseMongoRepository;
+import org.anvilpowered.ontime.api.member.repository.MongoMemberRepository;
+import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
-import org.anvilpowered.ontime.api.member.repository.MongoMemberRepository;
-import org.anvilpowered.ontime.api.model.member.Member;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.common.repository.CommonMongoRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class CommonMongoMemberRepository
     extends CommonMemberRepository<ObjectId, Datastore>
-    implements CommonMongoRepository<Member<ObjectId>>,
+    implements BaseMongoRepository<Member<ObjectId>>,
     MongoMemberRepository {
 
     @Inject
@@ -48,21 +48,21 @@ public class CommonMongoMemberRepository
 
     @Override
     public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
-        return update(query, inc("playTime"));
+        return update(query, inc("playTime", 60));
     }
 
     @Override
-    public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int time) {
+    public CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, long time) {
         return update(query, inc("bonusTime", time));
     }
 
     @Override
-    public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int time) {
+    public CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, long time) {
         return update(query, set("bonusTime", time));
     }
 
     @Override
-    public CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, int time) {
+    public CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, long time) {
         return CompletableFuture.supplyAsync(() -> {
             Member<ObjectId> member = query.project("playTime", true).get();
             if (member == null) {
@@ -81,17 +81,17 @@ public class CommonMongoMemberRepository
     }
 
     @Override
-    public CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, int time) {
+    public CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, long time) {
         return addBonusTime(asQuery(userUUID), time);
     }
 
     @Override
-    public CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, int bonusTime) {
-        return setBonusTime(asQuery(userUUID), bonusTime);
+    public CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, long time) {
+        return setBonusTime(asQuery(userUUID), time);
     }
 
     @Override
-    public CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, int time) {
+    public CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, long time) {
         return setTotalTime(asQuery(userUUID), time);
     }
 

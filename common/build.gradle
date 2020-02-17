@@ -18,8 +18,8 @@ dependencies {
     implementation project(':Anvil:anvil-api')
     implementation project(':Anvil:anvil-api:anvil-api-mongodb')
 
-    implementation project(':Anvil:anvil-common')
-    implementation project(':Anvil:anvil-common:anvil-common-mongodb')
+    implementation project(':Anvil:anvil-base')
+    implementation project(':Anvil:anvil-base:anvil-base-mongodb')
 
     implementation configurate_core
     implementation configurate_hocon

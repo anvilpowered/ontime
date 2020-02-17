@@ -19,6 +19,8 @@
 package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
+import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.member.MemberManager;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -27,8 +29,6 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
-import org.anvilpowered.ontime.api.member.MemberManager;
 
 import java.util.Optional;
 

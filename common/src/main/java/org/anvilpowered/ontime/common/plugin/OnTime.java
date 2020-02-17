@@ -16,20 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.sponge.data.config;
+package org.anvilpowered.ontime.common.plugin;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.spongepowered.api.config.DefaultConfig;
-import org.anvilpowered.ontime.common.data.config.MSOnTimeConfigurationService;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import org.anvilpowered.anvil.base.plugin.BasePlugin;
 
-@Singleton
-public class MSOnTimeSpongeConfigurationService extends MSOnTimeConfigurationService {
+public abstract class OnTime<TPluginContainer> extends BasePlugin<TPluginContainer> {
 
-    @Inject
-    public MSOnTimeSpongeConfigurationService(@DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader) {
-        super(configLoader);
+    protected OnTime(Injector injector, Module module, Class<?>... earlyServices) {
+        super(OnTimePluginInfo.id, injector, module, earlyServices);
     }
 }

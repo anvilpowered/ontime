@@ -18,8 +18,8 @@
 
 package org.anvilpowered.ontime.api.member.repository;
 
-import org.anvilpowered.ontime.api.model.member.Member;
 import org.anvilpowered.anvil.api.repository.Repository;
+import org.anvilpowered.ontime.api.model.member.Member;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -38,9 +38,9 @@ public interface MemberRepository<
 
     CompletableFuture<Boolean> addMinuteForUser(UUID userUUID);
 
-    CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, int time);
+    CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, long time);
 
-    CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, int time);
+    CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, long time);
 
-    CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, int time);
+    CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, long time);
 }

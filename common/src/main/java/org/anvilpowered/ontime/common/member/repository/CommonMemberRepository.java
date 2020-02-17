@@ -18,10 +18,10 @@
 
 package org.anvilpowered.ontime.common.member.repository;
 
+import org.anvilpowered.anvil.api.datastore.DataStoreContext;
+import org.anvilpowered.anvil.base.repository.BaseRepository;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.common.repository.CommonRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class CommonMemberRepository<
     TKey,
     TDataStore>
-    extends CommonRepository<TKey, Member<TKey>, TDataStore>
+    extends BaseRepository<TKey, Member<TKey>, TDataStore>
     implements MemberRepository<TKey, TDataStore> {
 
     protected CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
@@ -46,19 +46,14 @@ public abstract class CommonMemberRepository<
     @Override
     public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID) {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
-                if (optionalMember.isPresent()) return optionalMember;
-                // if there isn't one already, create a new one
-                Member<TKey> member = generateEmpty();
-                member.setBonusTime(0);
-                member.setPlayTime(0);
-                member.setUserUUID(userUUID);
-                return insertOne(member).join();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Optional.empty();
-            }
+            Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
+            if (optionalMember.isPresent()) return optionalMember;
+            // if there isn't one already, create a new one
+            Member<TKey> member = generateEmpty();
+            member.setBonusTime(0);
+            member.setPlayTime(0);
+            member.setUserUUID(userUUID);
+            return insertOne(member).join();
         });
     }
 

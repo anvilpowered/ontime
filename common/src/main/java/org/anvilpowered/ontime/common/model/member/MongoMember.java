@@ -18,10 +18,10 @@
 
 package org.anvilpowered.ontime.common.model.member;
 
+import org.anvilpowered.anvil.base.model.MongoDbo;
+import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import org.anvilpowered.ontime.api.model.member.Member;
-import org.anvilpowered.anvil.common.model.MongoDbo;
 
 import java.util.UUID;
 
@@ -29,8 +29,8 @@ import java.util.UUID;
 public class MongoMember extends MongoDbo implements Member<ObjectId> {
 
     private UUID userUUID;
-    private int playTime;
-    private int bonusTime;
+    private long playTime;
+    private long bonusTime;
 
     @Override
     public UUID getUserUUID() {
@@ -43,22 +43,22 @@ public class MongoMember extends MongoDbo implements Member<ObjectId> {
     }
 
     @Override
-    public int getPlayTime() {
+    public long getPlayTime() {
         return playTime;
     }
 
     @Override
-    public void setPlayTime(int playTime) {
+    public void setPlayTime(long playTime) {
         this.playTime = playTime;
     }
 
     @Override
-    public int getBonusTime() {
+    public long getBonusTime() {
         return bonusTime;
     }
 
     @Override
-    public void setBonusTime(int bonusTime) {
+    public void setBonusTime(long bonusTime) {
         this.bonusTime = bonusTime;
     }
 

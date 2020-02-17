@@ -16,22 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.tasks;
+package org.anvilpowered.ontime.sponge.data.config;
 
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
+import org.spongepowered.api.config.DefaultConfig;
 
-public abstract class CommonSyncTaskService implements SyncTaskService {
+@Singleton
+public class OnTimeSpongeConfigurationService extends OnTimeConfigurationService {
 
-    protected Registry registry;
-
-    protected CommonSyncTaskService(Registry registry) {
-        this.registry = registry;
-        this.registry.addRegistryLoadedListener(this::registryLoaded);
-    }
-
-    private void registryLoaded() {
-        stopSyncTask();
-        startSyncTask();
+    @Inject
+    public OnTimeSpongeConfigurationService(@DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader) {
+        super(configLoader);
     }
 }

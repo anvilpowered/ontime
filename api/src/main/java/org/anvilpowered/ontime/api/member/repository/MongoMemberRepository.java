@@ -30,11 +30,11 @@ public interface MongoMemberRepository extends MemberRepository<ObjectId, Datast
 
     CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
 
-    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, int time);
+    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, long time);
 
-    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, int time);
+    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, long time);
 
-    CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, int time);
+    CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, long time);
 
     Query<Member<ObjectId>> asQuery(UUID userUUID);
 }

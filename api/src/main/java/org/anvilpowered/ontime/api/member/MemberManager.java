@@ -18,8 +18,8 @@
 
 package org.anvilpowered.ontime.api.member;
 
-import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.anvil.api.manager.Manager;
+import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -53,11 +53,9 @@ public interface MemberManager<TString> extends Manager<MemberRepository<?, ?>> 
 
     CompletableFuture<Optional<String>> sync(UUID userUUID);
 
-    CompletableFuture<TString> addBonusTime(UUID userUUID, int time);
+    CompletableFuture<TString> addBonusTime(UUID userUUID, long time);
 
-    CompletableFuture<TString> setBonusTime(UUID userUUID, int time);
+    CompletableFuture<TString> setBonusTime(UUID userUUID, long time);
 
-    CompletableFuture<TString> setTotalTime(UUID userUUID, int time);
-
-    CompletableFuture<TString> getNextGroup(UUID userUUID);
+    CompletableFuture<TString> setTotalTime(UUID userUUID, long time);
 }

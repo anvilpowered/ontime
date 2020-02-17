@@ -21,25 +21,26 @@ package org.anvilpowered.ontime.common.module;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import org.anvilpowered.ontime.common.data.config.MSOnTimeConfigurationService;
-import org.anvilpowered.ontime.common.data.registry.MSOnTimeRegistry;
-import org.anvilpowered.ontime.common.util.CommonDataImportService;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.anvilpowered.ontime.api.member.MemberManager;
-import org.anvilpowered.ontime.api.member.repository.MemberRepository;
-import org.anvilpowered.ontime.api.util.DataImportService;
-import org.anvilpowered.ontime.common.member.CommonMemberManager;
-import org.anvilpowered.ontime.common.member.repository.CommonMongoMemberRepository;
-import org.anvilpowered.ontime.common.plugin.MSOnTimePluginInfo;
+import org.anvilpowered.anvil.api.Anvil;
 import org.anvilpowered.anvil.api.data.config.ConfigurationService;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.api.datastore.MongoContext;
 import org.anvilpowered.anvil.api.manager.annotation.MongoDBComponent;
 import org.anvilpowered.anvil.api.misc.BindingExtensions;
+import org.anvilpowered.anvil.api.plugin.BasicPluginInfo;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.anvil.common.misc.CommonBindingExtensions;
+import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.api.member.repository.MemberRepository;
+import org.anvilpowered.ontime.api.util.DataImportService;
+import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
+import org.anvilpowered.ontime.common.data.registry.MSOnTimeRegistry;
+import org.anvilpowered.ontime.common.member.CommonMemberManager;
+import org.anvilpowered.ontime.common.member.repository.CommonMongoMemberRepository;
+import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
+import org.anvilpowered.ontime.common.util.CommonDataImportService;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
 
 @SuppressWarnings("UnstableApiUsage")
 public class CommonModule<
@@ -52,7 +53,7 @@ public class CommonModule<
     @Override
     protected void configure() {
 
-        BindingExtensions be = new CommonBindingExtensions(binder());
+        BindingExtensions be = Anvil.getBindingExtensions(binder());
 
         be.bind(
             new TypeToken<MemberRepository<?, ?>>(getClass()) {
@@ -72,9 +73,16 @@ public class CommonModule<
         );
 
         be.bind(
+            new TypeToken<BasicPluginInfo>(getClass()) {
+            },
+            new TypeToken<OnTimePluginInfo<TString, TCommandSource>>(getClass()) {
+            }
+        );
+
+        be.bind(
             new TypeToken<PluginInfo<TString>>(getClass()) {
             },
-            new TypeToken<MSOnTimePluginInfo<TString, TCommandSource>>(getClass()) {
+            new TypeToken<OnTimePluginInfo<TString, TCommandSource>>(getClass()) {
             }
         );
 
@@ -86,10 +94,9 @@ public class CommonModule<
         );
 
         bind(new TypeLiteral<DataStoreContext<ObjectId, Datastore>>() {
-        }).to(new TypeLiteral<MongoContext>() {
-        });
+        }).to(MongoContext.class);
 
-        bind(ConfigurationService.class).to(MSOnTimeConfigurationService.class);
+        bind(ConfigurationService.class).to(OnTimeConfigurationService.class);
         bind(Registry.class).to(MSOnTimeRegistry.class);
     }
 }

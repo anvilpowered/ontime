@@ -19,11 +19,13 @@
 package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.Environment;
+import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +55,15 @@ public class OnTimeCommandManager {
     @Inject
     OnTimeSetCommand onTimeSetCommand;
 
-    public void register(Object plugin) {
+    @Inject
+    Environment environment;
+
+    @Inject
+    public OnTimeCommandManager(Registry registry) {
+        registry.addRegistryLoadedListener(this::register);
+    }
+
+    public void register() {
         Map<List<String>, CommandSpec> subCommands = new HashMap<>();
 
         subCommands.put(Arrays.asList("add", "a"), CommandSpec.builder()
@@ -117,7 +127,7 @@ public class OnTimeCommandManager {
             .children(subCommands)
             .build();
 
-        Sponge.getCommandManager().register(plugin, mainCommand, "msontime", "ontime", "ot", "playtime");
+        Sponge.getCommandManager().register(environment.getPlugin(), mainCommand, "msontime", "ontime", "ot", "playtime");
         OnTimeCommandManager.subCommands = subCommands;
     }
 }

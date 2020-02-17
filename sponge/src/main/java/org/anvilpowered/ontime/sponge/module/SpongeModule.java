@@ -18,15 +18,15 @@
 
 package org.anvilpowered.ontime.sponge.module;
 
+import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
+import org.anvilpowered.ontime.common.module.CommonModule;
+import org.anvilpowered.ontime.sponge.data.config.OnTimeSpongeConfigurationService;
+import org.anvilpowered.ontime.sponge.tasks.SpongeSyncTaskService;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
-import org.anvilpowered.ontime.common.data.config.MSOnTimeConfigurationService;
-import org.anvilpowered.ontime.common.module.CommonModule;
-import org.anvilpowered.ontime.sponge.data.config.MSOnTimeSpongeConfigurationService;
-import org.anvilpowered.ontime.sponge.tasks.SpongeSyncTaskService;
 
 public class SpongeModule extends CommonModule<User, Player, Text, CommandSource> {
 
@@ -34,7 +34,7 @@ public class SpongeModule extends CommonModule<User, Player, Text, CommandSource
     protected void configure() {
         super.configure();
 
-        bind(MSOnTimeConfigurationService.class).to(MSOnTimeSpongeConfigurationService.class);
+        bind(OnTimeConfigurationService.class).to(OnTimeSpongeConfigurationService.class);
 
         bind(SyncTaskService.class).to(SpongeSyncTaskService.class);
     }

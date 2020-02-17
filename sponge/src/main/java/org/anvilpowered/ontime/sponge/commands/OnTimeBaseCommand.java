@@ -18,16 +18,50 @@
 
 package org.anvilpowered.ontime.sponge.commands;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.service.pagination.PaginationService;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OnTimeBaseCommand implements CommandExecutor {
 
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) {
-
+    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+        List<Text> helpList = new ArrayList<>();
+        OnTimeCommandManager.subCommands.forEach((aliases, commandSpec) -> {
+            if (!commandSpec.getShortDescription(source).isPresent()) return;
+            String subCommand = aliases.toString().replace("[", "").replace("]", "");
+            Text commandHelp = Text.builder()
+                .append(Text.builder()
+                    .append(Text.of(TextColors.GREEN, "/ontime ", subCommand))
+                    .build())
+                .append(Text.builder()
+                    .append(Text.of(TextColors.GOLD, " - " + commandSpec.getShortDescription(source).get().toPlain() + "\n"))
+                    .build())
+                .append(Text.builder()
+                    .append(Text.of(TextColors.GRAY, "Usage: /ontime ", subCommand, " ", commandSpec.getUsage(source).toPlain()))
+                    .build())
+                .build();
+            helpList.add(commandHelp);
+        });
+        helpList.sort(Text::compareTo);
+        Sponge.getServiceManager().provide(PaginationService.class)
+            .orElseThrow(() -> new CommandException(Text.of("Missing pagination service")))
+            .builder()
+            .title(Text.of(TextColors.GOLD, "OnTime - MilspecSG"))
+            .padding(Text.of(TextColors.DARK_GREEN, "-"))
+            .contents(helpList)
+            .linesPerPage(20)
+            .build()
+            .sendTo(source);
         return CommandResult.success();
     }
 }

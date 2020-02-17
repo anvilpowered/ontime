@@ -19,15 +19,18 @@
 package org.anvilpowered.ontime.common.member;
 
 import com.google.inject.Inject;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
-import org.anvilpowered.ontime.api.member.MemberManager;
-import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.StringResult;
+import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.anvil.common.manager.CommonManager;
+import org.anvilpowered.anvil.base.manager.BaseManager;
+import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.api.member.repository.MemberRepository;
+import org.anvilpowered.ontime.api.model.member.Member;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,17 +41,20 @@ public class CommonMemberManager<
     TPlayer extends TCommandSource,
     TString,
     TCommandSource>
-    extends CommonManager<MemberRepository<?, ?>>
+    extends BaseManager<MemberRepository<?, ?>>
     implements MemberManager<TString> {
 
     @Inject
-    PluginInfo<TString> pluginInfo;
+    protected PluginInfo<TString> pluginInfo;
 
     @Inject
-    StringResult<TString, TCommandSource> stringResult;
+    protected StringResult<TString, TCommandSource> stringResult;
 
     @Inject
-    UserService<TUser, TPlayer> userService;
+    protected TimeFormatService timeFormatService;
+
+    @Inject
+    protected UserService<TUser, TPlayer> userService;
 
     @Inject
     public CommonMemberManager(Registry registry) {
@@ -57,39 +63,71 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> info(UUID userUUID) {
-        return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember ->
-            optionalMember.isPresent()
-                ? stringResult.builder()
-                .append(stringResult.builder().dark_gray().append("========= ").gold().append(userService.getUserName(userUUID).orElse("null")).dark_gray().append(" ========="))
-                .append("\n")
-                .gray().append("\nPlayTime: ").aqua().append(optionalMember.get().getPlayTime() + optionalMember.get().getBonusTime())
-                .append("\n")
-                .append(getNextGroup(optionalMember.get().getUserUUID()).join())
-                .append("\n")
-                .append(stringResult.builder().dark_gray().append("\n========= ").gold().append(pluginInfo.getPrefix()).dark_gray().append(" ========="))
-                .build()
-                : stringResult.builder()
+        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
+        return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            if (optionalMember.isPresent()) {
+                Member<?> member = optionalMember.get();
+                String totalTime = timeFormatService.format(
+                    Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
+                );
+                return stringResult.builder()
+                    .append(
+                        stringResult.builder()
+                            .dark_gray().append("========= ")
+                            .gold().append(name)
+                            .dark_gray().append(" =========")
+                    )
+                    .gray().append("\n\nTotal Time: ").aqua().append(totalTime)
+                    .append("\n", getNextGroup(member))
+                    .append("\n\n", stringResult.builder()
+                        .dark_gray().append("========= ")
+                        .gold().append(pluginInfo.getPrefix())
+                        .dark_gray().append(" ========="))
+                    .build();
+            }
+            return stringResult.builder()
                 .append(pluginInfo.getPrefix())
-                .red().append("Could not find user ", userService.getUserName(userUUID).orElse(userUUID.toString()))
-                .build());
+                .red().append("Could not find user ", name)
+                .build();
+        });
     }
 
     @Override
     public CompletableFuture<TString> infoExtended(UUID userUUID) {
-        return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember ->
-            optionalMember.isPresent()
-                ? stringResult.builder()
-                .append(stringResult.builder().dark_gray().append("========= ").gold().append(userService.getUserName(userUUID).orElse("null")).dark_gray().append(" ========="))
-                .gray().append("\n\nPlay Time: ").aqua().append(optionalMember.get().getPlayTime())
-                .gray().append("\nBonus Time: ").aqua().append(optionalMember.get().getBonusTime())
-                .gray().append("\nEffective Time: ").aqua().append(optionalMember.get().getPlayTime() + optionalMember.get().getBonusTime())
-                .append("\n", getNextGroup(optionalMember.get().getUserUUID()).join())
-                .append(stringResult.builder().dark_gray().append("\n\n========= ").gold().append(pluginInfo.getPrefix()).dark_gray().append(" ========="))
-                .build()
-                : stringResult.builder()
+        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
+        return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            if (optionalMember.isPresent()) {
+                Member<?> member = optionalMember.get();
+                String playTime = timeFormatService.format(
+                    Duration.ofSeconds(member.getPlayTime())
+                );
+                String bonusTime = timeFormatService.format(
+                    Duration.ofSeconds(member.getBonusTime())
+                );
+                String totalTime = timeFormatService.format(
+                    Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
+                );
+                return stringResult.builder()
+                    .append(stringResult.builder()
+                        .dark_gray().append("========= ")
+                        .gold().append(name)
+                        .dark_gray().append(" =========")
+                    )
+                    .gray().append("\n\nPlay Time: ").aqua().append(playTime)
+                    .gray().append("\nBonus Time: ").aqua().append(bonusTime)
+                    .gray().append("\nTotal Time: ").aqua().append(totalTime)
+                    .append("\n", getNextGroup(member))
+                    .append("\n\n", stringResult.builder()
+                        .dark_gray().append("========= ")
+                        .gold().append(pluginInfo.getPrefix())
+                        .dark_gray().append(" ========="))
+                    .build();
+            }
+            return stringResult.builder()
                 .append(pluginInfo.getPrefix())
-                .red().append("Could not find user ", userService.getUserName(userUUID).orElse(userUUID.toString()))
-                .build());
+                .red().append("Could not find ", name)
+                .build();
+        });
     }
 
     @Override
@@ -104,7 +142,7 @@ public class CommonMemberManager<
                     return Optional.<String>empty();
                 }
 
-                int playTime = optionalMember.get().getPlayTime();
+                long playTime = optionalMember.get().getPlayTime();
                 String[] highestRank = {null};
                 int[] highestPlayTime = {0};
                 registry.getOrDefault(MSOnTimeKeys.RANKS).forEach((k, v) -> {
@@ -119,62 +157,67 @@ public class CommonMemberManager<
     }
 
     @Override
-    public CompletableFuture<TString> addBonusTime(UUID userUUID, int time) {
+    public CompletableFuture<TString> addBonusTime(UUID userUUID, long time) {
+        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().addBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
-                return stringResult.success("Added " + time + " to " + userService.getUserName(userUUID).orElse("null"));
+                return stringResult.builder()
+                    .append(pluginInfo.getPrefix())
+                    .green().append("Successfully added ")
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
+                    .green().append(" to ", name, "'s bonus time")
+                    .build();
             }
-            return stringResult.fail("Invalid user");
+            return stringResult.fail("Could not find " + name);
         });
     }
 
     @Override
-    public CompletableFuture<TString> setBonusTime(UUID userUUID, int time) {
+    public CompletableFuture<TString> setBonusTime(UUID userUUID, long time) {
+        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
                 return stringResult.builder()
                     .append(pluginInfo.getPrefix())
-                    .green().append("Successfully updated ", userService.getUserName(userUUID).orElse("null"), "'s bonus time to ")
-                    .gold().append(time)
+                    .green().append("Successfully updated ", name, "'s bonus time to ")
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
-            return stringResult.fail("Invalid user");
+            return stringResult.fail("Could not find " + name);
         });
     }
 
     @Override
-    public CompletableFuture<TString> setTotalTime(UUID userUUID, int time) {
+    public CompletableFuture<TString> setTotalTime(UUID userUUID, long time) {
+        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setTotalTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
                 return stringResult.builder()
                     .append(pluginInfo.getPrefix())
-                    .green().append("Successfully updated ", userService.getUserName(userUUID).orElse("null"), "'s total time to ")
-                    .gold().append(time)
+                    .green().append("Successfully updated ", name, "'s total time to ")
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
-            return stringResult.fail("Invalid user");
+            return stringResult.fail("Could not find " + name);
         });
     }
 
-    @Override
-    public CompletableFuture<TString> getNextGroup(UUID userUUID) {
-        return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalUser -> {
-            if (optionalUser.isPresent()) {
-                Map<String, Integer> ranks = registry.getOrDefault(MSOnTimeKeys.RANKS);
-                int effectiveTime = optionalUser.get().getBonusTime() + optionalUser.get().getPlayTime();
-                String[] nextRankPrefix = new String[]{"N/A"};
-                int[] nextRankMinutes = new int[]{-1};
-                ranks.forEach((k, v) -> {
-                    if (v > effectiveTime && (nextRankMinutes[0] < 0 || v < nextRankMinutes[0])) {
-                        nextRankPrefix[0] = k;
-                        nextRankMinutes[0] = v;
-                    }
-                });
-                return stringResult.builder().gray().append("Next Rank: ").aqua().append(nextRankPrefix[0] + " (" + nextRankMinutes[0] + " minutes) ")
-                    .gray().append("\nTime Remaining: ").aqua().append(nextRankMinutes[0] > 0 ? nextRankMinutes[0] - effectiveTime : -1).build();
-            } else {
-                return stringResult.fail("Couldn't find data for " + userService.getUserName(userUUID));
+    protected TString getNextGroup(Member<?> member) {
+        Map<String, Integer> ranks = registry.getOrDefault(MSOnTimeKeys.RANKS);
+        long totalTime = member.getBonusTime() + member.getPlayTime();
+        String[] nextRankPrefix = new String[]{"N/A"};
+        long[] nextRankSeconds = new long[]{-1};
+        ranks.forEach((k, v) -> {
+            if (v > totalTime && (nextRankSeconds[0] < 0 || v < nextRankSeconds[0])) {
+                nextRankPrefix[0] = k;
+                nextRankSeconds[0] = v;
             }
         });
+        return stringResult.builder()
+            .gray().append("Next Rank: ")
+            .aqua().append(nextRankPrefix[0] + " (" + nextRankSeconds[0] + " minutes) ")
+            .gray().append("\nTime Remaining: ")
+            .aqua().append(nextRankSeconds[0] > 0 ? nextRankSeconds[0] - totalTime : -1)
+            .build();
     }
 }

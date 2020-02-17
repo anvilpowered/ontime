@@ -19,10 +19,10 @@
 package org.anvilpowered.ontime.sponge.listeners;
 
 import com.google.inject.Inject;
+import org.anvilpowered.ontime.api.member.MemberManager;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.text.Text;
-import org.anvilpowered.ontime.api.member.MemberManager;
 
 public class PlayerListener {
 
