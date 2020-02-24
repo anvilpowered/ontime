@@ -50,7 +50,7 @@ public class CommonDataImportService<TString> implements DataImportService {
                     continue;
                 }
                 //Insert the user into MongoDB
-                memberManager.getPrimaryComponent().generateUserFromConfig(UUID.fromString(key), Integer.parseInt(ontime));
+                memberManager.getPrimaryComponent().generateUserFromConfig(UUID.fromString(key), Long.parseLong(ontime) * 60L);
             }
 
         } catch (IOException e) {

@@ -32,7 +32,7 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
-    CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, int time);
+    CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, long time);
 
     CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
