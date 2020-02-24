@@ -40,8 +40,8 @@ public class OnTimeConfigurationService extends BaseConfigurationService {
         defaultMap.put(Keys.MONGODB_DBNAME, OnTimePluginInfo.id);
 
         Map<String, Integer> defaultRankMap = new HashMap<>();
-        defaultRankMap.put("player", 5);
-        defaultRankMap.put("member", 60);
+        defaultRankMap.put("player", 600);
+        defaultRankMap.put("member", 1800);
 
         defaultMap.put(MSOnTimeKeys.RANKS, defaultRankMap);
     }
@@ -55,6 +55,6 @@ public class OnTimeConfigurationService extends BaseConfigurationService {
     @Override
     protected void initNodeDescriptionMap() {
         super.initNodeDescriptionMap();
-        nodeDescriptionMap.put(MSOnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in minutes.");
+        nodeDescriptionMap.put(MSOnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.");
     }
 }
