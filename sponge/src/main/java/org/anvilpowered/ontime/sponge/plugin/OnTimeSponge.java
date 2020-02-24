@@ -20,11 +20,14 @@ package org.anvilpowered.ontime.sponge.plugin;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 import org.anvilpowered.ontime.common.plugin.OnTime;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.sponge.commands.OnTimeCommandManager;
+import org.anvilpowered.ontime.sponge.listeners.PlayerListener;
 import org.anvilpowered.ontime.sponge.module.SpongeModule;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -43,5 +46,12 @@ public class OnTimeSponge extends OnTime<PluginContainer> {
     @Inject
     public OnTimeSponge(Injector injector) {
         super(injector, new SpongeModule(), SyncTaskService.class, OnTimeCommandManager.class);
+    }
+
+    @Override
+    protected void whenReady(Environment environment) {
+        super.whenReady(environment);
+        Sponge.getEventManager().registerListeners(this,
+            environment.getInjector().getInstance(PlayerListener.class));
     }
 }
