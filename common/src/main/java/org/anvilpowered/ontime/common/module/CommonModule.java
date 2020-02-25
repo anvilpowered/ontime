@@ -34,7 +34,7 @@ import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.ontime.api.util.DataImportService;
 import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
-import org.anvilpowered.ontime.common.data.registry.MSOnTimeRegistry;
+import org.anvilpowered.ontime.common.data.registry.OnTimeRegistry;
 import org.anvilpowered.ontime.common.member.CommonMemberManager;
 import org.anvilpowered.ontime.common.member.repository.CommonMongoMemberRepository;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
@@ -97,6 +97,6 @@ public class CommonModule<
         }).to(MongoContext.class);
 
         bind(ConfigurationService.class).to(OnTimeConfigurationService.class);
-        bind(Registry.class).to(MSOnTimeRegistry.class);
+        bind(Registry.class).to(OnTimeRegistry.class);
     }
 }

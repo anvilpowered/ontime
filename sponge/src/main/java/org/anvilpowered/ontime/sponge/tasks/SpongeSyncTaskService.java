@@ -22,14 +22,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.anvil.api.plugin.Plugin;
-import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.common.tasks.CommonSyncTaskService;
-import org.anvilpowered.ontime.sponge.plugin.OnTimeSponge;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
@@ -75,7 +71,7 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
     public Runnable getSyncTask() {
         return () -> {
             Collection<Subject> allGroups = permissionService.getGroupSubjects().getLoadedSubjects();
-            Set<String> configRanks = registry.getOrDefault(MSOnTimeKeys.RANKS).keySet();
+            Set<String> configRanks = registry.getOrDefault(OnTimeKeys.RANKS).keySet();
             Sponge.getServer().getOnlinePlayers().forEach(player ->
                 memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
                     if (!optionalRank.isPresent()) {

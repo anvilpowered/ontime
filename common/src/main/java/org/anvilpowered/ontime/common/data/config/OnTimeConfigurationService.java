@@ -24,7 +24,7 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.anvilpowered.anvil.api.data.key.Keys;
 import org.anvilpowered.anvil.base.data.config.BaseConfigurationService;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 
 import java.util.HashMap;
@@ -43,18 +43,18 @@ public class OnTimeConfigurationService extends BaseConfigurationService {
         defaultRankMap.put("player", 600);
         defaultRankMap.put("member", 1800);
 
-        defaultMap.put(MSOnTimeKeys.RANKS, defaultRankMap);
+        defaultMap.put(OnTimeKeys.RANKS, defaultRankMap);
     }
 
     @Override
     protected void initNodeNameMap() {
         super.initNodeNameMap();
-        nodeNameMap.put(MSOnTimeKeys.RANKS, "ranks");
+        nodeNameMap.put(OnTimeKeys.RANKS, "ranks");
     }
 
     @Override
     protected void initNodeDescriptionMap() {
         super.initNodeDescriptionMap();
-        nodeDescriptionMap.put(MSOnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.");
+        nodeDescriptionMap.put(OnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.");
     }
 }

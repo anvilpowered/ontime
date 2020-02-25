@@ -24,10 +24,10 @@ import org.anvilpowered.anvil.api.data.key.Keys;
 import org.anvilpowered.anvil.base.data.registry.BaseExtendedRegistry;
 
 @Singleton
-public class MSOnTimeRegistry extends BaseExtendedRegistry {
+public class OnTimeRegistry extends BaseExtendedRegistry {
 
     @Inject
-    public MSOnTimeRegistry() {
+    public OnTimeRegistry() {
         defaultMap.put(Keys.BASE_SCAN_PACKAGE, "org.anvilpowered.ontime.common.model");
     }
 }

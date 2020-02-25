@@ -25,7 +25,7 @@ import org.anvilpowered.anvil.api.util.StringResult;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.manager.BaseManager;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
@@ -146,7 +146,7 @@ public class CommonMemberManager<
                 long playTime = optionalMember.get().getPlayTime();
                 String[] highestRank = {null};
                 long[] highestPlayTime = {Long.MIN_VALUE};
-                registry.getOrDefault(MSOnTimeKeys.RANKS).forEach((k, v) -> {
+                registry.getOrDefault(OnTimeKeys.RANKS).forEach((k, v) -> {
                     if (v >= highestPlayTime[0] && v <= playTime) {
                         highestPlayTime[0] = v;
                         highestRank[0] = k;
@@ -236,7 +236,7 @@ public class CommonMemberManager<
     }
 
     protected TString getGroupInfo(Member<?> member) {
-        Map<String, Integer> ranks = registry.getOrDefault(MSOnTimeKeys.RANKS);
+        Map<String, Integer> ranks = registry.getOrDefault(OnTimeKeys.RANKS);
         long totalTime = member.getBonusTime() + member.getPlayTime();
         // current rank, next rank
         String[] rankPrefix = new String[]{"N/A", "N/A"};

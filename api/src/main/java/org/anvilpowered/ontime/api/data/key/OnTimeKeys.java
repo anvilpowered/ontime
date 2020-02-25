@@ -24,17 +24,17 @@ import org.anvilpowered.anvil.api.data.key.Keys;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MSOnTimeKeys {
+public final class OnTimeKeys {
 
     public static final Key<Map<String, Integer>> RANKS = new Key<Map<String, Integer>>("RANKS", new HashMap<>()) {
     };
-    public static final Key<String> CHECK_PERMISSION = new Key<String>("CHECK_PERMISSION", "msontime.user.check") {
+    public static final Key<String> CHECK_PERMISSION = new Key<String>("CHECK_PERMISSION", "ontime.user.check") {
     };
-    public static final Key<String> CHECK_EXTENDED_PERMISSION = new Key<String>("CHECK_EXTENDED_PERMISSION", "msontime.admin.check") {
+    public static final Key<String> CHECK_EXTENDED_PERMISSION = new Key<String>("CHECK_EXTENDED_PERMISSION", "ontime.admin.check") {
     };
-    public static final Key<String> EDIT_PERMISSION = new Key<String>("EDIT_PERMISSION", "msontime.admin.edit") {
+    public static final Key<String> EDIT_PERMISSION = new Key<String>("EDIT_PERMISSION", "ontime.admin.edit") {
     };
-    public static final Key<String> IMPORT_PERMISSION = new Key<String>("IMPORT_PERMISSION", "msontime.admin.import") {
+    public static final Key<String> IMPORT_PERMISSION = new Key<String>("IMPORT_PERMISSION", "ontime.admin.import") {
     };
 
     static {
@@ -45,7 +45,7 @@ public final class MSOnTimeKeys {
         Keys.registerKey(IMPORT_PERMISSION);
     }
 
-    private MSOnTimeKeys() {
+    private OnTimeKeys() {
         throw new AssertionError("**boss music** No instance for you!");
     }
 }

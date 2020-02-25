@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.sponge.commands;
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.ontime.api.data.key.MSOnTimeKeys;
+import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -68,7 +68,7 @@ public class OnTimeCommandManager {
 
         subCommands.put(Arrays.asList("add", "a"), CommandSpec.builder()
             .description(Text.of("Add bonus time to a player"))
-            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.string(Text.of("time"))
@@ -79,12 +79,12 @@ public class OnTimeCommandManager {
 
         subCommands.put(Arrays.asList("check", "c", "info", "i"), CommandSpec.builder()
             .description(Text.of("Check play time"))
-            .permission(MSOnTimeKeys.CHECK_PERMISSION.getFallbackValue())
+            .permission(OnTimeKeys.CHECK_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.optional(
                     GenericArguments.requiringPermission(
                         GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                        MSOnTimeKeys.CHECK_EXTENDED_PERMISSION.getFallbackValue()
+                        OnTimeKeys.CHECK_EXTENDED_PERMISSION.getFallbackValue()
                     )
                 )
             )
@@ -94,14 +94,14 @@ public class OnTimeCommandManager {
 
         subCommands.put(Collections.singletonList("import"), CommandSpec.builder()
             .description(Text.of("Import data from rankupper"))
-            .permission(MSOnTimeKeys.IMPORT_PERMISSION.getFallbackValue())
+            .permission(OnTimeKeys.IMPORT_PERMISSION.getFallbackValue())
             .arguments(GenericArguments.string(Text.of("path")))
             .executor(onTimeImportCommand)
             .build());
 
         subCommands.put(Arrays.asList("setbonus", "sb"), CommandSpec.builder()
             .description(Text.of("Set bonus playtime"))
-            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.string(Text.of("time"))
@@ -112,7 +112,7 @@ public class OnTimeCommandManager {
 
         subCommands.put(Arrays.asList("set", "s", "settotal", "st"), CommandSpec.builder()
             .description(Text.of("Set total playtime"))
-            .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.string(Text.of("time"))
