@@ -49,9 +49,8 @@ public class OnTimeSponge extends OnTime<PluginContainer> {
     }
 
     @Override
-    protected void whenReady(Environment environment) {
-        super.whenReady(environment);
-        Sponge.getEventManager().registerListeners(this,
-            environment.getInjector().getInstance(PlayerListener.class));
+    protected void applyToBuilder(Environment.Builder builder) {
+        builder.addEarlyServices(PlayerListener.class, t ->
+            Sponge.getEventManager().registerListeners(this, t));
     }
 }

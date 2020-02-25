@@ -255,11 +255,15 @@ public class CommonMemberManager<
         return stringResult.builder()
             .gray().append("\nCurrent Rank: ")
             .aqua().append(rankPrefix[0], " (")
-            .append(timeFormatService.format(Duration.ofSeconds(rankSeconds[0])))
+            .append(rankSeconds[0] >= 0
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[0]))
+                : -1)
             .append(")")
             .gray().append("\nNext Rank: ")
             .aqua().append(rankPrefix[1], " (")
-            .append(timeFormatService.format(Duration.ofSeconds(rankSeconds[1])))
+            .append(rankSeconds[1] >= 0
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1]))
+                : -1)
             .append(")")
             .gray().append("\nTime Remaining: ")
             .aqua().append(rankSeconds[1] > 0
