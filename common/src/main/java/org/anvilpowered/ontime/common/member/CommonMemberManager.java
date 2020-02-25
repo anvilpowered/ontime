@@ -143,11 +143,12 @@ public class CommonMemberManager<
                     return Optional.<String>empty();
                 }
 
-                long playTime = optionalMember.get().getPlayTime();
+                long totalTime = optionalMember.get().getPlayTime()
+                    + optionalMember.get().getBonusTime();
                 String[] highestRank = {null};
                 long[] highestPlayTime = {Long.MIN_VALUE};
                 registry.getOrDefault(OnTimeKeys.RANKS).forEach((k, v) -> {
-                    if (v >= highestPlayTime[0] && v <= playTime) {
+                    if (v >= highestPlayTime[0] && v <= totalTime) {
                         highestPlayTime[0] = v;
                         highestRank[0] = k;
                     }
