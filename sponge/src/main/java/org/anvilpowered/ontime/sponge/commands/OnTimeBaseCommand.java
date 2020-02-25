@@ -37,7 +37,8 @@ public class OnTimeBaseCommand implements CommandExecutor {
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
         List<Text> helpList = new ArrayList<>();
         OnTimeCommandManager.subCommands.forEach((aliases, commandSpec) -> {
-            if (!commandSpec.getShortDescription(source).isPresent()) return;
+            if (!commandSpec.getShortDescription(source).isPresent()
+                || !commandSpec.testPermission(source)) return;
             String subCommand = aliases.toString().replace("[", "").replace("]", "");
             Text commandHelp = Text.builder()
                 .append(Text.builder()

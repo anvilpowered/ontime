@@ -55,7 +55,13 @@ public interface MemberManager<TString> extends Manager<MemberRepository<?, ?>> 
 
     CompletableFuture<TString> addBonusTime(UUID userUUID, long time);
 
+    CompletableFuture<TString> addBonusTime(UUID userUUID, String time);
+
     CompletableFuture<TString> setBonusTime(UUID userUUID, long time);
 
+    CompletableFuture<TString> setBonusTime(UUID userUUID, String time);
+
     CompletableFuture<TString> setTotalTime(UUID userUUID, long time);
+
+    CompletableFuture<TString> setTotalTime(UUID userUUID, String time);
 }

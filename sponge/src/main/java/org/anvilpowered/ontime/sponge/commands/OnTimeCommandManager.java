@@ -71,7 +71,7 @@ public class OnTimeCommandManager {
             .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.integer(Text.of("time"))
+                GenericArguments.string(Text.of("time"))
             )
             .executor(onTimeAddCommand)
             .build()
@@ -104,7 +104,7 @@ public class OnTimeCommandManager {
             .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.integer(Text.of("time"))
+                GenericArguments.string(Text.of("time"))
             )
             .executor(onTimeSetBonusCommand)
             .build()
@@ -115,7 +115,7 @@ public class OnTimeCommandManager {
             .permission(MSOnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.integer(Text.of("time"))
+                GenericArguments.string(Text.of("time"))
             )
             .executor(onTimeSetCommand)
             .build()

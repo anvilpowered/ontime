@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 public class CommonMemberManager<
     TUser,
@@ -78,7 +79,7 @@ public class CommonMemberManager<
                             .dark_gray().append(" =========")
                     )
                     .gray().append("\n\nTotal Time: ").aqua().append(totalTime)
-                    .append("\n", getNextGroup(member))
+                    .append(getGroupInfo(member))
                     .append("\n\n", stringResult.builder()
                         .dark_gray().append("========= ")
                         .gold().append(pluginInfo.getPrefix())
@@ -116,7 +117,7 @@ public class CommonMemberManager<
                     .gray().append("\n\nPlay Time: ").aqua().append(playTime)
                     .gray().append("\nBonus Time: ").aqua().append(bonusTime)
                     .gray().append("\nTotal Time: ").aqua().append(totalTime)
-                    .append("\n", getNextGroup(member))
+                    .append(getGroupInfo(member))
                     .append("\n\n", stringResult.builder()
                         .dark_gray().append("========= ")
                         .gold().append(pluginInfo.getPrefix())
@@ -144,9 +145,9 @@ public class CommonMemberManager<
 
                 long playTime = optionalMember.get().getPlayTime();
                 String[] highestRank = {null};
-                int[] highestPlayTime = {0};
+                long[] highestPlayTime = {Long.MIN_VALUE};
                 registry.getOrDefault(MSOnTimeKeys.RANKS).forEach((k, v) -> {
-                    if (v > highestPlayTime[0] && v <= playTime) {
+                    if (v >= highestPlayTime[0] && v <= playTime) {
                         highestPlayTime[0] = v;
                         highestRank[0] = k;
                     }
@@ -172,6 +173,28 @@ public class CommonMemberManager<
         });
     }
 
+    private CompletableFuture<TString> convertFromString(
+        BiFunction<UUID, Long, CompletableFuture<TString>> function,
+        UUID userUUID, String time
+    ) {
+        Optional<Long> optionalTime = timeFormatService.parseSeconds(time);
+        if (optionalTime.isPresent()) {
+            return function.apply(userUUID, optionalTime.get());
+        }
+        return CompletableFuture.completedFuture(
+            stringResult.builder()
+                .append(pluginInfo.getPrefix())
+                .red().append("Failed to parse ")
+                .gold().append(time)
+                .build()
+        );
+    }
+
+    @Override
+    public CompletableFuture<TString> addBonusTime(UUID userUUID, String time) {
+        return convertFromString(this::addBonusTime, userUUID, time);
+    }
+
     @Override
     public CompletableFuture<TString> setBonusTime(UUID userUUID, long time) {
         String name = userService.getUserName(userUUID).orElse(userUUID.toString());
@@ -185,6 +208,11 @@ public class CommonMemberManager<
             }
             return stringResult.fail("Could not find " + name);
         });
+    }
+
+    @Override
+    public CompletableFuture<TString> setBonusTime(UUID userUUID, String time) {
+        return convertFromString(this::setBonusTime, userUUID, time);
     }
 
     @Override
@@ -202,22 +230,41 @@ public class CommonMemberManager<
         });
     }
 
-    protected TString getNextGroup(Member<?> member) {
+    @Override
+    public CompletableFuture<TString> setTotalTime(UUID userUUID, String time) {
+        return convertFromString(this::setTotalTime, userUUID, time);
+    }
+
+    protected TString getGroupInfo(Member<?> member) {
         Map<String, Integer> ranks = registry.getOrDefault(MSOnTimeKeys.RANKS);
         long totalTime = member.getBonusTime() + member.getPlayTime();
-        String[] nextRankPrefix = new String[]{"N/A"};
-        long[] nextRankSeconds = new long[]{-1};
+        // current rank, next rank
+        String[] rankPrefix = new String[]{"N/A", "N/A"};
+        long[] rankSeconds = new long[]{Long.MIN_VALUE, Long.MIN_VALUE};
         ranks.forEach((k, v) -> {
-            if (v > totalTime && (nextRankSeconds[0] < 0 || v < nextRankSeconds[0])) {
-                nextRankPrefix[0] = k;
-                nextRankSeconds[0] = v;
+            if (v >= rankSeconds[0] && v <= totalTime) {
+                rankSeconds[0] = v;
+                rankPrefix[0] = k;
+            }
+            if (v > totalTime && (rankSeconds[1] < 0 || v < rankSeconds[1])) {
+                rankPrefix[1] = k;
+                rankSeconds[1] = v;
             }
         });
         return stringResult.builder()
-            .gray().append("Next Rank: ")
-            .aqua().append(nextRankPrefix[0] + " (" + nextRankSeconds[0] + " minutes) ")
+            .gray().append("\nCurrent Rank: ")
+            .aqua().append(rankPrefix[0], " (")
+            .append(timeFormatService.format(Duration.ofSeconds(rankSeconds[0])))
+            .append(")")
+            .gray().append("\nNext Rank: ")
+            .aqua().append(rankPrefix[1], " (")
+            .append(timeFormatService.format(Duration.ofSeconds(rankSeconds[1])))
+            .append(")")
             .gray().append("\nTime Remaining: ")
-            .aqua().append(nextRankSeconds[0] > 0 ? nextRankSeconds[0] - totalTime : -1)
+            .aqua().append(rankSeconds[1] > 0
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime))
+                : -1
+            )
             .build();
     }
 }

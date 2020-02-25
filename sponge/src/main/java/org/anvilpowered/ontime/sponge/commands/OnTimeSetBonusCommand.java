@@ -43,7 +43,7 @@ public class OnTimeSetBonusCommand implements CommandExecutor {
             context.<User>getOne(Text.of("user"))
                 .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing user")))
                 .getUniqueId(),
-            context.<Integer>getOne(Text.of("time"))
+            context.<String>getOne(Text.of("time"))
                 .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing time")))
         ).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
