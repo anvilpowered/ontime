@@ -20,11 +20,18 @@ package org.anvilpowered.ontime.common.plugin;
 
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.base.plugin.BasePlugin;
+import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 
 public abstract class OnTime<TPluginContainer> extends BasePlugin<TPluginContainer> {
 
-    protected OnTime(Injector injector, Module module, Class<?>... earlyServices) {
-        super(OnTimePluginInfo.id, injector, module, earlyServices);
+    protected OnTime(Injector injector, Module module) {
+        super(OnTimePluginInfo.id, injector, module, SyncTaskService.class);
+    }
+
+    @Override
+    protected void applyToBuilder(Environment.Builder builder) {
+        builder.withRootCommand();
     }
 }

@@ -20,10 +20,15 @@ package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.Environment;
+import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.util.CommandService;
 import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
+import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 
@@ -32,16 +37,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class OnTimeCommandManager {
+public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
 
-    public static Map<List<String>, CommandSpec> subCommands = new HashMap<>();
+    private boolean alreadyLoaded;
+    private CommandSpec command;
+    private Map<List<String>, CommandSpec> subCommands;
 
     @Inject
     OnTimeAddCommand onTimeAddCommand;
-
-    @Inject
-    OnTimeBaseCommand onTimeBaseCommand;
 
     @Inject
     OnTimeCheckCommand onTimeCheckCommand;
@@ -56,15 +61,22 @@ public class OnTimeCommandManager {
     OnTimeSetCommand onTimeSetCommand;
 
     @Inject
-    Environment environment;
+    private CommandService<CommandSpec, CommandExecutor, CommandSource> commandService;
 
     @Inject
-    public OnTimeCommandManager(Registry registry) {
+    private Environment environment;
+
+    @Inject
+    public OnTimeSpongeCommandNode(Registry registry) {
         registry.addRegistryLoadedListener(this::register);
+        this.alreadyLoaded = false;
     }
 
     public void register() {
-        Map<List<String>, CommandSpec> subCommands = new HashMap<>();
+        if (alreadyLoaded) return;
+        alreadyLoaded = true;
+
+        subCommands = new HashMap<>();
 
         subCommands.put(Arrays.asList("add", "a"), CommandSpec.builder()
             .description(Text.of("Add bonus time to a player"))
@@ -121,13 +133,42 @@ public class OnTimeCommandManager {
             .build()
         );
 
-        CommandSpec mainCommand = CommandSpec.builder()
-            .description(Text.of("Base command"))
-            .executor(onTimeBaseCommand)
+        subCommands.put(Collections.singletonList("help"), CommandSpec.builder()
+            .description(Text.of("Help command"))
+            .executor(commandService.generateHelpCommand(this))
+            .build()
+        );
+
+        subCommands.put(Collections.singletonList("version"), CommandSpec.builder()
+            .description(Text.of("Version command"))
+            .executor(commandService.generateVersionCommand("/ontime help"))
+            .build()
+        );
+
+        command = CommandSpec.builder()
+            .description(Text.of("Root command"))
+            .executor(commandService.generateRootCommand("/ontime help"))
             .children(subCommands)
             .build();
 
-        Sponge.getCommandManager().register(environment.getPlugin(), mainCommand, "msontime", "ontime", "ot", "playtime");
-        OnTimeCommandManager.subCommands = subCommands;
+        Sponge.getCommandManager()
+            .register(environment.getPlugin(), command, OnTimePluginInfo.id, "ot");
+    }
+
+    private static final String ERROR_MESSAGE = "OnTime command has not been loaded yet";
+
+    @Override
+    public Map<List<String>, CommandSpec> getCommands() {
+        return Objects.requireNonNull(subCommands, ERROR_MESSAGE);
+    }
+
+    @Override
+    public CommandSpec getCommand() {
+        return Objects.requireNonNull(command, ERROR_MESSAGE);
+    }
+
+    @Override
+    public String getName() {
+        return OnTimePluginInfo.id;
     }
 }

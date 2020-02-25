@@ -18,12 +18,16 @@
 
 package org.anvilpowered.ontime.sponge.module;
 
+import com.google.inject.TypeLiteral;
+import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
 import org.anvilpowered.ontime.common.module.CommonModule;
+import org.anvilpowered.ontime.sponge.commands.OnTimeSpongeCommandNode;
 import org.anvilpowered.ontime.sponge.data.config.OnTimeSpongeConfigurationService;
 import org.anvilpowered.ontime.sponge.tasks.SpongeSyncTaskService;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
@@ -34,6 +38,8 @@ public class SpongeModule extends CommonModule<User, Player, Text, CommandSource
     protected void configure() {
         super.configure();
 
+        bind(new TypeLiteral<CommandNode<CommandSpec>>(){
+        }).to(OnTimeSpongeCommandNode.class);
         bind(OnTimeConfigurationService.class).to(OnTimeSpongeConfigurationService.class);
 
         bind(SyncTaskService.class).to(SpongeSyncTaskService.class);

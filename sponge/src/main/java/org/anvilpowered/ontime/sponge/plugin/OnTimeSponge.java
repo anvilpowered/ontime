@@ -21,10 +21,8 @@ package org.anvilpowered.ontime.sponge.plugin;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 import org.anvilpowered.ontime.common.plugin.OnTime;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
-import org.anvilpowered.ontime.sponge.commands.OnTimeCommandManager;
 import org.anvilpowered.ontime.sponge.listeners.PlayerListener;
 import org.anvilpowered.ontime.sponge.module.SpongeModule;
 import org.spongepowered.api.Sponge;
@@ -45,11 +43,12 @@ public class OnTimeSponge extends OnTime<PluginContainer> {
 
     @Inject
     public OnTimeSponge(Injector injector) {
-        super(injector, new SpongeModule(), SyncTaskService.class, OnTimeCommandManager.class);
+        super(injector, new SpongeModule());
     }
 
     @Override
     protected void applyToBuilder(Environment.Builder builder) {
+        super.applyToBuilder(builder);
         builder.addEarlyServices(PlayerListener.class, t ->
             Sponge.getEventManager().registerListeners(this, t));
     }
