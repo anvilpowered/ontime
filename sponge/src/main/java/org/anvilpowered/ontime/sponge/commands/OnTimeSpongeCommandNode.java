@@ -83,7 +83,7 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.string(Text.of("time"))
+                GenericArguments.remainingJoinedStrings(Text.of("time"))
             )
             .executor(onTimeAddCommand)
             .build()
@@ -107,7 +107,7 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
         subCommands.put(Collections.singletonList("import"), CommandSpec.builder()
             .description(Text.of("Import data from rankupper"))
             .permission(OnTimeKeys.IMPORT_PERMISSION.getFallbackValue())
-            .arguments(GenericArguments.string(Text.of("path")))
+            .arguments(GenericArguments.remainingJoinedStrings(Text.of("path")))
             .executor(onTimeImportCommand)
             .build());
 
@@ -116,7 +116,7 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.string(Text.of("time"))
+                GenericArguments.remainingJoinedStrings(Text.of("time"))
             )
             .executor(onTimeSetBonusCommand)
             .build()
@@ -127,7 +127,7 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                GenericArguments.string(Text.of("time"))
+                GenericArguments.remainingJoinedStrings(Text.of("time"))
             )
             .executor(onTimeSetCommand)
             .build()
