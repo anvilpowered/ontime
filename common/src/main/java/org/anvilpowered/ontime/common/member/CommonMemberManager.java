@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.common.member;
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.anvil.api.util.StringResult;
+import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.anvil.base.manager.BaseManager;
@@ -49,7 +49,7 @@ public class CommonMemberManager<
     protected PluginInfo<TString> pluginInfo;
 
     @Inject
-    protected StringResult<TString, TCommandSource> stringResult;
+    protected TextService<TString, TCommandSource> textService;
 
     @Inject
     protected TimeFormatService timeFormatService;
@@ -71,25 +71,22 @@ public class CommonMemberManager<
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
                 );
-                return stringResult.builder()
+                return textService.builder()
                     .append(
-                        stringResult.builder()
+                        textService.builder()
                             .dark_gray().append("========= ")
                             .gold().append(name)
                             .dark_gray().append(" =========")
                     )
                     .gray().append("\n\nTotal Time: ").aqua().append(totalTime)
                     .append(getGroupInfo(member))
-                    .append("\n\n", stringResult.builder()
+                    .append("\n\n", textService.builder()
                         .dark_gray().append("========= ")
                         .gold().append(pluginInfo.getPrefix())
                         .dark_gray().append(" ========="))
                     .build();
             }
-            return stringResult.builder()
-                .append(pluginInfo.getPrefix())
-                .red().append("Could not find user ", name)
-                .build();
+            return getNotFoundError(name);
         });
     }
 
@@ -108,8 +105,8 @@ public class CommonMemberManager<
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
                 );
-                return stringResult.builder()
-                    .append(stringResult.builder()
+                return textService.builder()
+                    .append(textService.builder()
                         .dark_gray().append("========= ")
                         .gold().append(name)
                         .dark_gray().append(" =========")
@@ -118,16 +115,13 @@ public class CommonMemberManager<
                     .gray().append("\nBonus Time: ").aqua().append(bonusTime)
                     .gray().append("\nTotal Time: ").aqua().append(totalTime)
                     .append(getGroupInfo(member))
-                    .append("\n\n", stringResult.builder()
+                    .append("\n\n", textService.builder()
                         .dark_gray().append("========= ")
                         .gold().append(pluginInfo.getPrefix())
                         .dark_gray().append(" ========="))
                     .build();
             }
-            return stringResult.builder()
-                .append(pluginInfo.getPrefix())
-                .red().append("Could not find ", name)
-                .build();
+            return getNotFoundError(name);
         });
     }
 
@@ -163,14 +157,14 @@ public class CommonMemberManager<
         String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().addBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
-                return stringResult.builder()
+                return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully added ")
                     .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .green().append(" to ", name, "'s bonus time")
                     .build();
             }
-            return stringResult.fail("Could not find " + name);
+            return getNotFoundError(name);
         });
     }
 
@@ -183,7 +177,7 @@ public class CommonMemberManager<
             return function.apply(userUUID, optionalTime.get());
         }
         return CompletableFuture.completedFuture(
-            stringResult.builder()
+            textService.builder()
                 .append(pluginInfo.getPrefix())
                 .red().append("Failed to parse ")
                 .gold().append(time)
@@ -201,13 +195,13 @@ public class CommonMemberManager<
         String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
-                return stringResult.builder()
+                return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s bonus time to ")
                     .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
-            return stringResult.fail("Could not find " + name);
+            return getNotFoundError(name);
         });
     }
 
@@ -221,13 +215,13 @@ public class CommonMemberManager<
         String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setTotalTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (result) {
-                return stringResult.builder()
+                return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s total time to ")
                     .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
-            return stringResult.fail("Could not find " + name);
+            return getNotFoundError(name);
         });
     }
 
@@ -252,7 +246,7 @@ public class CommonMemberManager<
                 rankSeconds[1] = v;
             }
         });
-        return stringResult.builder()
+        return textService.builder()
             .gray().append("\nCurrent Rank: ")
             .aqua().append(rankPrefix[0], " (")
             .append(rankSeconds[0] >= 0
@@ -270,6 +264,13 @@ public class CommonMemberManager<
                 ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime))
                 : -1
             )
+            .build();
+    }
+
+    protected TString getNotFoundError(String name) {
+        return textService.builder()
+            .append(pluginInfo.getPrefix())
+            .red().append("Could not find ", name)
             .build();
     }
 }

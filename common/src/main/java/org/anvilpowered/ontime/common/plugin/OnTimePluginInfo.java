@@ -20,7 +20,7 @@ package org.anvilpowered.ontime.common.plugin;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
-import org.anvilpowered.anvil.api.util.StringResult;
+import org.anvilpowered.anvil.api.util.TextService;
 
 public class OnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TString> {
     public static final String id = "ontime";
@@ -34,8 +34,8 @@ public class OnTimePluginInfo<TString, TCommandSource> implements PluginInfo<TSt
     public TString pluginPrefix;
 
     @Inject
-    public void setPluginPrefix(StringResult<TString, TCommandSource> stringResult) {
-        pluginPrefix = stringResult.builder().gold().append("[", name, "] ").build();
+    public void setPluginPrefix(TextService<TString, TCommandSource> textService) {
+        pluginPrefix = textService.builder().gold().append("[", name, "] ").build();
     }
 
     @Override
