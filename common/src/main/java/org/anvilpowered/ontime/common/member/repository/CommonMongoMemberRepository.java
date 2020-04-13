@@ -20,7 +20,7 @@ package org.anvilpowered.ontime.common.member.repository;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.base.repository.BaseMongoRepository;
+import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
 import org.anvilpowered.ontime.api.member.repository.MongoMemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;

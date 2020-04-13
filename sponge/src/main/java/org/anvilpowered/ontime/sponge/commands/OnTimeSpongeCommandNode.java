@@ -19,11 +19,10 @@
 package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.anvil.api.command.CommandNode;
+import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.anvil.api.util.CommandService;
 import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
+import org.anvilpowered.ontime.common.command.CommonOnTimeCommandNode;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
@@ -32,55 +31,41 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.text.Text;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
-
-    private boolean alreadyLoaded;
-    private CommandSpec command;
-    private Map<List<String>, CommandSpec> subCommands;
+@Singleton
+public class OnTimeSpongeCommandNode
+    extends CommonOnTimeCommandNode<CommandExecutor, CommandSource> {
 
     @Inject
-    OnTimeAddCommand onTimeAddCommand;
+    private OnTimeAddCommand onTimeAddCommand;
 
     @Inject
-    OnTimeCheckCommand onTimeCheckCommand;
+    private OnTimeCheckCommand onTimeCheckCommand;
 
     @Inject
-    OnTimeImportCommand onTimeImportCommand;
+    private OnTimeImportCommand onTimeImportCommand;
 
     @Inject
-    OnTimeSetBonusCommand onTimeSetBonusCommand;
+    private OnTimeSetBonusCommand onTimeSetBonusCommand;
 
     @Inject
-    OnTimeSetCommand onTimeSetCommand;
-
-    @Inject
-    private CommandService<CommandSpec, CommandExecutor, CommandSource> commandService;
-
-    @Inject
-    private Environment environment;
+    private OnTimeSetCommand onTimeSetCommand;
 
     @Inject
     public OnTimeSpongeCommandNode(Registry registry) {
-        registry.addRegistryLoadedListener(this::register);
-        this.alreadyLoaded = false;
+        super(registry);
     }
 
-    public void register() {
-        if (alreadyLoaded) return;
-        alreadyLoaded = true;
+    @Override
+    protected void loadCommands() {
+        Map<List<String>, CommandSpec> subCommands = new HashMap<>();
 
-        subCommands = new HashMap<>();
-
-        subCommands.put(Arrays.asList("add", "a"), CommandSpec.builder()
-            .description(Text.of("Add bonus time to a player"))
-            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+        subCommands.put(ADD_ALIAS, CommandSpec.builder()
+            .description(Text.of(ADD_DESCRIPTION))
+            .permission(registry.getOrDefault(OnTimeKeys.EDIT_PERMISSION))
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.remainingJoinedStrings(Text.of("time"))
@@ -89,14 +74,14 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .build()
         );
 
-        subCommands.put(Arrays.asList("check", "c", "info", "i"), CommandSpec.builder()
-            .description(Text.of("Check play time"))
-            .permission(OnTimeKeys.CHECK_PERMISSION.getFallbackValue())
+        subCommands.put(CHECK_ALIAS, CommandSpec.builder()
+            .description(Text.of(CHECK_DESCRIPTION))
+            .permission(registry.getOrDefault(OnTimeKeys.CHECK_PERMISSION))
             .arguments(
                 GenericArguments.optional(
                     GenericArguments.requiringPermission(
                         GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
-                        OnTimeKeys.CHECK_EXTENDED_PERMISSION.getFallbackValue()
+                        registry.getOrDefault(OnTimeKeys.CHECK_EXTENDED_PERMISSION)
                     )
                 )
             )
@@ -104,16 +89,16 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .build()
         );
 
-        subCommands.put(Collections.singletonList("import"), CommandSpec.builder()
-            .description(Text.of("Import data from rankupper"))
-            .permission(OnTimeKeys.IMPORT_PERMISSION.getFallbackValue())
+        subCommands.put(IMPORT_ALIAS, CommandSpec.builder()
+            .description(Text.of(IMPORT_DESCRIPTION))
+            .permission(registry.getOrDefault(OnTimeKeys.IMPORT_PERMISSION))
             .arguments(GenericArguments.remainingJoinedStrings(Text.of("path")))
             .executor(onTimeImportCommand)
             .build());
 
-        subCommands.put(Arrays.asList("setbonus", "sb"), CommandSpec.builder()
-            .description(Text.of("Set bonus playtime"))
-            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+        subCommands.put(SET_BONUS_ALIAS, CommandSpec.builder()
+            .description(Text.of(SET_BONUS_DESCRIPTION))
+            .permission(registry.getOrDefault(OnTimeKeys.EDIT_PERMISSION))
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.remainingJoinedStrings(Text.of("time"))
@@ -122,9 +107,9 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .build()
         );
 
-        subCommands.put(Arrays.asList("set", "s", "settotal", "st"), CommandSpec.builder()
-            .description(Text.of("Set total playtime"))
-            .permission(OnTimeKeys.EDIT_PERMISSION.getFallbackValue())
+        subCommands.put(SET_TOTAL_ALIAS, CommandSpec.builder()
+            .description(Text.of(SET_TOTAL_DESCRIPTION))
+            .permission(registry.getOrDefault(OnTimeKeys.EDIT_PERMISSION))
             .arguments(
                 GenericArguments.onlyOne(GenericArguments.user(Text.of("user"))),
                 GenericArguments.remainingJoinedStrings(Text.of("time"))
@@ -133,42 +118,25 @@ public class OnTimeSpongeCommandNode implements CommandNode<CommandSpec> {
             .build()
         );
 
-        subCommands.put(Collections.singletonList("help"), CommandSpec.builder()
-            .description(Text.of("Help command"))
+        subCommands.put(HELP_ALIAS, CommandSpec.builder()
+            .description(Text.of(HELP_COMMAND))
             .executor(commandService.generateHelpCommand(this))
             .build()
         );
 
-        subCommands.put(Collections.singletonList("version"), CommandSpec.builder()
-            .description(Text.of("Version command"))
-            .executor(commandService.generateVersionCommand("/ontime help"))
+        subCommands.put(VERSION_ALIAS, CommandSpec.builder()
+            .description(Text.of(VERSION_DESCRIPTION))
+            .executor(commandService.generateVersionCommand(HELP_COMMAND))
             .build()
         );
 
-        command = CommandSpec.builder()
-            .description(Text.of("Root command"))
-            .executor(commandService.generateRootCommand("/ontime help"))
+        CommandSpec command = CommandSpec.builder()
+            .description(Text.of(ROOT_DESCRIPTION))
+            .executor(commandService.generateRootCommand(HELP_COMMAND))
             .children(subCommands)
             .build();
 
         Sponge.getCommandManager()
             .register(environment.getPlugin(), command, OnTimePluginInfo.id, "ot");
-    }
-
-    private static final String ERROR_MESSAGE = "OnTime command has not been loaded yet";
-
-    @Override
-    public Map<List<String>, CommandSpec> getCommands() {
-        return Objects.requireNonNull(subCommands, ERROR_MESSAGE);
-    }
-
-    @Override
-    public CommandSpec getCommand() {
-        return Objects.requireNonNull(command, ERROR_MESSAGE);
-    }
-
-    @Override
-    public String getName() {
-        return OnTimePluginInfo.id;
     }
 }

@@ -24,7 +24,7 @@ import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.TimeFormatService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.anvil.base.manager.BaseManager;
+import org.anvilpowered.anvil.base.datastore.BaseManager;
 import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
@@ -70,7 +70,7 @@ public class CommonMemberManager<
                 Member<?> member = optionalMember.get();
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
-                );
+                ).get();
                 return textService.builder()
                     .append(
                         textService.builder()
@@ -98,13 +98,13 @@ public class CommonMemberManager<
                 Member<?> member = optionalMember.get();
                 String playTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime())
-                );
+                ).get();
                 String bonusTime = timeFormatService.format(
                     Duration.ofSeconds(member.getBonusTime())
-                );
+                ).get();
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
-                );
+                ).get();
                 return textService.builder()
                     .append(textService.builder()
                         .dark_gray().append("========= ")
@@ -160,7 +160,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully added ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
                     .green().append(" to ", name, "'s bonus time")
                     .build();
             }
@@ -198,7 +198,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s bonus time to ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
                     .build();
             }
             return getNotFoundError(name);
@@ -218,7 +218,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s total time to ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
                     .build();
             }
             return getNotFoundError(name);
@@ -250,18 +250,18 @@ public class CommonMemberManager<
             .gray().append("\nCurrent Rank: ")
             .aqua().append(rankPrefix[0], " (")
             .append(rankSeconds[0] >= 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[0]))
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[0])).get()
                 : -1)
             .append(")")
             .gray().append("\nNext Rank: ")
             .aqua().append(rankPrefix[1], " (")
             .append(rankSeconds[1] >= 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1]))
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1])).get()
                 : -1)
             .append(")")
             .gray().append("\nTime Remaining: ")
             .aqua().append(rankSeconds[1] > 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime))
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime)).get()
                 : -1
             )
             .build();

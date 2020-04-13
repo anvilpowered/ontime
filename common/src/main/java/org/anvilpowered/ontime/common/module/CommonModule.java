@@ -20,21 +20,18 @@ package org.anvilpowered.ontime.common.module;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import org.anvilpowered.anvil.api.Anvil;
 import org.anvilpowered.anvil.api.data.config.ConfigurationService;
 import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
-import org.anvilpowered.anvil.api.datastore.MongoContext;
-import org.anvilpowered.anvil.api.manager.annotation.MongoDBComponent;
 import org.anvilpowered.anvil.api.misc.BindingExtensions;
 import org.anvilpowered.anvil.api.plugin.BasicPluginInfo;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 import org.anvilpowered.ontime.api.util.DataImportService;
-import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
-import org.anvilpowered.ontime.common.data.registry.OnTimeRegistry;
+import org.anvilpowered.ontime.common.data.config.CommonConfigurationService;
+import org.anvilpowered.ontime.common.data.registry.CommonRegistry;
 import org.anvilpowered.ontime.common.member.CommonMemberManager;
 import org.anvilpowered.ontime.common.member.repository.CommonMongoMemberRepository;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
@@ -62,7 +59,7 @@ public class CommonModule<
             },
             new TypeToken<CommonMongoMemberRepository>(getClass()) {
             },
-            MongoDBComponent.class
+            Names.named("mongodb")
         );
 
         be.bind(
@@ -93,10 +90,9 @@ public class CommonModule<
             }
         );
 
-        bind(new TypeLiteral<DataStoreContext<ObjectId, Datastore>>() {
-        }).to(MongoContext.class);
+        be.withMongoDB();
 
-        bind(ConfigurationService.class).to(OnTimeConfigurationService.class);
-        bind(Registry.class).to(OnTimeRegistry.class);
+        bind(ConfigurationService.class).to(CommonConfigurationService.class);
+        bind(Registry.class).to(CommonRegistry.class);
     }
 }

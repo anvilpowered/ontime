@@ -1,11 +1,19 @@
-plugins {
-    id 'java'
+allprojects {
+    group = "org.anvilpowered"
+    version = "A1.0-1.0.0-SNAPSHOT"
 }
-
 subprojects {
-    group "rocks.milspecsg"
-    version "A1.0-1.0.0-SNAPSHOT"
+    apply plugin: 'java'
     sourceCompatibility = 1.8
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spongepowered.org/maven' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://jetbrains.bintray.com/xodus' }
+    }
+    dependencies {
+        implementation 'org.anvilpowered:anvil-api:1.0-SNAPSHOT'
+    }
     if (project.hasProperty("buildNumber") && version.contains("-SNAPSHOT")) {
         version = version.replace("-SNAPSHOT", "-RC${buildNumber}")
     }

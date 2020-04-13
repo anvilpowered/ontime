@@ -18,7 +18,7 @@
 
 package org.anvilpowered.ontime.api.member;
 
-import org.anvilpowered.anvil.api.manager.Manager;
+import org.anvilpowered.anvil.api.datastore.Manager;
 import org.anvilpowered.ontime.api.member.repository.MemberRepository;
 
 import java.util.Optional;

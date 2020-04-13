@@ -19,6 +19,7 @@
 package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
+import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.spongepowered.api.command.CommandException;
@@ -37,13 +38,16 @@ public class OnTimeCheckCommand implements CommandExecutor {
     @Inject
     private MemberManager<Text> memberManager;
 
+    @Inject
+    private Registry registry;
+
     @Override
     public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
         Optional<User> optionalUser = context.getOne(Text.of("user"));
         if (optionalUser.isPresent()) {
             memberManager.infoExtended(optionalUser.get().getUniqueId()).thenAcceptAsync(source::sendMessage);
         } else if (source instanceof Player) {
-            if (source.hasPermission(OnTimeKeys.CHECK_EXTENDED_PERMISSION.getFallbackValue())) {
+            if (source.hasPermission(registry.getOrDefault(OnTimeKeys.CHECK_EXTENDED_PERMISSION))) {
                 memberManager.infoExtended(((Player) source).getUniqueId()).thenAcceptAsync(source::sendMessage);
             } else {
                 memberManager.info(((Player) source).getUniqueId()).thenAcceptAsync(source::sendMessage);

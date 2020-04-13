@@ -16,20 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.sponge.data.config;
+package org.anvilpowered.ontime.common.data.registry;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.anvilpowered.ontime.common.data.config.OnTimeConfigurationService;
-import org.spongepowered.api.config.DefaultConfig;
+import org.anvilpowered.anvil.api.data.key.Keys;
+import org.anvilpowered.anvil.base.data.registry.BaseExtendedRegistry;
 
 @Singleton
-public class OnTimeSpongeConfigurationService extends OnTimeConfigurationService {
+public class CommonRegistry extends BaseExtendedRegistry {
 
     @Inject
-    public OnTimeSpongeConfigurationService(@DefaultConfig(sharedRoot = false) ConfigurationLoader<CommentedConfigurationNode> configLoader) {
-        super(configLoader);
+    public CommonRegistry() {
+        setDefault(Keys.BASE_SCAN_PACKAGE, "org.anvilpowered.ontime.common.model");
     }
 }

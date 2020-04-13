@@ -31,30 +31,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class OnTimeConfigurationService extends BaseConfigurationService {
+public class CommonConfigurationService extends BaseConfigurationService {
 
     @Inject
-    public OnTimeConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
+    public CommonConfigurationService(ConfigurationLoader<CommentedConfigurationNode> configLoader) {
         super(configLoader);
-        defaultMap.put(Keys.DATA_DIRECTORY, OnTimePluginInfo.id);
-        defaultMap.put(Keys.MONGODB_DBNAME, OnTimePluginInfo.id);
+        withMongoDB();
+        setDefault(Keys.DATA_DIRECTORY, OnTimePluginInfo.id);
+        setDefault(Keys.MONGODB_DBNAME, OnTimePluginInfo.id);
 
         Map<String, Integer> defaultRankMap = new HashMap<>();
+        defaultRankMap.put("noob", 0);
         defaultRankMap.put("player", 600);
-        defaultRankMap.put("member", 1800);
-
-        defaultMap.put(OnTimeKeys.RANKS, defaultRankMap);
-    }
-
-    @Override
-    protected void initNodeNameMap() {
-        super.initNodeNameMap();
-        nodeNameMap.put(OnTimeKeys.RANKS, "ranks");
-    }
-
-    @Override
-    protected void initNodeDescriptionMap() {
-        super.initNodeDescriptionMap();
-        nodeDescriptionMap.put(OnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.");
+        defaultRankMap.put("trusted", 1800);
+        setDefault(OnTimeKeys.RANKS, defaultRankMap);
+        setName(OnTimeKeys.RANKS, "ranks");
+        setDescription(OnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.");
     }
 }
