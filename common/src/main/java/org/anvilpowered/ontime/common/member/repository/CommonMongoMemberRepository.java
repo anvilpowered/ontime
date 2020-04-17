@@ -43,7 +43,7 @@ public class CommonMongoMemberRepository
 
     @Override
     public CompletableFuture<Optional<Member<ObjectId>>> getOneForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(asQuery(userUUID).get()));
+        return getOne(asQuery(userUUID));
     }
 
     @Override
