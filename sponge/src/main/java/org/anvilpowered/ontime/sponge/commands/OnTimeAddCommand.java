@@ -19,9 +19,7 @@
 package org.anvilpowered.ontime.sponge.commands;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.plugin.PluginInfo;
 import org.anvilpowered.ontime.api.member.MemberManager;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -34,17 +32,11 @@ public class OnTimeAddCommand implements CommandExecutor {
     @Inject
     private MemberManager<Text> memberManager;
 
-    @Inject
-    private PluginInfo<Text> pluginInfo;
-
     @Override
-    public CommandResult execute(CommandSource source, CommandContext context) throws CommandException {
+    public CommandResult execute(CommandSource source, CommandContext context) {
         memberManager.addBonusTime(
-            context.<User>getOne(Text.of("user"))
-                .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing user")))
-                .getUniqueId(),
-            context.<String>getOne(Text.of("time"))
-                .orElseThrow(() -> new CommandException(Text.of(pluginInfo.getPrefix(), "Missing time")))
+            context.<User>requireOne(Text.of("user")).getUniqueId(),
+            context.requireOne(Text.of("time"))
         ).thenAcceptAsync(source::sendMessage);
         return CommandResult.success();
     }
