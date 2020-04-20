@@ -26,6 +26,8 @@ import org.anvilpowered.ontime.api.model.member.Member;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class CommonMemberRepository<
     TKey,
@@ -44,13 +46,12 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID) {
-        return CompletableFuture.supplyAsync(() -> {
-            Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
+    public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID, long time) {
+        return getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
             if (optionalMember.isPresent()) return optionalMember;
             // if there isn't one already, create a new one
             Member<TKey> member = generateEmpty();
-            member.setBonusTime(0);
+            member.setBonusTime(time);
             member.setPlayTime(0);
             member.setUserUUID(userUUID);
             return insertOne(member).join();
@@ -58,22 +59,7 @@ public abstract class CommonMemberRepository<
     }
 
     @Override
-    public CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, long time) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                Optional<Member<TKey>> optionalMember = getOneForUser(userUUID).join();
-                if (optionalMember.isPresent()) return optionalMember;
-                //If the user doens't exist in the db, create it from the values
-                //Specified in the config
-                Member<TKey> member = generateEmpty();
-                member.setBonusTime(time);
-                member.setPlayTime(0);
-                member.setUserUUID(userUUID);
-                return insertOne(member).join();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Optional.empty();
-            }
-        });
+    public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID) {
+        return getOneOrGenerateForUser(userUUID, 0);
     }
 }

@@ -23,9 +23,9 @@ import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 import org.anvilpowered.ontime.common.data.config.CommonConfigurationService;
 import org.anvilpowered.ontime.common.module.CommonModule;
-import org.anvilpowered.ontime.sponge.commands.OnTimeSpongeCommandNode;
+import org.anvilpowered.ontime.sponge.command.SpongeOnTimeCommandNode;
 import org.anvilpowered.ontime.sponge.data.config.SpongeConfigurationService;
-import org.anvilpowered.ontime.sponge.tasks.SpongeSyncTaskService;
+import org.anvilpowered.ontime.sponge.task.SpongeSyncTaskService;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
@@ -38,7 +38,7 @@ public class SpongeModule extends CommonModule<User, Player, Text, CommandSource
         super.configure();
 
         bind(new TypeLiteral<CommandNode<CommandSource>>() {
-        }).to(OnTimeSpongeCommandNode.class);
+        }).to(SpongeOnTimeCommandNode.class);
         bind(CommonConfigurationService.class).to(SpongeConfigurationService.class);
 
         bind(SyncTaskService.class).to(SpongeSyncTaskService.class);

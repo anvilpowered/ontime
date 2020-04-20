@@ -2,4 +2,7 @@ rootProject.name = 'OnTime'
 
 include 'api'
 include 'common'
+include 'luckperms'
+include 'spigot'
 include 'sponge'
+include 'velocity'

@@ -39,7 +39,7 @@ import java.util.function.BiFunction;
 
 public class CommonMemberManager<
     TUser,
-    TPlayer extends TCommandSource,
+    TPlayer,
     TString,
     TCommandSource>
     extends BaseManager<MemberRepository<?, ?>>
@@ -64,8 +64,8 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> info(UUID userUUID) {
-        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            String name = userService.getUserName(userUUID).join().orElse(userUUID.toString());
             if (optionalMember.isPresent()) {
                 Member<?> member = optionalMember.get();
                 String totalTime = timeFormatService.format(
@@ -83,7 +83,7 @@ public class CommonMemberManager<
                     .append("\n\n", textService.builder()
                         .dark_gray().append("========= ")
                         .gold().append(pluginInfo.getPrefix())
-                        .dark_gray().append(" ========="))
+                        .dark_gray().append("========="))
                     .build();
             }
             return getNotFoundError(name);
@@ -92,8 +92,8 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> infoExtended(UUID userUUID) {
-        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            String name = userService.getUserName(userUUID).join().orElse(userUUID.toString());
             if (optionalMember.isPresent()) {
                 Member<?> member = optionalMember.get();
                 String playTime = timeFormatService.format(
@@ -154,8 +154,8 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> addBonusTime(UUID userUUID, long time) {
-        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().addBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            String name = userService.getUserName(userUUID).join().orElse(userUUID.toString());
             if (result) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
@@ -192,8 +192,8 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> setBonusTime(UUID userUUID, long time) {
-        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setBonusTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            String name = userService.getUserName(userUUID).join().orElse(userUUID.toString());
             if (result) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
@@ -212,8 +212,8 @@ public class CommonMemberManager<
 
     @Override
     public CompletableFuture<TString> setTotalTime(UUID userUUID, long time) {
-        String name = userService.getUserName(userUUID).orElse(userUUID.toString());
         return getPrimaryComponent().setTotalTimeForUser(userUUID, time).thenApplyAsync(result -> {
+            String name = userService.getUserName(userUUID).join().orElse(userUUID.toString());
             if (result) {
                 return textService.builder()
                     .append(pluginInfo.getPrefix())

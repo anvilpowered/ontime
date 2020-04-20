@@ -26,6 +26,7 @@ import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.Optional;
 import java.util.UUID;

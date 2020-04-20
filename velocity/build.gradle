@@ -1,0 +1,32 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+jar.enabled = false // we only want shadowJar
+
+repositories {
+    maven { url 'https://repo.velocitypowered.com/snapshots/' }
+}
+dependencies {
+    implementation project(':api')
+    implementation project(':common')
+    implementation project(':luckperms')
+    implementation velocity
+    annotationProcessor velocity
+}
+
+shadowJar {
+    String jarName = "OnTime-Velocity-${project.version}.jar"
+    println "Building: " + jarName
+    archiveFileName = jarName
+
+    dependencies {
+        include project(':api')
+        include project(':common')
+        include project(':luckperms')
+    }
+}
+
+artifacts {
+    archives shadowJar
+}

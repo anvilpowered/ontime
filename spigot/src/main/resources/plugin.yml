@@ -1,0 +1,10 @@
+name: OnTime
+version: "1.0.0-SNAPSHOT"
+main: org.anvilpowered.ontime.spigot.plugin.OnTimeSpigot
+api-version: 1.15
+authors: [Cableguy20, STG_Allen]
+description: Playtime tracker
+depend: [Anvil, LuckPerms]
+commands:
+  ontime:
+    description: OnTime root command

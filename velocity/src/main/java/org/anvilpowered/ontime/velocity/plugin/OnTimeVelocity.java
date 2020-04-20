@@ -16,19 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.sponge.plugin;
+package org.anvilpowered.ontime.velocity.plugin;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.velocitypowered.api.plugin.Dependency;
+import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.PluginContainer;
+import com.velocitypowered.api.proxy.ProxyServer;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.ontime.common.plugin.OnTime;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
-import org.anvilpowered.ontime.sponge.listener.SpongePlayerListener;
-import org.anvilpowered.ontime.sponge.module.SpongeModule;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.plugin.Dependency;
-import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
+import org.anvilpowered.ontime.velocity.listener.VelocityPlayerListener;
+import org.anvilpowered.ontime.velocity.module.VelocityModule;
 
 @Plugin(
     id = OnTimePluginInfo.id,
@@ -39,17 +39,20 @@ import org.spongepowered.api.plugin.PluginContainer;
     url = OnTimePluginInfo.url,
     authors = {"Cableguy20", "STG_Allen"}
 )
-public class OnTimeSponge extends OnTime<PluginContainer> {
+public class OnTimeVelocity extends OnTime<PluginContainer> {
 
     @Inject
-    public OnTimeSponge(Injector injector) {
-        super(injector, new SpongeModule());
+    private ProxyServer proxyServer;
+
+    @Inject
+    public OnTimeVelocity(Injector injector) {
+        super(injector, new VelocityModule());
     }
 
     @Override
     protected void applyToBuilder(Environment.Builder builder) {
         super.applyToBuilder(builder);
-        builder.addEarlyServices(SpongePlayerListener.class, t ->
-            Sponge.getEventManager().registerListeners(this, t));
+        builder.addEarlyServices(VelocityPlayerListener.class, t ->
+            proxyServer.getEventManager().register(this, t));
     }
 }

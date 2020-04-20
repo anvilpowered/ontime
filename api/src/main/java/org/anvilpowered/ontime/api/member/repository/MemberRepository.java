@@ -30,9 +30,9 @@ public interface MemberRepository<
     TDataStore>
     extends Repository<TKey, Member<TKey>, TDataStore> {
 
-    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
+    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID, long time);
 
-    CompletableFuture<Optional<Member<TKey>>> generateUserFromConfig(UUID userUUID, long time);
+    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
     CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 

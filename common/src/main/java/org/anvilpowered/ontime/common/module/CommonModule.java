@@ -45,7 +45,7 @@ import org.mongodb.morphia.Datastore;
 @SuppressWarnings("UnstableApiUsage")
 public class CommonModule<
     TUser,
-    TPlayer extends TCommandSource,
+    TPlayer,
     TString,
     TCommandSource>
     extends AbstractModule {
