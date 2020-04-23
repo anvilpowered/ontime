@@ -1,6 +1,6 @@
 allprojects {
     group = "org.anvilpowered"
-    version = "A1.0-1.0.0-SNAPSHOT"
+    version = "0.1.0"
 }
 subprojects {
     apply plugin: 'java'
