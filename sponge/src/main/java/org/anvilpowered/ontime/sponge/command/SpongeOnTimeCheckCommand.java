@@ -29,13 +29,12 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
-import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.text.Text;
 
 import java.util.Optional;
 
 public class SpongeOnTimeCheckCommand
-    extends CommonOnTimeCheckCommand<User, Player, Subject, Text, CommandSource>
+    extends CommonOnTimeCheckCommand<User, Player, Text, CommandSource>
     implements CommandExecutor {
 
     @Inject

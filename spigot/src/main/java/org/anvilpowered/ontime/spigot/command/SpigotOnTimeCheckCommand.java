@@ -23,12 +23,10 @@ import org.anvilpowered.ontime.common.command.CommonOnTimeCheckCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
 
 public class SpigotOnTimeCheckCommand
-    extends CommonOnTimeCheckCommand<Player, Player, Permissible, TextComponent, CommandSender>
+    extends CommonOnTimeCheckCommand<Player, Player, TextComponent, CommandSender>
     implements CommandExecutor {
 
     @Override
@@ -38,7 +36,7 @@ public class SpigotOnTimeCheckCommand
         String alias,
         String[] context
     ) {
-        sendCheck(source, context, Player.class, ConsoleCommandSender.class);
+        sendCheck(source, context, Player.class);
         return true;
     }
 }

@@ -1,6 +1,6 @@
 allprojects {
     group = "org.anvilpowered"
-    version = "0.1.0"
+    version = "0.2.0-SNAPSHOT"
 }
 subprojects {
     apply plugin: 'java'
@@ -12,7 +12,7 @@ subprojects {
         maven { url 'https://jetbrains.bintray.com/xodus' }
     }
     dependencies {
-        implementation 'org.anvilpowered:anvil-api:0.1-SNAPSHOT'
+        implementation 'org.anvilpowered:anvil-api:0.2-SNAPSHOT'
     }
     if (project.hasProperty("buildNumber") && version.contains("-SNAPSHOT")) {
         version = version.replace("-SNAPSHOT", "-RC${buildNumber}")

@@ -70,7 +70,7 @@ public class CommonMemberManager<
                 Member<?> member = optionalMember.get();
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
-                ).get();
+                ).toString();
                 return textService.builder()
                     .append(
                         textService.builder()
@@ -98,13 +98,13 @@ public class CommonMemberManager<
                 Member<?> member = optionalMember.get();
                 String playTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime())
-                ).get();
+                ).toString();
                 String bonusTime = timeFormatService.format(
                     Duration.ofSeconds(member.getBonusTime())
-                ).get();
+                ).toString();
                 String totalTime = timeFormatService.format(
                     Duration.ofSeconds(member.getPlayTime() + member.getBonusTime())
-                ).get();
+                ).toString();
                 return textService.builder()
                     .append(textService.builder()
                         .dark_gray().append("========= ")
@@ -160,7 +160,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully added ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .green().append(" to ", name, "'s bonus time")
                     .build();
             }
@@ -198,7 +198,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s bonus time to ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
             return getNotFoundError(name);
@@ -218,7 +218,7 @@ public class CommonMemberManager<
                 return textService.builder()
                     .append(pluginInfo.getPrefix())
                     .green().append("Successfully updated ", name, "'s total time to ")
-                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)).get())
+                    .gold().append(timeFormatService.format(Duration.ofSeconds(time)))
                     .build();
             }
             return getNotFoundError(name);
@@ -250,18 +250,18 @@ public class CommonMemberManager<
             .gray().append("\nCurrent Rank: ")
             .aqua().append(rankPrefix[0], " (")
             .append(rankSeconds[0] >= 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[0])).get()
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[0]))
                 : -1)
             .append(")")
             .gray().append("\nNext Rank: ")
             .aqua().append(rankPrefix[1], " (")
             .append(rankSeconds[1] >= 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1])).get()
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1]))
                 : -1)
             .append(")")
             .gray().append("\nTime Remaining: ")
             .aqua().append(rankSeconds[1] > 0
-                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime)).get()
+                ? timeFormatService.format(Duration.ofSeconds(rankSeconds[1] - totalTime))
                 : -1
             )
             .build();

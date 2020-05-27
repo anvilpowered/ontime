@@ -18,8 +18,8 @@
 
 package org.anvilpowered.ontime.common.command;
 
-public class CommonOnTimeSetTotalCommand<TUser, TPlayer, TSubject, TString, TCommandSource>
-    extends CommonOnTimeTwoArgCommand<TUser, TPlayer, TSubject, TString, TCommandSource> {
+public class CommonOnTimeSetTotalCommand<TUser, TPlayer, TString, TCommandSource>
+    extends CommonOnTimeTwoArgCommand<TUser, TPlayer, TString, TCommandSource> {
 
     public void sendSetTotal(TCommandSource source, String[] context) {
         send(source, context, "set", memberManager::setTotalTime);

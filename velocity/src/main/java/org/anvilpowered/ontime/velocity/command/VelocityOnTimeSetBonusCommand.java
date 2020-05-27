@@ -20,13 +20,12 @@ package org.anvilpowered.ontime.velocity.command;
 
 import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.permission.PermissionSubject;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.text.TextComponent;
 import org.anvilpowered.ontime.common.command.CommonOnTimeSetBonusCommand;
 
 public class VelocityOnTimeSetBonusCommand
-    extends CommonOnTimeSetBonusCommand<Player, Player, PermissionSubject, TextComponent, CommandSource>
+    extends CommonOnTimeSetBonusCommand<Player, Player, TextComponent, CommandSource>
     implements Command {
 
     @Override

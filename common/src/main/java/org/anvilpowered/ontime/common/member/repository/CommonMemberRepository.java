@@ -26,8 +26,6 @@ import org.anvilpowered.ontime.api.model.member.Member;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class CommonMemberRepository<
     TKey,

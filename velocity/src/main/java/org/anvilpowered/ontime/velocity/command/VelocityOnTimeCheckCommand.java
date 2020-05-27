@@ -20,18 +20,16 @@ package org.anvilpowered.ontime.velocity.command;
 
 import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.permission.PermissionSubject;
-import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.text.TextComponent;
 import org.anvilpowered.ontime.common.command.CommonOnTimeCheckCommand;
 
 public class VelocityOnTimeCheckCommand
-    extends CommonOnTimeCheckCommand<Player, Player, PermissionSubject, TextComponent, CommandSource>
+    extends CommonOnTimeCheckCommand<Player, Player, TextComponent, CommandSource>
     implements Command {
 
     @Override
     public void execute(CommandSource source, String[] context) {
-        sendCheck(source, context, Player.class, ConsoleCommandSource.class);
+        sendCheck(source, context, Player.class);
     }
 }

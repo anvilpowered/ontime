@@ -32,13 +32,13 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unchecked")
-public class CommonOnTimeCheckCommand<TUser, TPlayer, TSubject, TString, TCommandSource> {
+public class CommonOnTimeCheckCommand<TUser, TPlayer, TString, TCommandSource> {
 
     @Inject
     protected MemberManager<TString> memberManager;
 
     @Inject
-    private PermissionService<TSubject> permissionService;
+    private PermissionService permissionService;
 
     @Inject
     private PluginInfo<TString> pluginInfo;
@@ -60,18 +60,17 @@ public class CommonOnTimeCheckCommand<TUser, TPlayer, TSubject, TString, TComman
     }
 
     public void sendCheck(TCommandSource source, String[] context,
-                          Class<TPlayer> playerClass, Class<?> consoleClass) {
-        final boolean isConsole = consoleClass.isAssignableFrom(source.getClass());
+                          Class<TPlayer> playerClass) {
         final boolean isPlayer = playerClass.isAssignableFrom(source.getClass());
-        if (!isConsole && !(isPlayer && permissionService.hasPermission((TSubject) source,
-            registry.getOrDefault(OnTimeKeys.CHECK_PERMISSION)))) {
+        if (permissionService.hasPermission(source,
+            registry.getOrDefault(OnTimeKeys.CHECK_PERMISSION))) {
             textService.builder()
                 .append(pluginInfo.getPrefix())
                 .red().append("You do not have permission for this command!")
                 .sendTo(source);
             return;
         }
-        final boolean hasExtended = isConsole || permissionService.hasPermission((TSubject) source,
+        final boolean hasExtended = permissionService.hasPermission(source,
             registry.getOrDefault(OnTimeKeys.CHECK_EXTENDED_PERMISSION));
 
         CompletableFuture<Optional<UUID>> futureUUID;

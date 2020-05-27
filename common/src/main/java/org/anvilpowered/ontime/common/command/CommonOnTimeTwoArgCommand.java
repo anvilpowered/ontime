@@ -27,18 +27,17 @@ import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 
-public class CommonOnTimeTwoArgCommand<TUser, TPlayer, TSubject, TString, TCommandSource> {
+public class CommonOnTimeTwoArgCommand<TUser, TPlayer, TString, TCommandSource> {
 
     @Inject
     protected MemberManager<TString> memberManager;
 
     @Inject
-    protected PermissionService<TSubject> permissionService;
+    protected PermissionService permissionService;
 
     @Inject
     private PluginInfo<TString> pluginInfo;
@@ -54,7 +53,7 @@ public class CommonOnTimeTwoArgCommand<TUser, TPlayer, TSubject, TString, TComma
 
     public void send(TCommandSource source, String[] context, String command,
                      BiFunction<UUID, String, CompletableFuture<TString>> function) {
-        if (!permissionService.hasPermission((TSubject) source,
+        if (!permissionService.hasPermission(source,
             registry.getOrDefault(OnTimeKeys.EDIT_PERMISSION))) {
             textService.builder()
                 .append(pluginInfo.getPrefix())
