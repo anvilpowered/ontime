@@ -29,17 +29,17 @@ import java.util.UUID;
 @XodusEntity
 public class XodusMember extends XodusDbo implements Member<EntityId> {
 
-    private String userUUID;
+    private UUID userUUID;
     private long playTime;
     private long bonusTime;
 
     @Override
     public UUID getUserUUID() {
-        return UUID.fromString(userUUID);
+        return userUUID;
     }
 
     public void setUserUUID(UUID userUUID) {
-        this.userUUID = userUUID.toString();
+        this.userUUID = userUUID;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class XodusMember extends XodusDbo implements Member<EntityId> {
     @Override
     public Entity writeTo(Entity object) {
         super.writeTo(object);
-        object.setProperty("userUUID", userUUID);
+        object.setProperty("userUUID", userUUID.toString());
         object.setProperty("playTime", playTime);
         object.setProperty("bonusTime", bonusTime);
         return object;
@@ -76,7 +76,7 @@ public class XodusMember extends XodusDbo implements Member<EntityId> {
         super.readFrom(object);
         Comparable<?> userUUID = object.getProperty("userUUID");
         if (userUUID instanceof String) {
-            this.userUUID = (String) userUUID;
+            this.userUUID = UUID.fromString((String) userUUID);
         }
         Comparable<?> playTime = object.getProperty("playTime");
         if (playTime instanceof Long) {
