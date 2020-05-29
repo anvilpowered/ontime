@@ -46,7 +46,11 @@ public abstract class CommonMemberRepository<
     @Override
     public CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID, long time) {
         return getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
-            if (optionalMember.isPresent()) return optionalMember;
+            if (optionalMember.isPresent()) {
+                return setBonusTimeForUser(userUUID, time).join()
+                    ? optionalMember
+                    : Optional.empty();
+            }
             // if there isn't one already, create a new one
             Member<TKey> member = generateEmpty();
             member.setBonusTime(time);
