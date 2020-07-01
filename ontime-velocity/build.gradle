@@ -9,9 +9,9 @@ repositories {
     maven { url 'https://libraries.minecraft.net/' }
 }
 dependencies {
-    implementation project(':api')
-    implementation project(':common')
-    implementation project(':luckperms')
+    implementation project(':ontime-api')
+    implementation project(':ontime-common')
+    implementation project(':ontime-luckperms')
     implementation velocity
     annotationProcessor velocity
 }
@@ -22,9 +22,9 @@ shadowJar {
     archiveFileName = jarName
 
     dependencies {
-        include project(':api')
-        include project(':common')
-        include project(':luckperms')
+        include project(':ontime-api')
+        include project(':ontime-common')
+        include project(':ontime-luckperms')
     }
 }
 

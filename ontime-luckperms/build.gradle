@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':ontime-api')
+    implementation project(':ontime-common')
+    implementation luckperms
+}

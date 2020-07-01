@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation project(':api')
+    implementation project(':ontime-api')
     implementation configurate_hocon
 }
 
