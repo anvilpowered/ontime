@@ -1,6 +1,6 @@
 name: OnTime
 version: "0.2.0-SNAPSHOT"
-main: org.anvilpowered.ontime.spigot.plugin.OnTimeSpigot
+main: org.anvilpowered.ontime.spigot.OnTimeSpigot
 api-version: 1.15
 authors: [Cableguy20, STG_Allen]
 description: Playtime tracker

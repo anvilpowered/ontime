@@ -16,16 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.velocity.plugin;
+package org.anvilpowered.ontime.velocity;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
-import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.ontime.common.plugin.OnTime;
+import org.anvilpowered.ontime.api.OnTimeImpl;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.velocity.listener.VelocityPlayerListener;
 import org.anvilpowered.ontime.velocity.module.VelocityModule;
@@ -39,7 +38,7 @@ import org.anvilpowered.ontime.velocity.module.VelocityModule;
     url = OnTimePluginInfo.url,
     authors = {"Cableguy20", "STG_Allen"}
 )
-public class OnTimeVelocity extends OnTime<PluginContainer> {
+public class OnTimeVelocity extends OnTimeImpl {
 
     @Inject
     private ProxyServer proxyServer;

@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.common.command;
 public class CommonOnTimeAddCommand<TUser, TPlayer, TString, TCommandSource>
     extends CommonOnTimeTwoArgCommand<TUser, TPlayer, TString, TCommandSource> {
 
-    public void sendAdd(TCommandSource source, String[] context) {
-        send(source, context, "add", memberManager::addBonusTime);
+    public void execute(TCommandSource source, String[] context) {
+        execute(source, context, "add", memberManager::addBonusTime);
     }
 }

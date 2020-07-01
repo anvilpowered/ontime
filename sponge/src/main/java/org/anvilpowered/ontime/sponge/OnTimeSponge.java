@@ -16,19 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.sponge.plugin;
+package org.anvilpowered.ontime.sponge;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.ontime.common.plugin.OnTime;
+import org.anvilpowered.ontime.api.OnTimeImpl;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.sponge.listener.SpongePlayerListener;
 import org.anvilpowered.ontime.sponge.module.SpongeModule;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 
 @Plugin(
     id = OnTimePluginInfo.id,
@@ -39,7 +38,7 @@ import org.spongepowered.api.plugin.PluginContainer;
     url = OnTimePluginInfo.url,
     authors = {"Cableguy20", "STG_Allen"}
 )
-public class OnTimeSponge extends OnTime<PluginContainer> {
+public class OnTimeSponge extends OnTimeImpl {
 
     @Inject
     public OnTimeSponge(Injector injector) {

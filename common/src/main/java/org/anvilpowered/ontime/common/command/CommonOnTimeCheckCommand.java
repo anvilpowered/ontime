@@ -59,10 +59,10 @@ public class CommonOnTimeCheckCommand<TUser, TPlayer, TString, TCommandSource> {
             .sendTo(source);
     }
 
-    public void sendCheck(TCommandSource source, String[] context,
-                          Class<TPlayer> playerClass) {
+    public void execute(TCommandSource source, String[] context,
+                        Class<TPlayer> playerClass) {
         final boolean isPlayer = playerClass.isAssignableFrom(source.getClass());
-        if (permissionService.hasPermission(source,
+        if (!permissionService.hasPermission(source,
             registry.getOrDefault(OnTimeKeys.CHECK_PERMISSION))) {
             textService.builder()
                 .append(pluginInfo.getPrefix())

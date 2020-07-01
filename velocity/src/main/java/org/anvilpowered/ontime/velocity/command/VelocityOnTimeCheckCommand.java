@@ -30,6 +30,6 @@ public class VelocityOnTimeCheckCommand
 
     @Override
     public void execute(CommandSource source, String[] context) {
-        sendCheck(source, context, Player.class);
+        execute(source, context, Player.class);
     }
 }

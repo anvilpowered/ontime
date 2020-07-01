@@ -27,7 +27,7 @@ public abstract class CommonSyncTaskService implements SyncTaskService {
 
     protected CommonSyncTaskService(Registry registry) {
         this.registry = registry;
-        this.registry.whenLoaded(this::whenLoaded);
+        this.registry.whenLoaded(this::whenLoaded).register();
     }
 
     private void whenLoaded() {

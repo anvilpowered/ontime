@@ -27,9 +27,4 @@ import org.anvilpowered.ontime.common.command.CommonOnTimeSetBonusCommand;
 public class VelocityOnTimeSetBonusCommand
     extends CommonOnTimeSetBonusCommand<Player, Player, TextComponent, CommandSource>
     implements Command {
-
-    @Override
-    public void execute(CommandSource source, String[] context) {
-        sendSetBonus(source, context);
-    }
 }

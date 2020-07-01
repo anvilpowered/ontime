@@ -16,13 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.spigot.plugin;
+package org.anvilpowered.ontime.spigot;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.anvilpowered.anvil.api.Environment;
-import org.anvilpowered.ontime.common.plugin.OnTime;
+import org.anvilpowered.ontime.api.OnTimeImpl;
 import org.anvilpowered.ontime.spigot.listener.SpigotPlayerListener;
 import org.anvilpowered.ontime.spigot.module.SpigotModule;
 import org.bukkit.Bukkit;
@@ -35,13 +35,14 @@ public class OnTimeSpigot extends JavaPlugin {
             @Override
             protected void configure() {
                 bind(JavaPlugin.class).toInstance(OnTimeSpigot.this);
+                bind(OnTimeSpigot.class).toInstance(OnTimeSpigot.this);
             }
         };
         Injector injector = Guice.createInjector(module);
         inner = new Inner(injector);
     }
 
-    private final class Inner extends OnTime<JavaPlugin> {
+    private final class Inner extends OnTimeImpl {
         private Inner(Injector injector) {
             super(injector, new SpigotModule());
         }

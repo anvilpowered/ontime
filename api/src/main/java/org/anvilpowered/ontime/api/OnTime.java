@@ -16,22 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.plugin;
+package org.anvilpowered.ontime.api;
 
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import org.anvilpowered.anvil.api.Environment;
+import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.base.plugin.BasePlugin;
 import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 
-public abstract class OnTime<TPluginContainer> extends BasePlugin<TPluginContainer> {
+public class OnTime extends BasePlugin {
 
-    protected OnTime(Injector injector, Module module) {
-        super(OnTimePluginInfo.id, injector, module, SyncTaskService.class);
+    protected static Environment environment;
+
+    OnTime(String name, Injector injector, Module module) {
+        super(name, injector, module, SyncTaskService.class);
     }
 
-    @Override
-    protected void applyToBuilder(Environment.Builder builder) {
-        builder.withRootCommand();
+    public static Registry getRegistry() {
+        return environment.getInjector().getInstance(Registry.class);
     }
 }

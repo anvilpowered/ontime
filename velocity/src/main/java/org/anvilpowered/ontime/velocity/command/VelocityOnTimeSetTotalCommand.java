@@ -27,9 +27,4 @@ import org.anvilpowered.ontime.common.command.CommonOnTimeSetTotalCommand;
 public class VelocityOnTimeSetTotalCommand
     extends CommonOnTimeSetTotalCommand<Player, Player, TextComponent, CommandSource>
     implements Command {
-
-    @Override
-    public void execute(CommandSource source, String[] context) {
-        sendSetTotal(source, context);
-    }
 }

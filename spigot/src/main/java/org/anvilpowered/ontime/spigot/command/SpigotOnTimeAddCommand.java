@@ -36,7 +36,7 @@ public class SpigotOnTimeAddCommand
         String alias,
         String[] context
     ) {
-        sendAdd(source, context);
+        execute(source, context);
         return true;
     }
 }

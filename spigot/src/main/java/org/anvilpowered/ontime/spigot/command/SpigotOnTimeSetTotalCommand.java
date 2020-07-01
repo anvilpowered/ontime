@@ -36,7 +36,7 @@ public class SpigotOnTimeSetTotalCommand
         String alias,
         String[] context
     ) {
-        sendSetTotal(source, context);
+        execute(source, context);
         return true;
     }
 }

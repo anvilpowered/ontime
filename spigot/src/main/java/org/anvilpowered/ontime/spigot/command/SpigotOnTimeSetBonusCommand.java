@@ -36,7 +36,7 @@ public class SpigotOnTimeSetBonusCommand
         String alias,
         String[] context
     ) {
-        sendSetBonus(source, context);
+        execute(source, context);
         return true;
     }
 }

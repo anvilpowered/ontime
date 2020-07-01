@@ -81,7 +81,7 @@ public abstract class CommonOnTimeCommandNode<TCommandExecutor, TCommandSource>
             if (alreadyLoaded) return;
             loadCommands();
             alreadyLoaded = true;
-        });
+        }).register();
         alreadyLoaded = false;
         descriptions = new HashMap<>();
         permissions = new HashMap<>();

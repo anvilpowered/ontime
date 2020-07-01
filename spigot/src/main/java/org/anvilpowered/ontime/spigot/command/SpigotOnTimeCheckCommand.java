@@ -36,7 +36,7 @@ public class SpigotOnTimeCheckCommand
         String alias,
         String[] context
     ) {
-        sendCheck(source, context, Player.class);
+        execute(source, context, Player.class);
         return true;
     }
 }

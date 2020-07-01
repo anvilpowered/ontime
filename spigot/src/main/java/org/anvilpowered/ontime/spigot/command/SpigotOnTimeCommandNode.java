@@ -23,10 +23,10 @@ import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.ontime.common.command.CommonOnTimeCommandNode;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
+import org.anvilpowered.ontime.spigot.OnTimeSpigot;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +50,9 @@ public class SpigotOnTimeCommandNode
     private SpigotOnTimeSetTotalCommand onTimeSetTotalCommand;
 
     @Inject
+    private OnTimeSpigot plugin;
+
+    @Inject
     public SpigotOnTimeCommandNode(Registry registry) {
         super(registry);
     }
@@ -65,7 +68,6 @@ public class SpigotOnTimeCommandNode
         subCommands.put(HELP_ALIAS, commandService.generateHelpCommand(this));
         subCommands.put(VERSION_ALIAS, commandService.generateVersionCommand(HELP_COMMAND));
 
-        JavaPlugin plugin = environment.<JavaPlugin>getPlugin().getPluginContainer();
         PluginCommand root = plugin.getCommand(OnTimePluginInfo.id);
         Objects.requireNonNull(root, "OnTime command not registered");
         root.setExecutor(commandService.generateRoutingCommand(

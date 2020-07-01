@@ -51,8 +51,8 @@ public class CommonOnTimeTwoArgCommand<TUser, TPlayer, TString, TCommandSource> 
     @Inject
     private UserService<TUser, TPlayer> userService;
 
-    public void send(TCommandSource source, String[] context, String command,
-                     BiFunction<UUID, String, CompletableFuture<TString>> function) {
+    public void execute(TCommandSource source, String[] context, String command,
+                        BiFunction<UUID, String, CompletableFuture<TString>> function) {
         if (!permissionService.hasPermission(source,
             registry.getOrDefault(OnTimeKeys.EDIT_PERMISSION))) {
             textService.builder()
