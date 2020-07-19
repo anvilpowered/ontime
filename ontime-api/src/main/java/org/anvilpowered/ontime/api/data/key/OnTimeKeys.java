@@ -38,11 +38,13 @@ public final class OnTimeKeys {
     };
 
     static {
-        Keys.registerKey(RANKS);
-        Keys.registerKey(CHECK_PERMISSION);
-        Keys.registerKey(CHECK_EXTENDED_PERMISSION);
-        Keys.registerKey(EDIT_PERMISSION);
-        Keys.registerKey(IMPORT_PERMISSION);
+        Keys.startRegistration("ontime")
+            .register(RANKS)
+            .register(CHECK_PERMISSION)
+            .register(CHECK_EXTENDED_PERMISSION)
+            .register(EDIT_PERMISSION)
+            .register(IMPORT_PERMISSION)
+        ;
     }
 
     private OnTimeKeys() {
