@@ -1,9 +1,24 @@
+plugins {
+    id 'io.codearte.nexus-staging' version '0.21.2'
+}
+
+ext.apiVersion = "0.2-SNAPSHOT"
+
 allprojects {
     group = "org.anvilpowered"
     version = "0.2.0-SNAPSHOT"
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 }
+
+String _name = project.hasProperty("name") ? name : ""
+String _username = project.hasProperty("username") ? username : ""
+String _password = project.hasProperty("password") ? password : ""
+String _keyId = project.hasProperty("keyId") ? keyId : ""
+String _ringFile = project.hasProperty("ringFile") ? ringFile : ""
+
 subprojects {
-    apply plugin: 'java'
     sourceCompatibility = 1.8
     repositories {
         mavenCentral()
@@ -12,9 +27,81 @@ subprojects {
         maven { url 'https://jetbrains.bintray.com/xodus' }
     }
     dependencies {
-        implementation 'org.anvilpowered:anvil-api:0.2'
+        api 'org.anvilpowered:anvil-api:0.2'
     }
     if (project.hasProperty("buildNumber") && version.contains("-SNAPSHOT")) {
         version = version.replace("-SNAPSHOT", "-RC${buildNumber}")
     }
+    nexusStaging {
+        packageGroup = 'org.anvilpowered'
+        username = _username
+        password = _password
+    }
+
+    if (project.hasProperty("sign")) {
+        ext.'signing.keyId' = _keyId
+        ext.'signing.password' = _password
+        ext.'signing.secretKeyRingFile' = _ringFile
+        signing {
+            sign publishing.publications
+            sign configurations.archives
+        }
+    }
 }
+
+
+project(':ontime-api') {
+    java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+    afterEvaluate {
+        publishing {
+            repositories {
+                maven {
+                    credentials {
+                        username _username
+                        password _password
+                    }
+                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+                    url version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+                }
+            }
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+
+                    pom {
+                        name = 'OnTime'
+                        description = 'A minecraft playtime tracker'
+                        url = 'https://github.com/AnvilPowered/OnTime'
+
+                        scm {
+                            url = 'https://github.com/AnvilPowered/OnTime'
+                            connection = 'scm:git:https://github.com/AnvilPowered/OnTime.git'
+                            developerConnection = 'scm:git:https://github.com/AnvilPowered/OnTime.git'
+                        }
+
+                        licenses {
+                            license {
+                                name = 'GNU LESSER GENERAL PUBLIC LICENSE Version 3'
+                                url = 'https://www.gnu.org/licenses/lgpl-3.0.html'
+                                distribution = 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = _username
+                                name = _name
+                                organization = 'AnvilPowered'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
