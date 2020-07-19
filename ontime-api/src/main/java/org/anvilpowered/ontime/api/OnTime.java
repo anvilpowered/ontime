@@ -18,6 +18,7 @@
 
 package org.anvilpowered.ontime.api;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import org.anvilpowered.anvil.api.Environment;
@@ -28,12 +29,17 @@ import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 public class OnTime extends BasePlugin {
 
     protected static Environment environment;
+    private static final String NOT_LOADED = "OnTime has not been loaded yet!";
 
     OnTime(String name, Injector injector, Module module) {
         super(name, injector, module, SyncTaskService.class);
     }
 
+    public static Environment getEnvironment() {
+        return Preconditions.checkNotNull(environment, NOT_LOADED);
+    }
+
     public static Registry getRegistry() {
-        return environment.getInjector().getInstance(Registry.class);
+        return getEnvironment().getInjector().getInstance(Registry.class);
     }
 }

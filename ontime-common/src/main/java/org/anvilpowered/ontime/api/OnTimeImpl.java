@@ -39,8 +39,4 @@ public class OnTimeImpl extends OnTime {
         super.whenReady(environment);
         OnTime.environment = environment;
     }
-
-    public Environment getEnvironment() {
-        return environment;
-    }
 }
