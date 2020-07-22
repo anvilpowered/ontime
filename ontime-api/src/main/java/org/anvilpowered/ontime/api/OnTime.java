@@ -24,6 +24,7 @@ import com.google.inject.Module;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.base.plugin.BasePlugin;
+import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.tasks.SyncTaskService;
 
 public class OnTime extends BasePlugin {
@@ -41,5 +42,9 @@ public class OnTime extends BasePlugin {
 
     public static Registry getRegistry() {
         return getEnvironment().getInjector().getInstance(Registry.class);
+    }
+
+    public static <TString> MemberManager<TString> getMemberManager() {
+        return getEnvironment().getInstance(MemberManager.class.getCanonicalName());
     }
 }
