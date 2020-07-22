@@ -1,5 +1,5 @@
 name: OnTime
-version: "0.2.0-SNAPSHOT"
+version: "0.2.0"
 main: org.anvilpowered.ontime.spigot.OnTimeSpigot
 api-version: 1.15
 authors: [Cableguy20, STG_Allen]
