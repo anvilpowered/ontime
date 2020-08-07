@@ -16,25 +16,31 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.api.member.repository;
+package org.anvilpowered.ontime.api.member;
 
+import org.anvilpowered.anvil.api.datastore.Repository;
 import org.anvilpowered.ontime.api.model.member.Member;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface MongoMemberRepository extends MemberRepository<ObjectId, Datastore> {
+public interface MemberRepository<
+    TKey,
+    TDataStore>
+    extends Repository<TKey, Member<TKey>, TDataStore> {
 
-    CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
+    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID, long time);
 
-    CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, long time);
+    CompletableFuture<Optional<Member<TKey>>> getOneOrGenerateForUser(UUID userUUID);
 
-    CompletableFuture<Boolean> setBonusTime(Query<Member<ObjectId>> query, long time);
+    CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
-    CompletableFuture<Boolean> setTotalTime(Query<Member<ObjectId>> query, long time);
+    CompletableFuture<Boolean> addMinuteForUser(UUID userUUID);
 
-    Query<Member<ObjectId>> asQuery(UUID userUUID);
+    CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, long time);
+
+    CompletableFuture<Boolean> setBonusTimeForUser(UUID userUUID, long time);
+
+    CompletableFuture<Boolean> setTotalTimeForUser(UUID userUUID, long time);
 }

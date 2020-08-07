@@ -23,10 +23,10 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
-import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.task.CommonSyncTaskService;
 
 import java.util.Set;

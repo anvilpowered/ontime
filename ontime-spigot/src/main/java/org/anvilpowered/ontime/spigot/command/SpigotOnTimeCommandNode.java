@@ -20,7 +20,7 @@ package org.anvilpowered.ontime.spigot.command;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.common.command.CommonOnTimeCommandNode;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.spigot.OnTimeSpigot;

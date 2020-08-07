@@ -19,13 +19,13 @@
 package org.anvilpowered.ontime.common.command;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.data.registry.Registry;
 import org.anvilpowered.anvil.api.plugin.PluginInfo;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.PermissionService;
 import org.anvilpowered.anvil.api.util.TextService;
 import org.anvilpowered.anvil.api.util.UserService;
-import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
 import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 
 import java.util.Optional;
 import java.util.UUID;

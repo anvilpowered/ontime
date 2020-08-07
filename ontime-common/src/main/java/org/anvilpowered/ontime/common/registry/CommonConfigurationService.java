@@ -16,15 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.data.config;
+package org.anvilpowered.ontime.common.registry;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.anvilpowered.anvil.api.data.key.Keys;
-import org.anvilpowered.anvil.base.data.config.BaseConfigurationService;
-import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
+import org.anvilpowered.anvil.api.registry.Keys;
+import org.anvilpowered.anvil.base.registry.BaseConfigurationService;
+import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 
 import java.util.HashMap;

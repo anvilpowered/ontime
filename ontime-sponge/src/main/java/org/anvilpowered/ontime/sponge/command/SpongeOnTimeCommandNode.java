@@ -20,8 +20,8 @@ package org.anvilpowered.ontime.sponge.command;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
+import org.anvilpowered.anvil.api.registry.Registry;
+import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.command.CommonOnTimeCommandNode;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.spongepowered.api.Sponge;

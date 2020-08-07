@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.data.registry;
+package org.anvilpowered.ontime.common.registry;
 
 import com.google.inject.Singleton;
-import org.anvilpowered.anvil.api.data.key.Keys;
-import org.anvilpowered.anvil.base.data.registry.BaseExtendedRegistry;
+import org.anvilpowered.anvil.api.registry.Keys;
+import org.anvilpowered.anvil.base.registry.BaseExtendedRegistry;
 
 @Singleton
 public class CommonRegistry extends BaseExtendedRegistry {

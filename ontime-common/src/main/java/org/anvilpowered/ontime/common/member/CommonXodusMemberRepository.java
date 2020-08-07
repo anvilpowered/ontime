@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.member.repository;
+package org.anvilpowered.ontime.common.member;
 
 import com.google.inject.Inject;
 import jetbrains.exodus.entitystore.Entity;
@@ -25,7 +25,7 @@ import jetbrains.exodus.entitystore.PersistentEntityStore;
 import jetbrains.exodus.entitystore.StoreTransaction;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseXodusRepository;
-import org.anvilpowered.ontime.api.member.repository.XodusMemberRepository;
+import org.anvilpowered.ontime.api.member.XodusMemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
 
 import java.util.Optional;

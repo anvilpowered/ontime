@@ -20,7 +20,7 @@ package org.anvilpowered.ontime.spigot.task;
 
 import com.google.inject.Inject;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.luckperms.task.LuckPermsSyncTaskService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

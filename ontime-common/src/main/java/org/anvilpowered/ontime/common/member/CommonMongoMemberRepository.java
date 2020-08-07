@@ -16,12 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.common.member.repository;
+package org.anvilpowered.ontime.common.member;
 
 import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
-import org.anvilpowered.ontime.api.member.repository.MongoMemberRepository;
+import org.anvilpowered.ontime.api.member.MongoMemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;

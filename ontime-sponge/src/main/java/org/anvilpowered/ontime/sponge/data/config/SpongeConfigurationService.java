@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.anvilpowered.ontime.common.data.config.CommonConfigurationService;
+import org.anvilpowered.ontime.common.registry.CommonConfigurationService;
 import org.spongepowered.api.config.DefaultConfig;
 
 @Singleton

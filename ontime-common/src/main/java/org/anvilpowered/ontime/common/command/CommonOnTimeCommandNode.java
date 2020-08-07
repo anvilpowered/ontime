@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.common.command;
 import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.command.CommandNode;
 import org.anvilpowered.anvil.api.command.CommandService;
-import org.anvilpowered.anvil.api.data.registry.Registry;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 
 import javax.inject.Inject;

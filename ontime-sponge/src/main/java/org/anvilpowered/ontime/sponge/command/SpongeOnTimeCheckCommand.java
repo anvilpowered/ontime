@@ -19,9 +19,9 @@
 package org.anvilpowered.ontime.sponge.command;
 
 import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.data.registry.Registry;
-import org.anvilpowered.ontime.api.data.key.OnTimeKeys;
+import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.api.member.MemberManager;
+import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.command.CommonOnTimeCheckCommand;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

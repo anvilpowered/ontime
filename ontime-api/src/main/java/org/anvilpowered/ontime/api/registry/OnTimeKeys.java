@@ -16,10 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.api.data.key;
+package org.anvilpowered.ontime.api.registry;
 
-import org.anvilpowered.anvil.api.data.key.Key;
-import org.anvilpowered.anvil.api.data.key.Keys;
+import org.anvilpowered.anvil.api.registry.Key;
+import org.anvilpowered.anvil.api.registry.Keys;
 
 import java.util.HashMap;
 import java.util.Map;
