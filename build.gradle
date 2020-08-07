@@ -2,11 +2,11 @@ plugins {
     id 'io.codearte.nexus-staging' version '0.21.2'
 }
 
-ext.apiVersion = "0.2"
+ext.apiVersion = "0.3-SNAPSHOT"
 
 allprojects {
     group = "org.anvilpowered"
-    version = "0.2.0"
+    version = "0.3.0-SNAPSHOT"
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
@@ -27,7 +27,7 @@ subprojects {
         maven { url 'https://jetbrains.bintray.com/xodus' }
     }
     dependencies {
-        api 'org.anvilpowered:anvil-api:0.2'
+        api 'org.anvilpowered:anvil-api:0.3-SNAPSHOT'
     }
     if (project.hasProperty("buildNumber") && version.contains("-SNAPSHOT")) {
         version = version.replace("-SNAPSHOT", "-RC${buildNumber}")
