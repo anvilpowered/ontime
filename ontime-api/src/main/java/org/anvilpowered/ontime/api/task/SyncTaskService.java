@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.api.tasks;
+package org.anvilpowered.ontime.api.task;
 
 public interface SyncTaskService {
 

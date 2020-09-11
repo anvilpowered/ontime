@@ -25,7 +25,7 @@ import org.anvilpowered.anvil.api.Environment;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.base.plugin.BasePlugin;
 import org.anvilpowered.ontime.api.member.MemberManager;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import org.anvilpowered.ontime.api.task.SyncTaskService;
 
 public class OnTime extends BasePlugin {
 

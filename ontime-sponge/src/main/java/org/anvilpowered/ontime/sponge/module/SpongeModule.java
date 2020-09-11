@@ -20,7 +20,7 @@ package org.anvilpowered.ontime.sponge.module;
 
 import com.google.inject.TypeLiteral;
 import org.anvilpowered.anvil.api.command.CommandNode;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import org.anvilpowered.ontime.api.task.SyncTaskService;
 import org.anvilpowered.ontime.common.module.CommonModule;
 import org.anvilpowered.ontime.common.registry.CommonConfigurationService;
 import org.anvilpowered.ontime.sponge.command.SpongeOnTimeCommandNode;

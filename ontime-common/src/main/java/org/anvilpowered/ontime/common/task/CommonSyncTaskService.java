@@ -19,7 +19,7 @@
 package org.anvilpowered.ontime.common.task;
 
 import org.anvilpowered.anvil.api.registry.Registry;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import org.anvilpowered.ontime.api.task.SyncTaskService;
 
 public abstract class CommonSyncTaskService implements SyncTaskService {
 

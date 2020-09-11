@@ -26,7 +26,7 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.anvilpowered.anvil.api.command.CommandNode;
-import org.anvilpowered.ontime.api.tasks.SyncTaskService;
+import org.anvilpowered.ontime.api.task.SyncTaskService;
 import org.anvilpowered.ontime.common.module.CommonModule;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.velocity.command.VelocityOnTimeCommandNode;
