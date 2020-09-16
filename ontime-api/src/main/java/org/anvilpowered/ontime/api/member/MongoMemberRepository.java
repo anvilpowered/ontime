@@ -28,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface MongoMemberRepository extends MemberRepository<ObjectId, Datastore> {
 
-    CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query);
+    CompletableFuture<Boolean> addTime(Query<Member<ObjectId>> query, long time);
 
     CompletableFuture<Boolean> addBonusTime(Query<Member<ObjectId>> query, long time);
 

@@ -18,10 +18,17 @@
 
 package org.anvilpowered.ontime.common.task;
 
+import com.google.inject.Inject;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.api.task.SyncTaskService;
+import org.slf4j.Logger;
 
 public abstract class CommonSyncTaskService implements SyncTaskService {
+
+    protected static final String MULTIPLIER_META_KEY = "ontime-multiplier";
+
+    @Inject
+    protected Logger logger;
 
     protected Registry registry;
 

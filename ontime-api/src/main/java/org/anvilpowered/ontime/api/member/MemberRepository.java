@@ -36,7 +36,7 @@ public interface MemberRepository<
 
     CompletableFuture<Optional<Member<TKey>>> getOneForUser(UUID userUUID);
 
-    CompletableFuture<Boolean> addMinuteForUser(UUID userUUID);
+    CompletableFuture<Boolean> addTimeForUser(UUID userUUID, long time);
 
     CompletableFuture<Boolean> addBonusTimeForUser(UUID userUUID, long time);
 

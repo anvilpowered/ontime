@@ -26,6 +26,7 @@ import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.task.CommonSyncTaskService;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
@@ -34,6 +35,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -72,8 +74,21 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
         return () -> {
             Collection<Subject> allGroups = permissionService.getGroupSubjects().getLoadedSubjects();
             Set<String> configRanks = registry.getOrDefault(OnTimeKeys.RANKS).keySet();
-            Sponge.getServer().getOnlinePlayers().forEach(player ->
-                memberManager.sync(player.getUniqueId()).thenAcceptAsync(optionalRank -> {
+            for (Player player : Sponge.getServer().getOnlinePlayers()) {
+                long time = 60;
+                for (Map<String, String> options : player.getSubjectData().getAllOptions().values()) {
+                    String multiplier = options.get(MULTIPLIER_META_KEY);
+                    if (multiplier == null) {
+                        continue;
+                    }
+                    try {
+                        time *= Double.parseDouble(multiplier);
+                    } catch (NumberFormatException e) {
+                        logger.error("An error occurred parsing the time multiplier for " + player.getName(), e);
+                    }
+                }
+
+                memberManager.sync(player.getUniqueId(), time).thenAcceptAsync(optionalRank -> {
                     if (!optionalRank.isPresent()) {
                         return;
                     }
@@ -89,8 +104,8 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
                             player.getSubjectData().removeParent(Collections.emptySet(), subject.asSubjectReference());
                         }
                     }
-                })
-            );
+                });
+            }
         };
     }
 }

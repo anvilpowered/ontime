@@ -49,8 +49,8 @@ public class CommonXodusMemberRepository
     }
 
     @Override
-    public CompletableFuture<Boolean> addMinuteForUser(UUID userUUID) {
-        return addMinute(asQuery(userUUID));
+    public CompletableFuture<Boolean> addTimeForUser(UUID userUUID, long time) {
+        return addTime(asQuery(userUUID), time);
     }
 
     @Override
@@ -74,12 +74,12 @@ public class CommonXodusMemberRepository
     }
 
     @Override
-    public CompletableFuture<Boolean> addMinute(
-        Function<? super StoreTransaction, ? extends Iterable<Entity>> query) {
+    public CompletableFuture<Boolean> addTime(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query, long time) {
         return update(query, e -> {
             Comparable<?> playTime = e.getProperty("playTime");
             if (playTime instanceof Long) {
-                e.setProperty("playTime", ((Long) playTime) + 60);
+                e.setProperty("playTime", ((Long) playTime) + time);
             }
         });
     }

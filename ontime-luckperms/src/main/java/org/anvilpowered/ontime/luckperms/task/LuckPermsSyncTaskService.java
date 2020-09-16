@@ -23,12 +23,15 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.MetaNode;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.anvil.api.util.UserService;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.registry.OnTimeKeys;
 import org.anvilpowered.ontime.common.task.CommonSyncTaskService;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -54,15 +57,30 @@ public abstract class LuckPermsSyncTaskService<TUser, TPlayer, TString>
             Set<String> configRanks = registry.getOrDefault(OnTimeKeys.RANKS).keySet();
             for (TPlayer player : userService.getOnlinePlayers()) {
                 UUID userUUID = userService.getUUID((TUser) player);
-                memberManager.sync(userUUID).thenAcceptAsync(optionalRank -> {
+                User user = luckPerms.getUserManager().getUser(userUUID);
+                if (user == null) {
+                    continue;
+                }
+                Optional<String> multiplier = user.getNodes().stream()
+                    .filter(NodeType.META::matches)
+                    .map(NodeType.META::cast)
+                    .filter(node -> MULTIPLIER_META_KEY.equals(node.getMetaKey()))
+                    .findAny()
+                    .map(MetaNode::getMetaValue);
+                long time = 60;
+                if (multiplier.isPresent()) {
+                    try {
+                        time *= Double.parseDouble(multiplier.get());
+                    } catch (NumberFormatException e) {
+                        logger.error("An error occurred parsing the time multiplier for "
+                            + userService.getUserName((TUser) player), e);
+                    }
+                }
+                memberManager.sync(userUUID, time).thenAcceptAsync(optionalRank -> {
                     if (!optionalRank.isPresent()) {
                         return;
                     }
                     String rank = optionalRank.get();
-                    User user = luckPerms.getUserManager().getUser(userUUID);
-                    if (user == null) {
-                        return;
-                    }
                     user.data().add(Node.builder("group." + rank).build());
                     for (String configRank : configRanks) {
                         if (!rank.equals(configRank)) {

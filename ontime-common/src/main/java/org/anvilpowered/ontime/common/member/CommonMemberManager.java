@@ -126,8 +126,8 @@ public class CommonMemberManager<
     }
 
     @Override
-    public CompletableFuture<Optional<String>> sync(UUID userUUID) {
-        return getPrimaryComponent().addMinuteForUser(userUUID).thenApplyAsync(result -> {
+    public CompletableFuture<Optional<String>> sync(UUID userUUID, long time) {
+        return getPrimaryComponent().addTimeForUser(userUUID, time).thenApplyAsync(result -> {
             if (!result) {
                 return Optional.empty();
             }
@@ -150,6 +150,11 @@ public class CommonMemberManager<
                 return Optional.ofNullable(highestRank[0]);
             }).join();
         });
+    }
+
+    @Override
+    public CompletableFuture<Optional<String>> sync(UUID userUUID) {
+        return sync(userUUID, 60);
     }
 
     @Override

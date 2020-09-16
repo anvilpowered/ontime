@@ -31,8 +31,8 @@ public interface XodusMemberRepository extends MemberRepository<EntityId, Persis
 
     Function<? super StoreTransaction, ? extends Iterable<Entity>> asQuery(UUID userUUID);
 
-    CompletableFuture<Boolean> addMinute(
-        Function<? super StoreTransaction, ? extends Iterable<Entity>> query);
+    CompletableFuture<Boolean> addTime(
+        Function<? super StoreTransaction, ? extends Iterable<Entity>> query, long time);
 
     CompletableFuture<Boolean> addBonusTime(
         Function<? super StoreTransaction, ? extends Iterable<Entity>> query, long time);

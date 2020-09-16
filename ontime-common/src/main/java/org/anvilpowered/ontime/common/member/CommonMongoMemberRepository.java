@@ -47,8 +47,8 @@ public class CommonMongoMemberRepository
     }
 
     @Override
-    public CompletableFuture<Boolean> addMinute(Query<Member<ObjectId>> query) {
-        return update(query, inc("playTime", 60));
+    public CompletableFuture<Boolean> addTime(Query<Member<ObjectId>> query, long time) {
+        return update(query, inc("playTime", time));
     }
 
     @Override
@@ -76,8 +76,8 @@ public class CommonMongoMemberRepository
     }
 
     @Override
-    public CompletableFuture<Boolean> addMinuteForUser(UUID userUUID) {
-        return addMinute(asQuery(userUUID));
+    public CompletableFuture<Boolean> addTimeForUser(UUID userUUID, long time) {
+        return addTime(asQuery(userUUID), time);
     }
 
     @Override
