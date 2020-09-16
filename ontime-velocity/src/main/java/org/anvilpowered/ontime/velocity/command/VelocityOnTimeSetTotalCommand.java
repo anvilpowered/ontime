@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.velocity.command;
 import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-import net.kyori.text.TextComponent;
+import net.kyori.adventure.text.TextComponent;
 import org.anvilpowered.ontime.common.command.CommonOnTimeSetTotalCommand;
 
 public class VelocityOnTimeSetTotalCommand

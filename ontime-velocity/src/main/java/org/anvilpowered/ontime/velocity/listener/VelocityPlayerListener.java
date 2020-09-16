@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.velocity.listener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.LoginEvent;
-import net.kyori.text.TextComponent;
+import net.kyori.adventure.text.TextComponent;
 import org.anvilpowered.ontime.api.member.MemberManager;
 
 public class VelocityPlayerListener {

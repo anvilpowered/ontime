@@ -21,7 +21,7 @@ package org.anvilpowered.ontime.velocity.module;
 import com.google.inject.TypeLiteral;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-import net.kyori.text.TextComponent;
+import net.kyori.adventure.text.TextComponent;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
