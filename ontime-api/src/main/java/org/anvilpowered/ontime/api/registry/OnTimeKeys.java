@@ -18,24 +18,45 @@
 
 package org.anvilpowered.ontime.api.registry;
 
+import com.google.common.reflect.TypeToken;
 import org.anvilpowered.anvil.api.registry.Key;
 import org.anvilpowered.anvil.api.registry.Keys;
+import org.anvilpowered.anvil.api.registry.TypeTokens;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class OnTimeKeys {
 
-    public static final Key<Map<String, Integer>> RANKS = new Key<Map<String, Integer>>("RANKS", new HashMap<>()) {
+    public static final TypeToken<Map<String, Integer>> MAP_STRING_INT = new TypeToken<Map<String, Integer>>() {
     };
-    public static final Key<String> CHECK_PERMISSION = new Key<String>("CHECK_PERMISSION", "ontime.user.check") {
-    };
-    public static final Key<String> CHECK_EXTENDED_PERMISSION = new Key<String>("CHECK_EXTENDED_PERMISSION", "ontime.admin.check") {
-    };
-    public static final Key<String> EDIT_PERMISSION = new Key<String>("EDIT_PERMISSION", "ontime.admin.edit") {
-    };
-    public static final Key<String> IMPORT_PERMISSION = new Key<String>("IMPORT_PERMISSION", "ontime.admin.import") {
-    };
+
+    public static final Key<Map<String, Integer>> RANKS =
+        Key.builder(MAP_STRING_INT)
+            .name("RANKS")
+            .fallback(new HashMap<>())
+            .build();
+    public static final Key<String> CHECK_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("CHECK_PERMISSION")
+            .fallback("ontime.user.check")
+            .build();
+    public static final Key<String> CHECK_EXTENDED_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("CHECK_EXTENDED_PERMISSION")
+            .fallback("ontime.admin.check")
+            .build();
+    public static final Key<String> EDIT_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("EDIT_PERMISSION")
+            .fallback("ontime.admin.edit")
+            .build();
+    public static final Key<String> IMPORT_PERMISSION =
+        Key.builder(TypeTokens.STRING)
+            .name("IMPORT_PERMISSION")
+            .fallback("ontime.admin.import")
+            .build();
 
     static {
         Keys.startRegistration("ontime")
