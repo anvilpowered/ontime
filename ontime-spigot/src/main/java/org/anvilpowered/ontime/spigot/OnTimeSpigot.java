@@ -26,6 +26,7 @@ import org.anvilpowered.ontime.api.OnTimeImpl;
 import org.anvilpowered.ontime.spigot.listener.SpigotPlayerListener;
 import org.anvilpowered.ontime.spigot.module.SpigotModule;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class OnTimeSpigot extends JavaPlugin {
@@ -34,6 +35,7 @@ public class OnTimeSpigot extends JavaPlugin {
         AbstractModule module = new AbstractModule() {
             @Override
             protected void configure() {
+                bind(Plugin.class).toInstance(OnTimeSpigot.this);
                 bind(JavaPlugin.class).toInstance(OnTimeSpigot.this);
                 bind(OnTimeSpigot.class).toInstance(OnTimeSpigot.this);
             }

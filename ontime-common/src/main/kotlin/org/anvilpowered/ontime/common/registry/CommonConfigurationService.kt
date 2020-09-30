@@ -35,12 +35,32 @@ open class CommonConfigurationService @Inject constructor(
         withMongoDB()
         setDefault(Keys.DATA_DIRECTORY, OnTimePluginInfo.id)
         setDefault(Keys.MONGODB_DBNAME, OnTimePluginInfo.id)
+        val defaultCommandMap: MutableMap<String, List<String>> = HashMap()
+        defaultCommandMap[".*"] = listOf(
+            "say %player% has advanced to %rank% after playing for %time%",
+            "give %player% iron_ingot 1"
+        )
+        defaultCommandMap["trusted"] = listOf(
+            "say %player% is the best"
+        )
+        setDefault(OnTimeKeys.COMMANDS, defaultCommandMap)
         val defaultRankMap: MutableMap<String, Int> = HashMap()
         defaultRankMap["noob"] = 0
         defaultRankMap["player"] = 600
         defaultRankMap["trusted"] = 1800
         setDefault(OnTimeKeys.RANKS, defaultRankMap)
+        setName(OnTimeKeys.COMMANDS, "commands")
         setName(OnTimeKeys.RANKS, "ranks")
+        setDescription(OnTimeKeys.COMMANDS, """
+Commands to run after a player has received a rank. The nodes are compiled as a regex and compared with the
+new rank name. The commands for every matching regex will run (not just the commands for the first regex that matches).
+Available placeholders:
+ - %player% : The player's username
+ - %rank% : The player's new rank
+ - %time% : The time requirement of the player's new rank
+Note: ".*" is the regex that matches everything (commands under this will run for every rank up).
+For more information on regex, visit https://regexr.com/
+""")
         setDescription(OnTimeKeys.RANKS, "\nPlayer ranks and their time requirement in seconds.")
     }
 }

@@ -20,9 +20,9 @@ package org.anvilpowered.ontime.api.member;
 
 import org.anvilpowered.anvil.api.datastore.Manager;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 public interface MemberManager<TString> extends Manager<MemberRepository<?, ?>> {
 
@@ -50,9 +50,9 @@ public interface MemberManager<TString> extends Manager<MemberRepository<?, ?>> 
 
     CompletableFuture<TString> infoExtended(UUID userUUID);
 
-    CompletableFuture<Optional<String>> sync(UUID userUUID, long time);
+    CompletableFuture<Void> sync(UUID userUUID, long time, Predicate<String> rankUp);
 
-    CompletableFuture<Optional<String>> sync(UUID userUUID);
+    CompletableFuture<Void> sync(UUID userUUID, Predicate<String> rankUp);
 
     CompletableFuture<TString> addBonusTime(UUID userUUID, long time);
 

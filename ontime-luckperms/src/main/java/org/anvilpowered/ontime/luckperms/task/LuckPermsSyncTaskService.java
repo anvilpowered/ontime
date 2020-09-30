@@ -21,6 +21,7 @@ package org.anvilpowered.ontime.luckperms.task;
 import com.google.inject.Inject;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.data.DataMutateResult;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -76,18 +77,15 @@ public abstract class LuckPermsSyncTaskService<TUser, TPlayer, TString>
                             + userService.getUserName((TUser) player), e);
                     }
                 }
-                memberManager.sync(userUUID, time).thenAcceptAsync(optionalRank -> {
-                    if (!optionalRank.isPresent()) {
-                        return;
-                    }
-                    String rank = optionalRank.get();
-                    user.data().add(Node.builder("group." + rank).build());
+                memberManager.sync(userUUID, time, rank -> {
                     for (String configRank : configRanks) {
                         if (!rank.equals(configRank)) {
                             user.data().remove(Node.builder("group." + configRank).build());
                         }
                     }
+                    DataMutateResult result = user.data().add(Node.builder("group." + rank).build());
                     luckPerms.getUserManager().saveUser(user);
+                    return result.wasSuccessful();
                 });
             }
         };

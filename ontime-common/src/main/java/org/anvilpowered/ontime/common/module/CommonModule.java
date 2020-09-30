@@ -32,6 +32,7 @@ import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.MemberRepository;
 import org.anvilpowered.ontime.api.util.DataImportService;
+import org.anvilpowered.ontime.api.util.RankCommandService;
 import org.anvilpowered.ontime.common.member.CommonMemberManager;
 import org.anvilpowered.ontime.common.member.CommonMongoMemberRepository;
 import org.anvilpowered.ontime.common.member.CommonXodusMemberRepository;
@@ -39,6 +40,7 @@ import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
 import org.anvilpowered.ontime.common.registry.CommonConfigurationService;
 import org.anvilpowered.ontime.common.registry.CommonRegistry;
 import org.anvilpowered.ontime.common.util.CommonDataImportService;
+import org.anvilpowered.ontime.common.util.CommonRankCommandService;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
@@ -100,6 +102,12 @@ public class CommonModule<
             new TypeToken<DataImportService>(getClass()) {
             },
             new TypeToken<CommonDataImportService<TString>>(getClass()) {
+            }
+        );
+
+        be.bind(
+            TypeToken.of(RankCommandService.class),
+            new TypeToken<CommonRankCommandService<TUser, TPlayer>>(getClass()) {
             }
         );
 

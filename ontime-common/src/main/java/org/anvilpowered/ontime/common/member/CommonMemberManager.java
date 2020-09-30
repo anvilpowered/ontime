@@ -29,6 +29,7 @@ import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.MemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
 import org.anvilpowered.ontime.api.registry.OnTimeKeys;
+import org.anvilpowered.ontime.api.util.RankCommandService;
 
 import java.time.Duration;
 import java.util.Map;
@@ -36,6 +37,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 public class CommonMemberManager<
     TUser,
@@ -47,6 +49,9 @@ public class CommonMemberManager<
 
     @Inject
     protected PluginInfo<TString> pluginInfo;
+
+    @Inject
+    protected RankCommandService rankCommandService;
 
     @Inject
     protected TextService<TString, TCommandSource> textService;
@@ -126,15 +131,15 @@ public class CommonMemberManager<
     }
 
     @Override
-    public CompletableFuture<Optional<String>> sync(UUID userUUID, long time) {
-        return getPrimaryComponent().addTimeForUser(userUUID, time).thenApplyAsync(result -> {
+    public CompletableFuture<Void> sync(UUID userUUID, long time, Predicate<String> rankUp) {
+        return getPrimaryComponent().addTimeForUser(userUUID, time).thenAcceptAsync(result -> {
             if (!result) {
-                return Optional.empty();
+                return;
             }
 
-            return getPrimaryComponent().getOneForUser(userUUID).thenApplyAsync(optionalMember -> {
+            getPrimaryComponent().getOneForUser(userUUID).thenAcceptAsync(optionalMember -> {
                 if (!optionalMember.isPresent()) {
-                    return Optional.<String>empty();
+                    return;
                 }
 
                 long totalTime = optionalMember.get().getPlayTime()
@@ -147,14 +152,16 @@ public class CommonMemberManager<
                         highestRank[0] = k;
                     }
                 });
-                return Optional.ofNullable(highestRank[0]);
+                if (rankUp.test(highestRank[0])) {
+                    rankCommandService.runCommands(userUUID, highestRank[0], highestPlayTime[0]);
+                }
             }).join();
         });
     }
 
     @Override
-    public CompletableFuture<Optional<String>> sync(UUID userUUID) {
-        return sync(userUUID, 60);
+    public CompletableFuture<Void> sync(UUID userUUID, Predicate<String> rankUp) {
+        return sync(userUUID, 60, rankUp);
     }
 
     @Override

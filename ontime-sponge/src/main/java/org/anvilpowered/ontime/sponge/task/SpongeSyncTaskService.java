@@ -18,6 +18,7 @@
 
 package org.anvilpowered.ontime.sponge.task;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.anvilpowered.anvil.api.Environment;
@@ -30,11 +31,12 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
+import org.spongepowered.api.service.permission.SubjectReference;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -88,22 +90,24 @@ public class SpongeSyncTaskService extends CommonSyncTaskService {
                     }
                 }
 
-                memberManager.sync(player.getUniqueId(), time).thenAcceptAsync(optionalRank -> {
-                    if (!optionalRank.isPresent()) {
-                        return;
-                    }
-                    String rank = optionalRank.get();
+                memberManager.sync(player.getUniqueId(), time, rank -> {
                     boolean hasNewRank = false;
+                    boolean matchedRank = false;
                     for (Subject subject : allGroups) {
                         if (subject.getIdentifier().equals(rank)) {
-                            player.getSubjectData().addParent(Collections.emptySet(), subject.asSubjectReference());
-                            hasNewRank = true;
-                        } else if (hasNewRank && player.getParents().size() == 1) {
+                            List<SubjectReference> parents = player.getSubjectData().getParents(ImmutableSet.of());
+                            if (!parents.contains(subject.asSubjectReference())) {
+                                player.getSubjectData().addParent(ImmutableSet.of(), subject.asSubjectReference());
+                                hasNewRank = true;
+                            }
+                            matchedRank = true;
+                        } else if (matchedRank && player.getParents().size() == 1) {
                             break;
                         } else if (configRanks.contains(subject.getIdentifier())) {
-                            player.getSubjectData().removeParent(Collections.emptySet(), subject.asSubjectReference());
+                            player.getSubjectData().removeParent(ImmutableSet.of(), subject.asSubjectReference());
                         }
                     }
+                    return hasNewRank;
                 });
             }
         };

@@ -24,14 +24,22 @@ import org.anvilpowered.anvil.api.registry.Keys;
 import org.anvilpowered.anvil.api.registry.TypeTokens;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class OnTimeKeys {
 
+    public static final TypeToken<Map<String, List<String>>> MAP_STRING_LIST_STRING = new TypeToken<Map<String, List<String>>>() {
+    };
     public static final TypeToken<Map<String, Integer>> MAP_STRING_INT = new TypeToken<Map<String, Integer>>() {
     };
 
+    public static final Key<Map<String, List<String>>> COMMANDS =
+        Key.builder(MAP_STRING_LIST_STRING)
+            .name("COMMANDS")
+            .fallback(new HashMap<>())
+            .build();
     public static final Key<Map<String, Integer>> RANKS =
         Key.builder(MAP_STRING_INT)
             .name("RANKS")
@@ -60,6 +68,7 @@ public final class OnTimeKeys {
 
     static {
         Keys.startRegistration("ontime")
+            .register(COMMANDS)
             .register(RANKS)
             .register(CHECK_PERMISSION)
             .register(CHECK_EXTENDED_PERMISSION)
