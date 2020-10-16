@@ -18,7 +18,6 @@
 
 package org.anvilpowered.ontime.common.member;
 
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseRepository;
 import org.anvilpowered.ontime.api.member.MemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
@@ -32,10 +31,6 @@ public abstract class CommonMemberRepository<
     TDataStore>
     extends BaseRepository<TKey, Member<TKey>, TDataStore>
     implements MemberRepository<TKey, TDataStore> {
-
-    protected CommonMemberRepository(DataStoreContext<TKey, TDataStore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     @SuppressWarnings("unchecked")

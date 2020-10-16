@@ -18,8 +18,6 @@
 
 package org.anvilpowered.ontime.common.member;
 
-import com.google.inject.Inject;
-import org.anvilpowered.anvil.api.datastore.DataStoreContext;
 import org.anvilpowered.anvil.base.datastore.BaseMongoRepository;
 import org.anvilpowered.ontime.api.member.MongoMemberRepository;
 import org.anvilpowered.ontime.api.model.member.Member;
@@ -35,11 +33,6 @@ public class CommonMongoMemberRepository
     extends CommonMemberRepository<ObjectId, Datastore>
     implements BaseMongoRepository<Member<ObjectId>>,
     MongoMemberRepository {
-
-    @Inject
-    public CommonMongoMemberRepository(DataStoreContext<ObjectId, Datastore> dataStoreContext) {
-        super(dataStoreContext);
-    }
 
     @Override
     public CompletableFuture<Optional<Member<ObjectId>>> getOneForUser(UUID userUUID) {
