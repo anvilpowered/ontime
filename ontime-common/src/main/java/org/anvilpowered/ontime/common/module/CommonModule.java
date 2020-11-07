@@ -32,12 +32,14 @@ import org.anvilpowered.anvil.api.registry.ConfigurationService;
 import org.anvilpowered.anvil.api.registry.Registry;
 import org.anvilpowered.ontime.api.member.MemberManager;
 import org.anvilpowered.ontime.api.member.MemberRepository;
+import org.anvilpowered.ontime.api.plugin.PluginMessages;
 import org.anvilpowered.ontime.api.util.DataImportService;
 import org.anvilpowered.ontime.api.util.RankCommandService;
 import org.anvilpowered.ontime.common.member.CommonMemberManager;
 import org.anvilpowered.ontime.common.member.CommonMongoMemberRepository;
 import org.anvilpowered.ontime.common.member.CommonXodusMemberRepository;
 import org.anvilpowered.ontime.common.plugin.OnTimePluginInfo;
+import org.anvilpowered.ontime.common.plugin.OnTimePluginMessages;
 import org.anvilpowered.ontime.common.registry.CommonConfigurationService;
 import org.anvilpowered.ontime.common.registry.CommonRegistry;
 import org.anvilpowered.ontime.common.util.CommonDataImportService;
@@ -56,6 +58,10 @@ public class CommonModule<
     protected void configure() {
 
         BindingExtensions be = Anvil.getBindingExtensions(binder());
+
+        be.bind(new TypeToken<PluginMessages<TString>>(getClass()) {
+        }, new TypeToken<OnTimePluginMessages<TString, TCommandSource>>(getClass()) {
+        });
 
         be.bind(
             new TypeToken<MemberRepository<?, ?>>(getClass()) {

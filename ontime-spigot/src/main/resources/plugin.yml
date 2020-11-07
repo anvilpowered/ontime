@@ -7,4 +7,4 @@ description: Playtime tracker
 depend: [Anvil, LuckPerms]
 commands:
   ontime:
-    description: OnTime root command
+    description: OnTime root org.anvilpowered.ontime.spigot.command
