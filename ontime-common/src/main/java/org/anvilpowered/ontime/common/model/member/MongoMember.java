@@ -18,10 +18,10 @@
 
 package org.anvilpowered.ontime.common.model.member;
 
+import dev.morphia.annotations.Entity;
 import org.anvilpowered.anvil.base.model.MongoDbo;
 import org.anvilpowered.ontime.api.model.member.Member;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
 
 import java.util.UUID;
 
