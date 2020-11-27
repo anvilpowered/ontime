@@ -3,11 +3,11 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "${kotlin_version}"
 }
 
-ext.apiVersion = "0.3-SNAPSHOT"
+ext.apiVersion = "0.3"
 
 allprojects {
     group = "org.anvilpowered"
-    version = "0.3.0-SNAPSHOT"
+    version = "0.3.0"
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
@@ -45,7 +45,7 @@ subprojects {
         maven { url 'https://jetbrains.bintray.com/xodus' }
     }
     dependencies {
-        api 'org.anvilpowered:anvil-api:0.3-SNAPSHOT'
+        api 'org.anvilpowered:anvil-api:0.3'
         implementation(kotlin_reflect + ":" + kotlin_version)
         implementation(kotlin_stdlib + ":" + kotlin_version)
         implementation(kotlin_stdlib8 + ":" + kotlin_version)
