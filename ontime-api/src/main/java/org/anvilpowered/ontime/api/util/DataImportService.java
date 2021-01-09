@@ -22,5 +22,7 @@ import java.nio.file.Path;
 
 public interface DataImportService {
 
-    void importData(Path dataPath);
+    void importRankUpData(Path dataPath);
+
+    void importRankUpperData(Path dataPath);
 }

@@ -59,7 +59,9 @@ class SpongeOnTimeCommandNode @Inject constructor(
         subCommands[IMPORT_ALIAS] = CommandSpec.builder()
             .description(Text.of(IMPORT_DESCRIPTION))
             .permission(registry.getOrDefault(OnTimeKeys.IMPORT_PERMISSION))
-            .arguments(GenericArguments.remainingJoinedStrings(Text.of("path")))
+            .arguments(
+                GenericArguments.string(Text.of("type")),
+                GenericArguments.remainingJoinedStrings(Text.of("path")))
             .executor(importCommand)
             .build()
         subCommands[SET_BONUS_ALIAS] = setBonusCommand

@@ -35,7 +35,7 @@ public class CommonDataImportService<TString> implements DataImportService {
     MemberManager<TString> memberManager;
 
     @Override
-    public void importData(Path dataPath) {
+    public void importRankUpData(Path dataPath) {
         try {
             ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(dataPath).build();
             CommentedConfigurationNode root = configLoader.load();
@@ -44,7 +44,6 @@ public class CommonDataImportService<TString> implements DataImportService {
 
                 String key = (String) objKey;
                 String ontime = root.getNode("playerData", key, "TimePlayed").getString();
-                String joinDate = root.getNode("playerData", key, "JoinDate").getString();
 
                 if (ontime == null) {
                     continue;
@@ -53,6 +52,28 @@ public class CommonDataImportService<TString> implements DataImportService {
                 memberManager.getPrimaryComponent().getOneOrGenerateForUser(UUID.fromString(key), Long.parseLong(ontime) * 60L);
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void importRankUpperData(Path dataPath) {
+        try {
+            ConfigurationLoader<CommentedConfigurationNode> configLoader =
+                HoconConfigurationLoader.builder().setPath(dataPath).build();
+            CommentedConfigurationNode root = configLoader.load();
+
+            for (Object objKey : root.getChildrenMap().keySet()) {
+                String key = (String) objKey;
+                String ontime = root.getNode(key, "TimePlayed").getString();
+
+                if (ontime == null) {
+                    continue;
+                }
+                // Assuming that playtime is stored in minutes
+                memberManager.getPrimaryComponent().getOneOrGenerateForUser(UUID.fromString(key), Long.parseLong(ontime) * 60L);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

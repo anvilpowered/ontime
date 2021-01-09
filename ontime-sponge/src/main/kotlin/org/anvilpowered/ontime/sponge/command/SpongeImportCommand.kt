@@ -37,16 +37,23 @@ class SpongeImportCommand : CommandExecutor {
     private lateinit var pluginInfo: PluginInfo<Text>
 
     override fun execute(source: CommandSource, context: CommandContext): CommandResult {
+        val type = context.requireOne<String>(Text.of("type"))
         val path = Paths.get(context.requireOne<String>(Text.of("path")))
         if (path.toFile().exists()) {
-            source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting Rankup import!"))
-            importService.importData(path)
+            if (type.toLowerCase() == "rankup") {
+                source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting Rankup import!"))
+                importService.importRankUpData(path)
+            }
+            if (type.toLowerCase() ==  "rankupper") {
+                source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting RankUpper import!"))
+                importService.importRankUpperData(path)
+            }
         } else {
             source.sendMessage(
                 Text.of(
                     pluginInfo.prefix, TextColors.YELLOW,
                     "Could not find the specified file.\nDid you mean:", TextColors.GOLD,
-                    "\"config/rankup/playerstats.conf\" ?"
+                    "\"config/${type}/playerstats.conf\" ?"
                 )
             )
         }
