@@ -20,6 +20,7 @@ package org.anvilpowered.ontime.sponge.command
 import com.google.inject.Inject
 import org.anvilpowered.anvil.api.plugin.PluginInfo
 import org.anvilpowered.ontime.api.util.DataImportService
+import org.spongepowered.api.command.CommandException
 import org.spongepowered.api.command.CommandResult
 import org.spongepowered.api.command.CommandSource
 import org.spongepowered.api.command.args.CommandContext
@@ -40,13 +41,20 @@ class SpongeImportCommand : CommandExecutor {
         val type = context.requireOne<String>(Text.of("type"))
         val path = Paths.get(context.requireOne<String>(Text.of("path")))
         if (path.toFile().exists()) {
-            if (type.toLowerCase() == "rankup") {
-                source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting Rankup import!"))
-                importService.importRankUpData(path)
-            }
-            if (type.toLowerCase() ==  "rankupper") {
-                source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting RankUpper import!"))
-                importService.importRankUpperData(path)
+            return when (type.toLowerCase()) {
+                "rankup" -> {
+                    source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting Rankup import!"))
+                    importService.importRankUpData(path)
+                    CommandResult.success()
+                }
+                "rankupper" -> {
+                    source.sendMessage(Text.of(pluginInfo.prefix, TextColors.GREEN, "Starting RankUpper import!"))
+                    importService.importRankUpperData(path)
+                    CommandResult.success()
+                }
+                else -> {
+                    throw CommandException(Text.of("Invalid type! Valid Types: rankup, rankupper"), true)
+                }
             }
         } else {
             source.sendMessage(
