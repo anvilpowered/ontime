@@ -24,12 +24,8 @@ rootProject.name = "ontime"
 
 sequenceOf(
     "api",
-    "app-plugin",
-    "app-plugin-core",
-    "app-plugin-sponge",
-    "app-plugin-velocity",
-    "domain",
     "core",
+    "velocity"
 ).forEach {
     val project = ":ontime-$it"
     include(project)

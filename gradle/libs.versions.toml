@@ -1,51 +1,21 @@
 [versions]
-#kmongo = "4.8.0"
-kotlin = "1.9.0"
-ktor = "2.3.0"
-log4j = "2.20.0"
+anvil = "0.4.0-SNAPSHOT"
+kotlin = "1.9.21"
 
 [libraries]
-adventure-bom = "net.kyori:adventure-bom:4.13.1"
-annotations = "org.jetbrains:annotations:24.0.0"
-exposed-bom = "org.jetbrains.exposed:exposed-bom:0.41.1"
-exposed-core = { module = "org.jetbrains.exposed:exposed-core" }
-exposed-dao = { module = "org.jetbrains.exposed:exposed-dao" }
-exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc" }
-exposed-java-time = { module = "org.jetbrains.exposed:exposed-java-time" }
-kbrig-brigadier = "org.anvilpowered:kbrig-brigadier:0.1.0-SNAPSHOT"
-kbrig-core = "org.anvilpowered:kbrig-core:0.1.0-SNAPSHOT"
-kontour = "org.sourcegrade:kontour-domain:0.1.0-SNAPSHOT"
+adventure-bom = "net.kyori:adventure-bom:4.14.0"
+anvil-core = { module = "org.anvilpowered:anvil-core", version.ref = "anvil" }
+anvil-velocity = { module = "org.anvilpowered:anvil-velocity", version.ref = "anvil" }
+arrow-core = "io.arrow-kt:arrow-core:1.2.0"
 kotest = "io.kotest:kotest-runner-junit5-jvm:5.5.4"
-kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0"
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
-kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
-ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
-ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
-ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
-ktor-server-resources = { module = "io.ktor:ktor-server-resources", version.ref = "ktor" }
-ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
-ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
-logging = "org.lighthousegames:logging:1.3.0"
-log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
-redux = "org.reduxkotlin:redux-kotlin-threadsafe:0.6.1"
-sponge = "org.spongepowered:spongeapi:8.1.0"
-velocity = "com.velocitypowered:velocity-api:3.2.0-SNAPSHOT"
-
-[bundles]
-exposed = ["exposed-core", "exposed-dao", "exposed-jdbc", "exposed-java-time"]
-ktor-client = ["ktor-client-cio", "ktor-serialization"]
-ktor-server = ["ktor-server-auth", "ktor-server-content-negotiation", "ktor-server-cors", "ktor-server-netty", "ktor-server-resources", "ktor-server-sessions", "ktor-server-status-pages"]
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
+luckperms = "net.luckperms:api:5.4"
+velocity = "com.velocitypowered:velocity-api:3.1.1"
 
 [plugins]
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktlint = "org.jlleitschuh.gradle.ktlint:11.3.1"
-shadow = "com.github.johnrengelman.shadow:8.1.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:11.6.1"
+shadow = "com.github.johnrengelman.shadow:8.1.1"
 sponge = "org.spongepowered.gradle.plugin:2.1.1"
-ktor = { id = "io.ktor.plugin", version.ref = "ktor" }

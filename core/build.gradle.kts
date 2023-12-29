@@ -1,8 +1,5 @@
-plugins {
-    id("kotlin-jvm.base-conventions")
-    id("kotlin-js.base-conventions")
-}
-
 dependencies {
-    commonMainApi(libs.kbrig.core)
+    api(libs.anvil.core)
+    api(project(":ontime-api"))
+    compileOnlyApi(libs.luckperms)
 }
