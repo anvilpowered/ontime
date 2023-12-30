@@ -5,7 +5,7 @@ import org.anvilpowered.anvil.core.config.KeyNamespace
 import org.anvilpowered.anvil.core.config.buildingMap
 import org.anvilpowered.anvil.core.config.buildingSimple
 
-@Suppress("RemoveExplicitTypeArguments")
+@Suppress("PropertyName")
 class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
 
     val DB_URL by Key.buildingSimple {
@@ -20,12 +20,47 @@ class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
         fallback("ontime")
     }
 
-    val COMMANDS by Key.buildingMap {
-        fallback(mapOf<String, List<String>>())
+    val RANK_TIMES by Key.buildingMap {
+        description(
+            """
+            Player ranks and their time requirement in seconds.
+            Make sure the rank names *exactly* match the groups in luckperms (case-sensitive).
+            """.trimIndent()
+        )
+        fallback(
+            mapOf(
+                "noob" to 0L,
+                "player" to 600L,
+                "trusted" to 1800L,
+            )
+        )
     }
 
-    val RANKS by Key.buildingMap {
-        fallback(mapOf<String, Int>())
+    val RANK_COMMANDS by Key.buildingMap {
+        description(
+            """
+            Commands to run after a player has received a new rank. The nodes are compiled as a regex and
+            matched against the the new rank name. The commands for every matching regex will run (not
+            just the first one).
+            
+            Available placeholders:
+            - %id%: The player's UUID
+            - %username%: The player's username
+            - %rank%: The player's new rank
+            - %time%: The player's total play time, formatted
+            """.trimIndent()
+        )
+        fallback(
+            mapOf(
+                ".*" to listOf(
+                    "say %username% has advanced to %rank% after playing for %time%",
+                    "give %username% iron_ingot 1 1",
+                ),
+                "trusted" to listOf(
+                    "say %username% is the best",
+                )
+            )
+        )
     }
 
     val PERMISSION_USER_CHECK by Key.buildingSimple {

@@ -21,6 +21,7 @@ package org.anvilpowered.ontime.core.command
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.anvilpowered.anvil.core.command.CommandSource
+import org.anvilpowered.anvil.core.command.config.ConfigCommandFactory
 import org.anvilpowered.anvil.core.command.format
 import org.anvilpowered.anvil.core.config.Registry
 import org.anvilpowered.kbrig.builder.ArgumentBuilder
@@ -34,6 +35,7 @@ class OnTimeCommandFactory(
     val registry: Registry,
     val onTimeKeys: OnTimeKeys,
     val onTimeUserRepository: OnTimeUserRepository,
+    private val configCommandFactory: ConfigCommandFactory,
 ) {
     fun create(): LiteralCommandNode<CommandSource> {
         return ArgumentBuilder.literal<CommandSource>("ontime")
@@ -66,6 +68,7 @@ class OnTimeCommandFactory(
                     .build()
             }
             .then(createCheck())
+            .then(configCommandFactory.create())
             .build()
     }
 }

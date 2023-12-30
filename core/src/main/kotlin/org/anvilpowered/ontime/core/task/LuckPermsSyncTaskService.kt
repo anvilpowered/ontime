@@ -36,13 +36,16 @@ class LuckPermsSyncTaskService(
     private val playerService: PlayerService,
     private val logger: Logger,
     private val onTimeUserRepository: OnTimeUserRepository,
+    private val rankCommandService: RankCommandService,
 ) {
 
-    private val configRanks = registry[onTimeKeys.RANKS]
+    private val rankTimes = registry[onTimeKeys.RANK_TIMES]
 
-    private fun User.clearOnTimeGroups() {
-        configRanks.keys.forEach {
-            data().remove(Node.builder("group.$it").build())
+    private fun User.clearOnTimeGroups(except: String) {
+        rankTimes.keys.forEach {
+            if (it != except) {
+                data().remove(Node.builder("group.$it").build())
+            }
         }
     }
 
@@ -60,35 +63,37 @@ class LuckPermsSyncTaskService(
             ?.metaValue
 
         val time = if (multiplier == null) {
-            60
+            60L
         } else {
             try {
-                multiplier.toDouble() * 60
+                (multiplier.toDouble() * 60L).toLong()
             } catch (e: NumberFormatException) {
                 logger.warn("An error occurred parsing the time multiplier '$multiplier' for ${user.username}", e)
                 return
             }
         }
 
-        val totalTime = onTimeUserRepository.addPlayTime(player.id, time.toLong())
+        val totalTime = onTimeUserRepository.addPlayTime(player.id, time)
         if (totalTime == null) {
             logger.warn("Could not find OnTime user for ${user.username} in sync task, skipping...")
             return
         }
 
-        val targetRank = configRanks.asSequence()
-            .sortedBy { (_, time) -> time }
-            .firstOrNull { (_, time) -> totalTime >= time }
+        val targetRank = rankTimes.asSequence()
+            .filter { (_, time) -> totalTime >= time }
+            .maxByOrNull { (_, time) -> time }
             ?.key
+
         if (targetRank == null) {
             logger.warn("Could not determine target rank for ${user.username} in sync task, skipping...")
             return
         }
 
-        user.clearOnTimeGroups()
         val addedResult = user.data().add(Node.builder("group.$targetRank").build())
         if (addedResult.wasSuccessful()) {
+            user.clearOnTimeGroups(except = targetRank)
             logger.info("Moved ${user.username} to group $targetRank")
+            rankCommandService.runCommands(player, targetRank, totalTime)
         }
         luckperms.userManager.saveUser(user).await()
         logger.debug("Saved {} to LuckPerms.", user.username)

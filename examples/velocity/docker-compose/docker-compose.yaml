@@ -3,6 +3,7 @@
 # Carefully read and understand the entire configuration before using any part of it.
 # By using this file, you are indicating your acceptance of the Minecraft EULA (https://www.minecraft.net/en-us/eula).
 version: "3.8"
+name: ontime-velocity
 
 services:
   db:
@@ -49,6 +50,26 @@ services:
       ONTIME_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
       ONTIME_DB_USER: ontime_docker_compose
       ONTIME_DB_PASSWORD: ontime_docker_compose
+      ONTIME_RANK_TIMES: |
+        {
+          "noob": 0,
+          "player": 600,
+          "trusted": 1800
+        }
+      ONTIME_RANK_COMMANDS: |
+        {
+          ".*": [
+            "broadcast %username% has advanced to %rank% after playing for %time%",
+            "give %username% iron_ingot 1 1"
+          ],
+          "trusted": [
+            "broadcast %username% is the best"
+          ]
+        }
+      # Don't use the same database in production
+      CATALYST_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
+      CATALYST_DB_USER: ontime_docker_compose
+      CATALYST_DB_PASSWORD: ontime_docker_compose
     volumes:
       - ../../../build/libs:/plugins
       - ../config/velocity.toml:/server/velocity.toml

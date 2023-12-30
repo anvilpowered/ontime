@@ -29,6 +29,7 @@ import org.anvilpowered.ontime.core.command.OnTimeCommandFactory
 import org.anvilpowered.ontime.core.db.OnTimeUserRepositoryImpl
 import org.anvilpowered.ontime.core.registrar.Registrar
 import org.anvilpowered.ontime.core.task.LuckPermsSyncTaskService
+import org.anvilpowered.ontime.core.task.RankCommandService
 import org.anvilpowered.ontime.velocity.listener.JoinListener
 import org.anvilpowered.ontime.velocity.registrar.VelocityCommandRegistrar
 import org.anvilpowered.ontime.velocity.registrar.VelocityListenerRegistrar
@@ -49,6 +50,7 @@ fun OnTimeApi.Companion.createVelocity(injector: Injector, logger: Logger): OnTi
 
         singleOf(::JoinListener)
         singleOf(::LuckPermsSyncTaskService)
+        singleOf(::RankCommandService)
 
         singleOf(::VelocityCommandRegistrar) { bind<Registrar>() }
         singleOf(::VelocityListenerRegistrar) { bind<Registrar>() }

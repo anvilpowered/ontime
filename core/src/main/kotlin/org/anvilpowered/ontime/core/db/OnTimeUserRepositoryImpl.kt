@@ -93,7 +93,7 @@ class OnTimeUserRepositoryImpl(
 
     private fun OnTimeUserEntity.setTime(time: Long) {
         bonusTime = time - playTime
-        logger.info("Set total time of User ${id.value} to $time")
+        logger.info("Set total time of user $username (${id.value}) to $time")
     }
 
     override suspend fun setTotalTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
@@ -106,7 +106,7 @@ class OnTimeUserRepositoryImpl(
 
     private fun OnTimeUserEntity.addBonusTime(time: Long) {
         bonusTime += time
-        logger.info("Added $time seconds to User ${id.value}")
+        logger.info("Added $time seconds to user $username (${id.value})")
     }
 
     override suspend fun addBonusTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
@@ -119,7 +119,7 @@ class OnTimeUserRepositoryImpl(
 
     private fun OnTimeUserEntity.setBonusTime(time: Long) {
         bonusTime = time
-        logger.info("Set bonus time of User ${id.value} to $time")
+        logger.info("Set bonus time of user $username (${id.value}) to $time")
     }
 
     override suspend fun setBonusTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
