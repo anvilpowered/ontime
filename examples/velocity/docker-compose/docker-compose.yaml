@@ -60,7 +60,7 @@ services:
         {
           ".*": [
             "broadcast %username% has advanced to %rank% after playing for %time%",
-            "give %username% iron_ingot 1 1"
+            "give %username% iron_ingot 1"
           ],
           "trusted": [
             "broadcast %username% is the best"

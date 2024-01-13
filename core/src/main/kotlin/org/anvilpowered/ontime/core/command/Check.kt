@@ -34,8 +34,8 @@ private val checkAdminUsage: Component = Component.text("Usage: /ontime check [<
 fun OnTimeCommandFactory.createCheck(): LiteralCommandNode<CommandSource> =
     ArgumentBuilder.literal<CommandSource>("check")
         .requires { source ->
-            source.hasPermissionSet(registry[onTimeKeys.PERMISSION_USER_CHECK])
-                || source.hasPermissionSet(registry[onTimeKeys.PERMISSION_ADMIN_CHECK])
+            source.hasPermissionSet(registry[onTimeKeys.PERMISSION_USER_CHECK]) ||
+                source.hasPermissionSet(registry[onTimeKeys.PERMISSION_ADMIN_CHECK])
         }
         .executesScoped {
             val user = extractOnTimeUserSource(onTimeUserRepository)
@@ -53,11 +53,11 @@ fun OnTimeCommandFactory.createCheck(): LiteralCommandNode<CommandSource> =
                     } else {
                         context.source.sendMessage(checkBaseUsage)
                     }
-                }
+                },
         )
         .then(
             ArgumentBuilder.requireOnTimeUserArgumentScoped(onTimeUserRepository) { user ->
                 context.source.sendMessage(user.getExtendedInfo())
-            }
+            },
         )
         .build()

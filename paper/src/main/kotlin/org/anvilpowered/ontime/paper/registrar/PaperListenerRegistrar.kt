@@ -16,27 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.velocity.registrar
+package org.anvilpowered.ontime.paper.registrar
 
-import com.mojang.brigadier.tree.LiteralCommandNode
-import com.velocitypowered.api.command.BrigadierCommand
-import com.velocitypowered.api.command.CommandSource
-import com.velocitypowered.api.proxy.ProxyServer
-import org.anvilpowered.anvil.velocity.command.toVelocity
-import org.anvilpowered.ontime.core.command.OnTimeCommandFactory
 import org.anvilpowered.ontime.core.registrar.Registrar
+import org.anvilpowered.ontime.paper.listener.PaperJoinListener
 import org.apache.logging.log4j.Logger
+import org.bukkit.Bukkit
+import org.bukkit.plugin.java.JavaPlugin
 
-class VelocityCommandRegistrar(
-    private val proxyServer: ProxyServer,
+class PaperListenerRegistrar(
     private val logger: Logger,
-    private val onTimeCommandFactory: OnTimeCommandFactory,
+    private val plugin: JavaPlugin,
+    private val joinListener: PaperJoinListener,
 ) : Registrar {
-    private fun LiteralCommandNode<CommandSource>.register() = proxyServer.commandManager.register(BrigadierCommand(this))
 
     override fun register() {
-        logger.info("Building command trees and registering commands...")
-        onTimeCommandFactory.create().toVelocity().register()
-        logger.info("Finished registering commands.")
+        logger.info("Registering listeners...")
+        Bukkit.getPluginManager().registerEvents(joinListener, plugin)
+        logger.info("Finished registering listeners.")
     }
 }

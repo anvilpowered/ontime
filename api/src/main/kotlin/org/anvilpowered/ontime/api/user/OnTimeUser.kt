@@ -10,12 +10,12 @@ data class OnTimeUser(
     val username: String,
     val createdUtc: LocalDateTime,
     val playTime: Long,
-    val bonusTime: Long
+    val bonusTime: Long,
 ) : DomainEntity {
 
     data class CreateDto(
         val id: UUID,
-        val username: String
+        val username: String,
     ) : Creates<OnTimeUser>
 }
 

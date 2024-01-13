@@ -48,7 +48,7 @@ internal fun OnTimeUserEntity.toOnTimeUser() = OnTimeUser(
     username = this.username,
     createdUtc = this.createdUtc,
     playTime = this.playTime,
-    bonusTime = this.bonusTime
+    bonusTime = this.bonusTime,
 )
 
 internal fun ResultRow.toOnTimeUser() = OnTimeUser(
@@ -56,5 +56,5 @@ internal fun ResultRow.toOnTimeUser() = OnTimeUser(
     username = this[OnTimeUserTable.username],
     createdUtc = this[OnTimeUserTable.createdUtc],
     playTime = this[OnTimeUserTable.playTime],
-    bonusTime = this[OnTimeUserTable.bonusTime]
+    bonusTime = this[OnTimeUserTable.bonusTime],
 )

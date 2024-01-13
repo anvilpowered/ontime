@@ -16,24 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.velocity.registrar
+package org.anvilpowered.ontime.paper.listener
 
-import com.velocitypowered.api.plugin.PluginContainer
-import com.velocitypowered.api.proxy.ProxyServer
-import org.anvilpowered.ontime.core.registrar.Registrar
-import org.anvilpowered.ontime.velocity.listener.VelocityJoinListener
-import org.apache.logging.log4j.Logger
+import kotlinx.coroutines.runBlocking
+import org.anvilpowered.ontime.api.user.OnTimeUser
+import org.anvilpowered.ontime.api.user.OnTimeUserRepository
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerJoinEvent
 
-class VelocityListenerRegistrar(
-    private val proxyServer: ProxyServer,
-    private val pluginContainer: PluginContainer,
-    private val logger: Logger,
-    private val joinListener: VelocityJoinListener,
-) : Registrar {
+class PaperJoinListener(private val onTimeUserRepository: OnTimeUserRepository) : Listener {
 
-    override fun register() {
-        logger.info("Registering listeners...")
-        proxyServer.eventManager.register(pluginContainer, joinListener)
-        logger.info("Finished registering listeners.")
+    @EventHandler
+    fun onJoin(event: PlayerJoinEvent) = runBlocking {
+        val player = event.player
+        onTimeUserRepository.put(
+            OnTimeUser.CreateDto(
+                id = player.uniqueId,
+                username = player.name,
+            ),
+        )
     }
 }

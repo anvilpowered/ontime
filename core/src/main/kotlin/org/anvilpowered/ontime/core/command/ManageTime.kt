@@ -36,7 +36,7 @@ context(OnTimeCommandFactory)
 fun LiteralArgumentBuilder<CommandSource>.thenSubCommand(
     name: String,
     dbFun: suspend OnTimeUserRepository.(username: String, duration: Long) -> Boolean,
-    successMessage: (username: String, duration: Duration) -> Component
+    successMessage: (username: String, duration: Duration) -> Component,
 ): LiteralArgumentBuilder<CommandSource> {
     val usage = PluginMessages.getCommandUsage("ontime $name <user> <time>")
     val node = ArgumentBuilder.literal<CommandSource>(name)
@@ -56,8 +56,8 @@ fun LiteralArgumentBuilder<CommandSource>.thenSubCommand(
                             } else {
                                 context.source.sendMessage(PluginMessages.getNoSuchUser(username))
                             }
-                        }
-                )
+                        },
+                ),
 
         ).build()
     return then(node)

@@ -23,27 +23,17 @@ import com.velocitypowered.api.event.connection.PostLoginEvent
 import kotlinx.coroutines.runBlocking
 import org.anvilpowered.ontime.api.user.OnTimeUser
 import org.anvilpowered.ontime.api.user.OnTimeUserRepository
-import org.anvilpowered.ontime.api.user.bonusTimeFormatted
-import org.anvilpowered.ontime.api.user.playTimeFormatted
-import org.anvilpowered.ontime.api.user.totalTimeFormatted
-import org.apache.logging.log4j.Logger
 
-class JoinListener(private val logger: Logger, private val onTimeUserRepository: OnTimeUserRepository) {
+class VelocityJoinListener(private val onTimeUserRepository: OnTimeUserRepository) {
 
     @Subscribe
     fun onPlayerJoin(event: PostLoginEvent) = runBlocking {
         val player = event.player
-        val result = onTimeUserRepository.put(
+        onTimeUserRepository.put(
             OnTimeUser.CreateDto(
                 id = player.uniqueId,
                 username = player.username,
             ),
         )
-
-        if (result.created) {
-            logger.info("Created new OnTime user ${player.username} (${player.uniqueId})")
-        } else {
-
-        }
     }
 }

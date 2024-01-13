@@ -16,30 +16,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.anvilpowered.ontime.velocity
+package org.anvilpowered.ontime.paper
 
 import org.anvilpowered.anvil.core.config.Registry
 import org.anvilpowered.anvil.core.config.configureDefaults
-import org.anvilpowered.anvil.velocity.AnvilVelocityApi
+import org.anvilpowered.anvil.paper.AnvilPaperApi
 import org.anvilpowered.ontime.api.OnTimeApi
 import org.anvilpowered.ontime.core.coreModule
 import org.anvilpowered.ontime.core.registrar.Registrar
-import org.anvilpowered.ontime.velocity.listener.VelocityJoinListener
-import org.anvilpowered.ontime.velocity.registrar.VelocityListenerRegistrar
+import org.anvilpowered.ontime.paper.listener.PaperJoinListener
+import org.anvilpowered.ontime.paper.registrar.PaperListenerRegistrar
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-fun OnTimeApi.Companion.createVelocity(anvil: AnvilVelocityApi): OnTimeApi {
-    val velocityModule = module {
-        includes(coreModule)
+fun OnTimeApi.Companion.createPaper(anvil: AnvilPaperApi): OnTimeApi {
+    val paperModule = module {
         includes(anvil.module)
+        includes(coreModule)
         Registry.configureDefaults(anvil)
-        singleOf(::VelocityJoinListener)
-        singleOf(::VelocityListenerRegistrar) { bind<Registrar>() }
+        singleOf(::PaperJoinListener)
+        singleOf(::PaperListenerRegistrar) { bind<Registrar>() }
     }
 
     return object : OnTimeApi {
-        override val module = velocityModule
+        override val module = paperModule
     }
 }

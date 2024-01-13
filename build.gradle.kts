@@ -25,7 +25,7 @@ allprojects {
         compilerOptions {
             freeCompilerArgs = listOf(
                 "-opt-in=kotlin.RequiresOptIn",
-                "-Xcontext-receivers"
+                "-Xcontext-receivers",
             )
         }
     }
@@ -44,6 +44,7 @@ allprojects {
 
 // for uber jar
 dependencies {
+    runtimeOnly(project(":ontime-paper"))
     runtimeOnly(project(":ontime-velocity"))
 }
 

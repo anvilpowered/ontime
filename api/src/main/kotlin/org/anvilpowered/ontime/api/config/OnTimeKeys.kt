@@ -25,14 +25,14 @@ class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
             """
             Player ranks and their time requirement in seconds.
             Make sure the rank names *exactly* match the groups in luckperms (case-sensitive).
-            """.trimIndent()
+            """.trimIndent(),
         )
         fallback(
             mapOf(
                 "noob" to 0L,
                 "player" to 600L,
                 "trusted" to 1800L,
-            )
+            ),
         )
     }
 
@@ -48,18 +48,18 @@ class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
             - %username%: The player's username
             - %rank%: The player's new rank
             - %time%: The player's total play time, formatted
-            """.trimIndent()
+            """.trimIndent(),
         )
         fallback(
             mapOf(
                 ".*" to listOf(
                     "say %username% has advanced to %rank% after playing for %time%",
-                    "give %username% iron_ingot 1 1",
+                    "give %username% iron_ingot 1",
                 ),
                 "trusted" to listOf(
                     "say %username% is the best",
-                )
-            )
+                ),
+            ),
         )
     }
 

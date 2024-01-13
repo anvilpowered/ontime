@@ -35,7 +35,7 @@ import java.time.ZoneId
 import java.util.UUID
 
 class OnTimeUserRepositoryImpl(
-    private val logger: Logger
+    private val logger: Logger,
 ) : OnTimeUserRepository {
     override suspend fun create(item: OnTimeUser.CreateDto): OnTimeUser = newSuspendedTransaction {
         val user = OnTimeUserEntity.new(item.id) {
@@ -65,7 +65,7 @@ class OnTimeUserRepositoryImpl(
                 "Loaded existing OnTime user ${existingUser.username} (${existingUser.id}) with" +
                     "play time ${existingUser.playTimeFormatted}, " +
                     "bonus time ${existingUser.bonusTimeFormatted}, " +
-                    "and total time ${existingUser.totalTimeFormatted}"
+                    "and total time ${existingUser.totalTimeFormatted}",
             )
             MutableRepository.PutResult(existingUser, created = false)
         }

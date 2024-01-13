@@ -20,17 +20,19 @@ package org.anvilpowered.ontime.velocity
 
 import com.google.inject.Inject
 import com.google.inject.Injector
+import com.velocitypowered.api.command.BrigadierCommand
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
+import com.velocitypowered.api.proxy.ProxyServer
 import org.anvilpowered.anvil.core.AnvilApi
+import org.anvilpowered.anvil.velocity.command.toVelocity
 import org.anvilpowered.anvil.velocity.createVelocity
 import org.anvilpowered.ontime.api.OnTimeApi
-import org.anvilpowered.ontime.core.OnTimeVelocityPlugin
+import org.anvilpowered.ontime.core.OnTimePlugin
 import org.koin.dsl.koinApplication
-import org.koin.dsl.module
 
 @Plugin(
     id = "ontime",
@@ -39,24 +41,24 @@ import org.koin.dsl.module
     authors = ["AnvilPowered"],
     dependencies = [Dependency(id = "luckperms")],
 )
-class OnTimeVelocityBootstrap @Inject constructor(private val injector: Injector) {
+class OnTimeVelocityBootstrap @Inject constructor(
+    private val injector: Injector,
+    private val proxyServer: ProxyServer,
+) {
 
-    private lateinit var plugin: OnTimeVelocityPlugin
+    private lateinit var plugin: OnTimePlugin
 
     @Subscribe
+    @Suppress("UNUSED_PARAMETER")
     fun onInit(event: ProxyInitializeEvent) {
-        val anvilApi = AnvilApi.createVelocity(injector)
-        plugin = koinApplication {
-            modules(
-                anvilApi.module,
-                OnTimeApi.createVelocity(injector, anvilApi.logger).module,
-                module { single { OnTimeVelocityPlugin(get(), get(), get(), get(), getAll()) } },
-            )
-        }.koin.get()
+        val anvil = AnvilApi.createVelocity(injector)
+        plugin = koinApplication { modules(OnTimeApi.createVelocity(anvil).module) }.koin.get()
         plugin.enable()
+        plugin.registerCommands { proxyServer.commandManager.register(BrigadierCommand(it.toVelocity())) }
     }
 
     @Subscribe
+    @Suppress("UNUSED_PARAMETER")
     fun onDisable(event: ProxyShutdownEvent) {
         plugin.disable()
     }

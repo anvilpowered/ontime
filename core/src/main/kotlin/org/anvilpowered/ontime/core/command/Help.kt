@@ -29,5 +29,5 @@ fun <B : ArgumentBuilder<CommandSource, B>> B.addDefaultUsage(usage: Component):
         context.source.sendMessage(usage)
     }.then(
         ArgumentBuilder.literal<CommandSource>("help")
-            .executesSingleSuccess { it.source.sendMessage(usage) }
+            .executesSingleSuccess { it.source.sendMessage(usage) },
     )

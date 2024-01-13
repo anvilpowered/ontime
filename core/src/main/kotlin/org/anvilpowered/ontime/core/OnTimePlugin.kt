@@ -19,8 +19,11 @@
 package org.anvilpowered.ontime.core
 
 import kotlinx.coroutines.runBlocking
+import org.anvilpowered.anvil.core.command.CommandSource
 import org.anvilpowered.anvil.core.config.Registry
+import org.anvilpowered.kbrig.tree.LiteralCommandNode
 import org.anvilpowered.ontime.api.config.OnTimeKeys
+import org.anvilpowered.ontime.core.command.OnTimeCommandFactory
 import org.anvilpowered.ontime.core.db.OnTimeUserTable
 import org.anvilpowered.ontime.core.registrar.Registrar
 import org.anvilpowered.ontime.core.task.LuckPermsSyncTaskService
@@ -31,11 +34,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
 
-class OnTimeVelocityPlugin(
+class OnTimePlugin(
     private val registry: Registry,
     private val onTimeKeys: OnTimeKeys,
     private val logger: Logger,
     private val luckPermsSyncTaskService: LuckPermsSyncTaskService,
+    private val onTimeCommandFactory: OnTimeCommandFactory,
     private val registrars: List<Registrar>,
 ) {
 
@@ -56,6 +60,17 @@ class OnTimeVelocityPlugin(
         logger.info("Disabling OnTime...")
         timer.cancel()
         logger.info("Finished disabling OnTime.")
+    }
+
+    fun registerCommands(callback: (LiteralCommandNode<CommandSource>) -> Unit) {
+        logger.info("Building command tree...")
+        val command = onTimeCommandFactory.create()
+        logger.info("Registering commands...")
+        callback(command)
+        logger.info("Finished registering commands.")
+    }
+
+    fun registerListeners() {
     }
 
     private fun connectDatabase() {

@@ -1,5 +1,5 @@
 dependencies {
-    api(libs.anvil.core)
     api(project(":ontime-api"))
+    api(libs.anvil.core)
     compileOnlyApi(libs.luckperms)
 }
