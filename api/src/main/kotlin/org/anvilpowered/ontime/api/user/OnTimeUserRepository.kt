@@ -6,7 +6,7 @@ import java.util.UUID
 
 interface OnTimeUserRepository : MutableRepository<OnTimeUser, OnTimeUser.CreateDto> {
 
-    suspend fun getAllUsernames(startWith: String = ""): SizedIterable<String>
+    suspend fun getAllUsernames(contains: String = ""): SizedIterable<String>
 
     suspend fun getByUsername(username: String): OnTimeUser?
 

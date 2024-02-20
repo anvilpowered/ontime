@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.mapLazy
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import java.time.LocalDateTime
@@ -71,8 +72,8 @@ class OnTimeUserRepositoryImpl(
         }
     }
 
-    override suspend fun getAllUsernames(startWith: String): SizedIterable<String> = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username like "$startWith%" }.mapLazy { it.username }
+    override suspend fun getAllUsernames(contains: String): SizedIterable<String> = newSuspendedTransaction {
+        OnTimeUserEntity.find { OnTimeUserTable.username.lowerCase() like "%${contains.lowercase()}%" }.mapLazy { it.username }
     }
 
     override suspend fun getByUsername(username: String): OnTimeUser? = newSuspendedTransaction {

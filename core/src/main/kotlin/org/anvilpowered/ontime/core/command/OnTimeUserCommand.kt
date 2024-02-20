@@ -58,7 +58,7 @@ fun ArgumentBuilder.Companion.requireOnTimeUserArgumentScoped(
 fun RequiredArgumentBuilder<CommandSource, String>.suggestOnTimeUserArgument(
     onTimeUserRepository: OnTimeUserRepository,
 ): RequiredArgumentBuilder<CommandSource, String> =
-    suggestsScoped { onTimeUserRepository.getAllUsernames(startWith = remainingLowerCase).suggestAll() }
+    suggestsScoped { onTimeUserRepository.getAllUsernames(contains = remainingLowerCase).suggestAll() }
 
 @CommandContextScopeDsl
 suspend fun CommandExecutionScope<CommandSource>.extractOnTimeUserArgument(
