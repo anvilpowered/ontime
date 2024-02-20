@@ -1,8 +1,0 @@
-rootProject.name = 'OnTime'
-
-include 'ontime-api'
-include 'ontime-common'
-include 'ontime-luckperms'
-include 'ontime-spigot'
-include 'ontime-sponge'
-include 'ontime-velocity'

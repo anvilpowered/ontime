@@ -1,0 +1,110 @@
+# This is not intended to be a production-ready deployment; It is only intended to demonstrate
+# how OnTime may be deployed in a container environment.
+# Carefully read and understand the entire configuration before using any part of it.
+# By using this file, you are indicating your acceptance of the Minecraft EULA (https://www.minecraft.net/en-us/eula).
+version: "3.8"
+name: ontime-velocity
+
+services:
+  db:
+    image: postgres:15.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ontime_docker_compose
+      POSTGRES_USER: ontime_docker_compose
+      POSTGRES_PASSWORD: ontime_docker_compose
+    volumes:
+      - ./db:/var/lib/postgresql/data
+
+  pg-admin:
+    image: dpage/pgadmin4:8.0
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ontime@example.com
+      PGADMIN_DEFAULT_PASSWORD: ontime
+
+  lp:
+    image: ghcr.io/luckperms/luckperms:v5.4.113
+    environment:
+      LUCKPERMS_STORAGE_METHOD: postgresql
+      LUCKPERMS_DATA_ADDRESS: db
+      # Use a different database and credentials in production
+      LUCKPERMS_DATA_DATABASE: ontime_docker_compose
+      LUCKPERMS_DATA_USERNAME: ontime_docker_compose
+      LUCKPERMS_DATA_PASSWORD: ontime_docker_compose
+
+  proxy:
+    image: itzg/bungeecord:java17
+    ports:
+      - "25565:25565"
+    environment:
+      TYPE: VELOCITY
+      VELOCITY_VERSION: 3.3.0-SNAPSHOT
+      VELOCITY_BUILD_ID: 310
+      PLUGINS: |
+        https://download.luckperms.net/1526/velocity/LuckPerms-Velocity-5.4.113.jar
+        https://cdn.modrinth.com/data/7IbzD4Zm/versions/fUJtz3XS/SignedVelocity-Proxy-1.2.2.jar
+      PATCH_DEFINITIONS: /server/velocity-patch-set.json
+      ONTIME_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
+      ONTIME_DB_USER: ontime_docker_compose
+      ONTIME_DB_PASSWORD: ontime_docker_compose
+      ONTIME_RANK_TIMES: |
+        {
+          "noob": 0,
+          "player": 600,
+          "trusted": 1800
+        }
+      ONTIME_RANK_COMMANDS: |
+        {
+          ".*": [
+            "broadcast %username% has advanced to %rank% after playing for %time%",
+            "give %username% iron_ingot 1"
+          ],
+          "trusted": [
+            "broadcast %username% is the best"
+          ]
+        }
+      # Don't use the same database in production
+      CATALYST_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
+      CATALYST_DB_USER: ontime_docker_compose
+      CATALYST_DB_PASSWORD: ontime_docker_compose
+    volumes:
+      - ../../../build/libs:/plugins
+      - ../config/velocity.toml:/server/velocity.toml
+      - ../config/forwarding.secret:/server/forwarding.secret
+      - ../config/velocity-patch-set.json:/server/velocity-patch-set.json
+      - ./proxy/plugins:/server/plugins
+
+  paper-0:
+    image: itzg/minecraft-server:2023.11.1-java21
+    expose:
+      - 25565
+    environment:
+      TYPE: PAPER
+      VERSION: "1.20.4"
+      EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
+      ONLINE_MODE: false
+      PATCH_DEFINITIONS: /config/paper-patch-set.json
+      PLUGINS: |
+        https://cdn.modrinth.com/data/7IbzD4Zm/versions/iL7nlFlA/SignedVelocity-Paper-1.2.2.jar
+    volumes:
+      - ./paper-0:/data
+      - ../config/paper-patch-set.json:/config/paper-patch-set.json:ro
+
+  paper-1:
+    image: itzg/minecraft-server:2023.11.1-java21
+    expose:
+      - 25565
+    environment:
+      TYPE: PAPER
+      VERSION: "1.20.4"
+      EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
+      ONLINE_MODE: false
+      PATCH_DEFINITIONS: /config/paper-patch-set.json
+      PLUGINS: |
+        https://cdn.modrinth.com/data/7IbzD4Zm/versions/iL7nlFlA/SignedVelocity-Paper-1.2.2.jar
+    volumes:
+      - ./paper-1:/data
+      - ../config/paper-patch-set.json:/config/paper-patch-set.json:ro
