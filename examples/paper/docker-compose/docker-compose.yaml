@@ -18,7 +18,7 @@ services:
       - ./db:/var/lib/postgresql/data
 
   pg-admin:
-    image: dpage/pgadmin4:8.0
+    image: dpage/pgadmin4:8.3
     ports:
       - "8081:80"
     environment:
@@ -26,7 +26,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ontime
 
   lp:
-    image: ghcr.io/luckperms/luckperms:v5.4.113
+    image: ghcr.io/luckperms/luckperms:v5.4.119
     environment:
       LUCKPERMS_STORAGE_METHOD: postgresql
       LUCKPERMS_DATA_ADDRESS: db
@@ -36,23 +36,17 @@ services:
       LUCKPERMS_DATA_PASSWORD: ontime_docker_compose
 
   paper:
-    build:
-      context: .
-      args:
-        GITHUB_BASEURL: "http://localhost:8080"
-        APPS_REV: "1"
-        MC_HELPER_VESION: "0.0.0-fix-filename-extractor-SNAPSHOT"
-    image: itzg/minecraft-server:2023.11.1-java21
+    image: itzg/minecraft-server:latest
     ports:
       - "25565:25565"
     environment:
       TYPE: PAPER
       VERSION: "1.20.4"
-      PAPER_DOWNLOAD_URL: "https://nexus.anvilpowered.org/repository/paper-bin/paper/paper-PR8235.jar"
+      PAPER_DOWNLOAD_URL: "https://nexus.anvilpowered.org/repository/paper-bin/paper/paper-PR8235-1.20.4-1.jar"
       EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
       ONLINE_MODE: true
       PLUGINS: |
-        https://download.luckperms.net/1526/bukkit/loader/LuckPerms-Bukkit-5.4.113.jar
+        https://download.luckperms.net/1532/bukkit/loader/LuckPerms-Bukkit-5.4.119.jar
       ONTIME_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
       ONTIME_DB_USER: ontime_docker_compose
       ONTIME_DB_PASSWORD: ontime_docker_compose

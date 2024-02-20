@@ -19,13 +19,12 @@
 
 package org.anvilpowered.ontime.paper
 
-import io.papermc.paper.event.server.ServerResourcesLoadEvent
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import org.anvilpowered.anvil.core.AnvilApi
 import org.anvilpowered.anvil.paper.command.toPaper
 import org.anvilpowered.anvil.paper.createPaper
 import org.anvilpowered.ontime.api.OnTimeApi
 import org.anvilpowered.ontime.core.OnTimePlugin
-import org.bukkit.event.EventHandler
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.dsl.koinApplication
 
@@ -38,14 +37,12 @@ class OnTimePaperBootstrap : JavaPlugin() {
         val anvil = AnvilApi.createPaper(this)
         plugin = koinApplication { modules(OnTimeApi.createPaper(anvil).module) }.koin.get()
         plugin.enable()
+        lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
+            plugin.registerCommands { command ->
+                event.registrar().register(command.toPaper())
+            }
+        }
     }
 
     override fun onDisable() = plugin.disable()
-
-    @EventHandler
-    fun load(event: ServerResourcesLoadEvent) {
-        plugin.registerCommands { command ->
-            event.commands.register(pluginMeta, command.toPaper())
-        }
-    }
 }
