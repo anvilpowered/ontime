@@ -4,19 +4,25 @@ plugins {
     `maven-publish`
 }
 
+extensions.configure<JavaPluginExtension> {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 extensions.configure<PublishingExtension> {
     repositories {
         maven {
             credentials {
-                username = project.findProperty("sonatypeUsername") as? String
-                password = project.findProperty("sonatypePassword") as? String
+                username = System.getenv("SONATYPE_USERNAME")
+                password = System.getenv("SONATYPE_PASSWORD")
             }
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots"
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
             url = URI(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
         }
     }
-    publications.withType<MavenPublication> {
+    publications.register<MavenPublication>("maven") {
+        from(components["java"])
         pom {
             name.set("ontime")
             url.set("https://www.anvilpowered.org")
