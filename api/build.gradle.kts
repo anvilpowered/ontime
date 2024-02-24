@@ -1,5 +1,6 @@
 plugins {
     id("ontime-publish")
+    id("ontime-sign")
 }
 
 dependencies {
