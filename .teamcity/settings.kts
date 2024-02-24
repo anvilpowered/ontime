@@ -6,6 +6,7 @@ import jetbrains.buildServer.configs.kotlin.buildFeatures.PullRequests
 import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildFeatures.pullRequests
+import jetbrains.buildServer.configs.kotlin.buildSteps.exec
 import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.project
 import jetbrains.buildServer.configs.kotlin.projectFeatures.githubIssues
@@ -114,7 +115,6 @@ class Test : BuildType() {
 
         steps {
             gradle {
-                id = "gradle_runner"
                 tasks = "test"
                 gradleParams = "--refresh-dependencies"
             }
@@ -135,7 +135,6 @@ class Style : BuildType() {
 
         steps {
             gradle {
-                id = "gradle_runner"
                 tasks = "ktlintCheck"
             }
         }
@@ -162,7 +161,7 @@ class PluginJar : BuildType() {
 
         steps {
             gradle {
-                id = "gradle_runner"
+                name = "Build jar"
                 tasks = "clean shadowJar"
                 gradleParams = "--refresh-dependencies"
             }
@@ -196,9 +195,8 @@ class Publish(test: BuildType, style: BuildType) : BuildType() {
 
         steps {
             gradle {
-                id = "gradle_runner"
                 tasks = "publish"
-                gradleParams = "--refresh-dependencies"
+                gradleParams = "--refresh-dependencies -PrawVersion"
             }
         }
     }
