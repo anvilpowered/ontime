@@ -9,7 +9,7 @@ anvil-paper = { module = "org.anvilpowered:anvil-paper", version.ref = "anvil" }
 anvil-velocity = { module = "org.anvilpowered:anvil-velocity", version.ref = "anvil" }
 arrow-core = "io.arrow-kt:arrow-core:1.2.0"
 driver-mariadb = "org.mariadb.jdbc:mariadb-java-client:3.3.3"
-driver-postgresql = "org.postgresql:postgresql:42.7.1"
+driver-postgresql = "org.postgresql:postgresql:42.7.2"
 kotest = "io.kotest:kotest-runner-junit5-jvm:5.5.4"
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 luckperms = "net.luckperms:api:5.4"
