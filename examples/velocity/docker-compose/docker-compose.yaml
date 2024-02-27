@@ -42,12 +42,12 @@ services:
     environment:
       TYPE: VELOCITY
       VELOCITY_VERSION: 3.3.0-SNAPSHOT
-      VELOCITY_BUILD_ID: 361
+      VELOCITY_BUILD_ID: 364
       PLUGINS: |
         https://download.luckperms.net/1532/velocity/LuckPerms-Velocity-5.4.119.jar
         https://cdn.modrinth.com/data/7IbzD4Zm/versions/eeGwpMZV/SignedVelocity-Proxy-1.2.3.jar
       PATCH_DEFINITIONS: /server/velocity-patch-set.json
-      ONTIME_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
+      ONTIME_DB_URL: jdbc:postgresql://db/ontime_docker_compose
       ONTIME_DB_USER: ontime_docker_compose
       ONTIME_DB_PASSWORD: ontime_docker_compose
       ONTIME_RANK_TIMES: |

@@ -7,7 +7,7 @@ name: ontime-paper
 
 services:
   db:
-    image: postgres:15.5
+    image: postgres:15.6
     ports:
       - "5432:5432"
     environment:
@@ -47,7 +47,7 @@ services:
       ONLINE_MODE: true
       PLUGINS: |
         https://download.luckperms.net/1532/bukkit/loader/LuckPerms-Bukkit-5.4.119.jar
-      ONTIME_DB_URL: jdbc:postgresql://db:5432/ontime_docker_compose
+      ONTIME_DB_URL: jdbc:postgresql://db/ontime_docker_compose
       ONTIME_DB_USER: ontime_docker_compose
       ONTIME_DB_PASSWORD: ontime_docker_compose
       ONTIME_RANK_TIMES: |
