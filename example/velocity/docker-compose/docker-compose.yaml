@@ -2,7 +2,6 @@
 # how OnTime may be deployed in a container environment.
 # Carefully read and understand the entire configuration before using any part of it.
 # By using this file, you are indicating your acceptance of the Minecraft EULA (https://www.minecraft.net/en-us/eula).
-version: "3.8"
 name: ontime-velocity
 
 services:
@@ -83,7 +82,7 @@ services:
       - 25565
     environment:
       TYPE: PAPER
-      VERSION: "1.20.4"
+      VERSION: "1.20.6"
       EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
       ONLINE_MODE: false
       PATCH_DEFINITIONS: /config/paper-patch-set.json
@@ -99,7 +98,7 @@ services:
       - 25565
     environment:
       TYPE: PAPER
-      VERSION: "1.20.4"
+      VERSION: "1.20.6"
       EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
       ONLINE_MODE: false
       PATCH_DEFINITIONS: /config/paper-patch-set.json
