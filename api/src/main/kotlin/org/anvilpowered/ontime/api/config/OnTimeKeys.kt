@@ -8,6 +8,10 @@ import org.anvilpowered.anvil.core.config.buildingSimple
 @Suppress("PropertyName")
 class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
 
+    val DB_TYPE by Key.buildingSimple {
+        fallback("postgresql")
+    }
+
     val DB_URL by Key.buildingSimple {
         fallback("jdbc:postgresql://db:5432/ontime")
     }
@@ -42,7 +46,7 @@ class OnTimeKeys : KeyNamespace by KeyNamespace.create("ONTIME") {
             Commands to run after a player has received a new rank. The nodes are compiled as a regex and
             matched against the the new rank name. The commands for every matching regex will run (not
             just the first one).
-            
+
             Available placeholders:
             - %id%: The player's UUID
             - %username%: The player's username
