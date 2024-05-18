@@ -24,7 +24,7 @@ import org.anvilpowered.anvil.core.config.Registry
 import org.anvilpowered.kbrig.tree.LiteralCommandNode
 import org.anvilpowered.ontime.api.config.OnTimeKeys
 import org.anvilpowered.ontime.core.command.OnTimeCommandFactory
-import org.anvilpowered.ontime.core.db.OnTimeUserTable
+import org.anvilpowered.ontime.core.db.OnTimeUsers
 import org.anvilpowered.ontime.core.registrar.Registrar
 import org.anvilpowered.ontime.core.task.LuckPermsSyncTaskService
 import org.apache.logging.log4j.Logger
@@ -90,7 +90,7 @@ class OnTimePlugin(
         logger.info("Finished connecting to database.")
         logger.info("Creating tables...")
         transaction {
-            SchemaUtils.createMissingTablesAndColumns(OnTimeUserTable)
+            SchemaUtils.createMissingTablesAndColumns(OnTimeUsers)
         }
         logger.info("Finished creating tables.")
     }

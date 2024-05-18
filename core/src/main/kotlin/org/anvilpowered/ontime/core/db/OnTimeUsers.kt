@@ -23,38 +23,22 @@ import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.javatime.datetime
 import java.util.UUID
 
-internal object OnTimeUserTable : UUIDTable("ontime_users") {
+internal object OnTimeUsers : UUIDTable("ontime_users") {
     val username = varchar("username", 16).uniqueIndex()
     val createdUtc = datetime("created_utc")
     val playTime = long("play_time")
     val bonusTime = long("bonus_time")
 }
 
-internal class OnTimeUserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-    var username by OnTimeUserTable.username
-    var createdUtc by OnTimeUserTable.createdUtc
-    var playTime by OnTimeUserTable.playTime
-    var bonusTime by OnTimeUserTable.bonusTime
+internal class DBOnTimeUser(id: EntityID<UUID>) : UUIDEntity(id), OnTimeUser {
+    override val uuid: UUID = id.value
+    override var username by OnTimeUsers.username
+    override var createdUtc by OnTimeUsers.createdUtc
+    override var playTime by OnTimeUsers.playTime
+    override var bonusTime by OnTimeUsers.bonusTime
 
-    companion object : UUIDEntityClass<OnTimeUserEntity>(OnTimeUserTable)
+    companion object : UUIDEntityClass<DBOnTimeUser>(OnTimeUsers)
 }
-
-internal fun OnTimeUserEntity.toOnTimeUser() = OnTimeUser(
-    id = this.id.value,
-    username = this.username,
-    createdUtc = this.createdUtc,
-    playTime = this.playTime,
-    bonusTime = this.bonusTime,
-)
-
-internal fun ResultRow.toOnTimeUser() = OnTimeUser(
-    id = this[OnTimeUserTable.id].value,
-    username = this[OnTimeUserTable.username],
-    createdUtc = this[OnTimeUserTable.createdUtc],
-    playTime = this[OnTimeUserTable.playTime],
-    bonusTime = this[OnTimeUserTable.bonusTime],
-)
