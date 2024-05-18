@@ -6,7 +6,7 @@ name: ontime-velocity
 
 services:
   db:
-    image: postgres:15.6
+    image: postgres:15.7
     ports:
       - "5432:5432"
     environment:
@@ -17,7 +17,7 @@ services:
       - ./db:/var/lib/postgresql/data
 
   pg-admin:
-    image: dpage/pgadmin4:8.3
+    image: dpage/pgadmin4:8.6
     ports:
       - "8080:80"
     environment:
@@ -35,13 +35,13 @@ services:
       LUCKPERMS_DATA_PASSWORD: ontime_docker_compose
 
   proxy:
-    image: itzg/bungeecord:java17
+    image: itzg/bungeecord:java21
     ports:
       - "25565:25565"
     environment:
       TYPE: VELOCITY
       VELOCITY_VERSION: 3.3.0-SNAPSHOT
-      VELOCITY_BUILD_ID: 364
+      VELOCITY_BUILD_ID: 390
       PLUGINS: |
         https://download.luckperms.net/1532/velocity/LuckPerms-Velocity-5.4.119.jar
         https://cdn.modrinth.com/data/7IbzD4Zm/versions/eeGwpMZV/SignedVelocity-Proxy-1.2.3.jar
