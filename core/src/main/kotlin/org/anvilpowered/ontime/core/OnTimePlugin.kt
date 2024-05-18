@@ -70,9 +70,11 @@ class OnTimePlugin(
         logger.info("Finished registering commands.")
     }
 
+    private val relocationPackage = "org.anvilpowered.ontime.relocated"
+
     private val dbDriver = mapOf(
-        "postgresql" to "org.postgresql.Driver",
-        "mariadb" to "org.mariadb.jdbc.Driver",
+        "postgresql" to "$relocationPackage.postgresql.Driver",
+        "mariadb" to "$relocationPackage.mariadb.jdbc.Driver",
     )
 
     private fun connectDatabase() {
@@ -80,7 +82,7 @@ class OnTimePlugin(
         val dbDriver = checkNotNull(dbDriver[registry[onTimeKeys.DB_TYPE]]) {
             "Unknown db type ${registry[onTimeKeys.DB_TYPE]}. Available: postgresql, mariadb."
         }
-        logger.info("Using database driver $dbDriver")
+        println("Using database driver $dbDriver")
         Database.connect(
             registry[onTimeKeys.DB_URL],
             driver = dbDriver,

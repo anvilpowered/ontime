@@ -40,7 +40,7 @@ internal class OnTimeUserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     var playTime by OnTimeUserTable.playTime
     var bonusTime by OnTimeUserTable.bonusTime
 
-    companion object : UUIDEntityClass<OnTimeUserEntity>(OnTimeUserTable)
+    companion object : UUIDEntityClass<OnTimeUserEntity>(OnTimeUserTable, OnTimeUserEntity::class.java, ::OnTimeUserEntity)
 }
 
 internal fun OnTimeUserEntity.toOnTimeUser() = OnTimeUser(

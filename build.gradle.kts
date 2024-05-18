@@ -70,6 +70,7 @@ tasks {
     shadowJar {
         archiveFileName = "ontime-${project.version}.jar"
 
+        mergeServiceFiles()
         relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
         relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
         relocate("org.jetbrains", "org.anvilpowered.ontime.relocated.jetbrains")
