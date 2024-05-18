@@ -39,31 +39,31 @@ class OnTimeUserRepositoryImpl(
     private val logger: Logger,
 ) : OnTimeUserRepository {
     override suspend fun create(item: OnTimeUser.CreateDto): OnTimeUser = newSuspendedTransaction {
-        val user = OnTimeUserEntity.new(item.id) {
+        val user = DBOnTimeUser.new(item.id) {
             username = item.username
             createdUtc = LocalDateTime.now(ZoneId.of("UTC"))
             playTime = 0
             bonusTime = 0
         }
         logger.info("Created new OnTimeUser ${user.id.value} with data $item")
-        user.toOnTimeUser()
+        user
     }
 
     override suspend fun put(item: OnTimeUser.CreateDto): MutableRepository.PutResult<OnTimeUser> = newSuspendedTransaction {
         val existingUser = getById(item.id)
         if (existingUser == null) {
             // create a new OnTimeUser
-            val newUser = OnTimeUserEntity.new(item.id) {
+            val newUser = DBOnTimeUser.new(item.id) {
                 username = item.username
                 createdUtc = LocalDateTime.now(ZoneId.of("UTC"))
                 playTime = 0
                 bonusTime = 0
             }
             logger.info("Created new OnTimeUser ${item.username} (${item.id}) with data $item")
-            MutableRepository.PutResult(newUser.toOnTimeUser(), created = true)
+            MutableRepository.PutResult(newUser, created = true)
         } else {
             logger.info(
-                "Loaded existing OnTime user ${existingUser.username} (${existingUser.id}) with" +
+                "Loaded existing OnTime user ${existingUser.username} (${existingUser.uuid}) with" +
                     "play time ${existingUser.playTimeFormatted}, " +
                     "bonus time ${existingUser.bonusTimeFormatted}, " +
                     "and total time ${existingUser.totalTimeFormatted}",
@@ -73,77 +73,77 @@ class OnTimeUserRepositoryImpl(
     }
 
     override suspend fun getAllUsernames(contains: String): SizedIterable<String> = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username.lowerCase() like "%${contains.lowercase()}%" }.mapLazy { it.username }
+        DBOnTimeUser.find { OnTimeUsers.username.lowerCase() like "%${contains.lowercase()}%" }.mapLazy { it.username }
     }
 
     override suspend fun getByUsername(username: String): OnTimeUser? = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username eq username }.firstOrNull()?.toOnTimeUser()
+        DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()
     }
 
-    private fun OnTimeUserEntity.addTime(time: Long) {
+    private fun DBOnTimeUser.addTime(time: Long) {
         playTime += time
         logger.debug("Added {} seconds to User {}", time, id.value)
     }
 
     override suspend fun addPlayTime(id: UUID, duration: Long): Long? = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id)?.let { user ->
+        DBOnTimeUser.findById(id)?.let { user ->
             user.addTime(duration)
             user.playTime + user.bonusTime
         }
     }
 
-    private fun OnTimeUserEntity.setTime(time: Long) {
+    private fun DBOnTimeUser.setTime(time: Long) {
         bonusTime = time - playTime
         logger.info("Set total time of user $username (${id.value}) to $time")
     }
 
     override suspend fun setTotalTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id)?.setTime(duration) != null
+        DBOnTimeUser.findById(id)?.setTime(duration) != null
     }
 
     override suspend fun setTotalTime(username: String, duration: Long) = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username eq username }.firstOrNull()?.setTime(duration) != null
+        DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()?.setTime(duration) != null
     }
 
-    private fun OnTimeUserEntity.addBonusTime(time: Long) {
+    private fun DBOnTimeUser.addBonusTime(time: Long) {
         bonusTime += time
         logger.info("Added $time seconds to user $username (${id.value})")
     }
 
     override suspend fun addBonusTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id)?.addBonusTime(duration) != null
+        DBOnTimeUser.findById(id)?.addBonusTime(duration) != null
     }
 
     override suspend fun addBonusTime(username: String, duration: Long): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username eq username }.firstOrNull()?.addBonusTime(duration) != null
+        DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()?.addBonusTime(duration) != null
     }
 
-    private fun OnTimeUserEntity.setBonusTime(time: Long) {
+    private fun DBOnTimeUser.setBonusTime(time: Long) {
         bonusTime = time
         logger.info("Set bonus time of user $username (${id.value}) to $time")
     }
 
     override suspend fun setBonusTime(id: UUID, duration: Long): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id)?.setBonusTime(duration) != null
+        DBOnTimeUser.findById(id)?.setBonusTime(duration) != null
     }
 
     override suspend fun setBonusTime(username: String, duration: Long): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.find { OnTimeUserTable.username eq username }.firstOrNull()?.setBonusTime(duration) != null
+        DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()?.setBonusTime(duration) != null
     }
 
     override suspend fun getById(id: UUID): OnTimeUser? = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id)?.toOnTimeUser()
+        DBOnTimeUser.findById(id)
     }
 
     override suspend fun countAll(): Long = newSuspendedTransaction {
-        OnTimeUserEntity.all().count()
+        DBOnTimeUser.all().count()
     }
 
     override suspend fun exists(id: UUID): Boolean = newSuspendedTransaction {
-        OnTimeUserEntity.findById(id) != null
+        DBOnTimeUser.findById(id) != null
     }
 
     override suspend fun deleteById(id: UUID): Boolean = newSuspendedTransaction {
-        OnTimeUserTable.deleteWhere { OnTimeUserTable.id eq id } > 0
+        OnTimeUsers.deleteWhere { OnTimeUsers.id eq id } > 0
     }
 }
