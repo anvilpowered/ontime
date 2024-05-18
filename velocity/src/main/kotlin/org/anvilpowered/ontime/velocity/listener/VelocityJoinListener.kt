@@ -27,7 +27,7 @@ import org.anvilpowered.ontime.api.user.OnTimeUserRepository
 class VelocityJoinListener(private val onTimeUserRepository: OnTimeUserRepository) {
 
     @Subscribe
-    fun onPlayerJoin(event: PostLoginEvent) = runBlocking {
+    fun onPlayerJoin(event: PostLoginEvent): Unit = runBlocking {
         val player = event.player
         onTimeUserRepository.put(
             OnTimeUser.CreateDto(
