@@ -69,5 +69,15 @@ dependencies {
 tasks {
     shadowJar {
         archiveFileName = "ontime-${project.version}.jar"
+
+        relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
+        relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
+        relocate("org.jetbrains", "org.anvilpowered.ontime.relocated.jetbrains")
+        relocate("org.koin", "org.anvilpowered.ontime.relocated.koin")
+        relocate("org.apache", "org.anvilpowered.ontime.relocated.apache")
+        relocate("org.mariadb", "org.anvilpowered.ontime.relocated.mariadb")
+        relocate("org.postgresql", "org.anvilpowered.ontime.relocated.postgresql")
+        relocate("org.slf4j", "org.anvilpowered.ontime.relocated.slf4j")
+        relocate("org.spongepowered", "org.anvilpowered.ontime.relocated.spongepowered")
     }
 }
