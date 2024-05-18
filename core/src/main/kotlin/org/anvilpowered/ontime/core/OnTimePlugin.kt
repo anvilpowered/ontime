@@ -83,7 +83,7 @@ class OnTimePlugin(
         logger.info("Using database driver $dbDriver")
         Database.connect(
             registry[onTimeKeys.DB_URL],
-            driver = "org.postgresql.Driver",
+            driver = dbDriver,
             user = registry[onTimeKeys.DB_USER],
             password = registry[onTimeKeys.DB_PASSWORD],
         )
