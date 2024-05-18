@@ -70,14 +70,20 @@ class OnTimePlugin(
         logger.info("Finished registering commands.")
     }
 
-    fun registerListeners() {
-    }
+    private val dbDriver = mapOf(
+        "postgresql" to "org.postgresql.Driver",
+        "mariadb" to "org.mariadb.jdbc.Driver",
+    )
 
     private fun connectDatabase() {
         logger.info("Connecting to database...")
+        val dbDriver = checkNotNull(dbDriver[registry[onTimeKeys.DB_TYPE]]) {
+            "Unknown db type ${registry[onTimeKeys.DB_TYPE]}. Available: postgresql, mariadb."
+        }
+        logger.info("Using database driver $dbDriver")
         Database.connect(
             registry[onTimeKeys.DB_URL],
-            driver = "org.postgresql.Driver",
+            driver = dbDriver,
             user = registry[onTimeKeys.DB_USER],
             password = registry[onTimeKeys.DB_PASSWORD],
         )
