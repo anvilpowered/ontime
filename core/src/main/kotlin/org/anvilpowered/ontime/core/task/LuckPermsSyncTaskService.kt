@@ -100,10 +100,10 @@ class LuckPermsSyncTaskService(
     }
 
     suspend fun sync() {
-        logger.info("Syncing all players...")
+        logger.debug("Syncing all players...")
         val players = playerService.getAll().toList()
         players.forEach { syncPlayer(it) }
-        logger.info("Finished syncing all (${players.size}) players.")
+        logger.debug("Finished syncing all (${players.size}) players.")
     }
 
     companion object {
