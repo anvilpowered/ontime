@@ -74,11 +74,19 @@ tasks {
         relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
         relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
         relocate("org.jetbrains", "org.anvilpowered.ontime.relocated.jetbrains")
+        relocate("kotlin", "org.anvilpowered.ontime.relocated.kotlin")
         relocate("org.koin", "org.anvilpowered.ontime.relocated.koin")
-        relocate("org.apache", "org.anvilpowered.ontime.relocated.apache")
+        relocate("co.touchlab.stately", "org.anvilpowered.ontime.relocated.stately")
+
         relocate("org.mariadb", "org.anvilpowered.ontime.relocated.mariadb")
+        relocate("org.checkerframework", "org.anvilpowered.ontime.relocated.checkerframework")
+        relocate("waffle", "org.anvilpowered.ontime.relocated.waffle")
+        relocate("com.github.benmanes.caffeine", "org.anvilpowered.ontime.relocated.caffeine")
+        relocate("com.google.errorprone", "org.anvilpowered.ontime.relocated.errorprone")
+        relocate("com.sun.jna", "org.anvilpowered.ontime.relocated.jna")
+
         relocate("org.postgresql", "org.anvilpowered.ontime.relocated.postgresql")
-        relocate("org.slf4j", "org.anvilpowered.ontime.relocated.slf4j")
         relocate("org.spongepowered", "org.anvilpowered.ontime.relocated.spongepowered")
+        relocate("io.leangen.geantyref", "org.anvilpowered.ontime.relocated.geantyref")
     }
 }

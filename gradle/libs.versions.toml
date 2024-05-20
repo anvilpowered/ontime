@@ -1,6 +1,7 @@
 [versions]
 anvil = "0.4.0-SNAPSHOT"
 kotlin = "1.9.22"
+log4j = "2.23.1"
 
 [libraries]
 adventure-bom = "net.kyori:adventure-bom:4.16.0"
@@ -17,6 +18,8 @@ exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc" }
 exposed-java-time = { module = "org.jetbrains.exposed:exposed-java-time" }
 kotest = "io.kotest:kotest-runner-junit5-jvm:5.8.0"
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
+logging-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+logging-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 luckperms = "net.luckperms:api:5.4"
 paper = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
 velocity = "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
