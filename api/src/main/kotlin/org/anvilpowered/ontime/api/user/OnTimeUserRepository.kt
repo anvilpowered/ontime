@@ -1,7 +1,7 @@
 package org.anvilpowered.ontime.api.user
 
 import org.anvilpowered.anvil.core.db.MutableRepository
-import org.jetbrains.exposed.sql.SizedIterable
+import org.anvilpowered.anvil.core.db.SizedIterable
 import java.util.UUID
 
 interface OnTimeUserRepository : MutableRepository<OnTimeUser, OnTimeUser.CreateDto> {

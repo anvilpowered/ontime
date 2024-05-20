@@ -19,13 +19,13 @@
 package org.anvilpowered.ontime.core.db
 
 import org.anvilpowered.anvil.core.db.MutableRepository
+import org.anvilpowered.anvil.core.db.SizedIterable
 import org.anvilpowered.ontime.api.user.OnTimeUser
 import org.anvilpowered.ontime.api.user.OnTimeUserRepository
 import org.anvilpowered.ontime.api.user.bonusTimeFormatted
 import org.anvilpowered.ontime.api.user.playTimeFormatted
 import org.anvilpowered.ontime.api.user.totalTimeFormatted
 import org.apache.logging.log4j.Logger
-import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.lowerCase
@@ -74,7 +74,7 @@ class OnTimeUserRepositoryImpl(
 
     override suspend fun getAllUsernames(contains: String): SizedIterable<String> = newSuspendedTransaction {
         DBOnTimeUser.find { OnTimeUsers.username.lowerCase() like "%${contains.lowercase()}%" }.mapLazy { it.username }
-    }
+    }.wrap()
 
     override suspend fun getByUsername(username: String): OnTimeUser? = newSuspendedTransaction {
         DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()

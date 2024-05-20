@@ -10,11 +10,19 @@ anvil-velocity = { module = "org.anvilpowered:anvil-velocity", version.ref = "an
 arrow-core = "io.arrow-kt:arrow-core:1.2.2"
 driver-mariadb = "org.mariadb.jdbc:mariadb-java-client:3.3.3"
 driver-postgresql = "org.postgresql:postgresql:42.7.2"
+exposed-bom = "org.jetbrains.exposed:exposed-bom:0.50.1"
+exposed-core = { module = "org.jetbrains.exposed:exposed-core" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc" }
+exposed-java-time = { module = "org.jetbrains.exposed:exposed-java-time" }
 kotest = "io.kotest:kotest-runner-junit5-jvm:5.8.0"
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 luckperms = "net.luckperms:api:5.4"
 paper = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
 velocity = "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+
+[bundles]
+exposed = ["exposed-core", "exposed-dao", "exposed-jdbc", "exposed-java-time"]
 
 [plugins]
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
