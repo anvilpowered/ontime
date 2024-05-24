@@ -35,9 +35,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
 
-class OnTimeUserRepositoryImpl(
-    private val logger: Logger,
-) : OnTimeUserRepository {
+class OnTimeUserRepositoryImpl(private val logger: Logger) : OnTimeUserRepository {
     override suspend fun create(item: OnTimeUser.CreateDto): OnTimeUser = newSuspendedTransaction {
         val user = DBOnTimeUser.new(item.id) {
             username = item.username
@@ -50,7 +48,7 @@ class OnTimeUserRepositoryImpl(
     }
 
     override suspend fun put(item: OnTimeUser.CreateDto): MutableRepository.PutResult<OnTimeUser> = newSuspendedTransaction {
-        val existingUser = getById(item.id)
+        val existingUser = findById(item.id)
         if (existingUser == null) {
             // create a new OnTimeUser
             val newUser = DBOnTimeUser.new(item.id) {
@@ -131,7 +129,7 @@ class OnTimeUserRepositoryImpl(
         DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()?.setBonusTime(duration) != null
     }
 
-    override suspend fun getById(id: UUID): OnTimeUser? = newSuspendedTransaction {
+    override suspend fun findById(id: UUID): OnTimeUser? = newSuspendedTransaction {
         DBOnTimeUser.findById(id)
     }
 

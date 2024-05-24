@@ -18,18 +18,17 @@
 
 package org.anvilpowered.ontime.core.db
 
-import org.anvilpowered.anvil.core.db.SizedIterable
 import org.anvilpowered.anvil.core.db.SizedIterable as AnvilSizedIterable
 import org.jetbrains.exposed.sql.SizedIterable as ExposedSizedIterable
 
-fun <T> ExposedSizedIterable<T>.wrap(): SizedIterable<T> = SizedIterableWrapper(this)
+fun <T> ExposedSizedIterable<T>.wrap(): AnvilSizedIterable<T> = SizedIterableWrapper(this)
 
 private class SizedIterableWrapper<out T>(
     private val delegate: ExposedSizedIterable<T>,
 ) : AnvilSizedIterable<T> {
-    override fun copy(): SizedIterable<T> = SizedIterableWrapper(delegate.copy())
+    override fun copy(): AnvilSizedIterable<T> = SizedIterableWrapper(delegate.copy())
     override fun count(): Long = delegate.count()
     override fun empty(): Boolean = delegate.empty()
     override fun iterator(): Iterator<T> = delegate.iterator()
-    override fun limit(n: Int, offset: Long): SizedIterable<T> = SizedIterableWrapper(delegate.limit(n, offset))
+    override fun limit(n: Int, offset: Long): AnvilSizedIterable<T> = SizedIterableWrapper(delegate.limit(n, offset))
 }
