@@ -87,7 +87,7 @@ suspend fun CommandExecutionScope<CommandSource>.extractOnTimeUserSource(
     playerProvider: suspend () -> Player = { extractPlayerSource() },
 ): OnTimeUser {
     val player = playerProvider()
-    val user = onTimeUserRepository.getById(player.id)
+    val user = onTimeUserRepository.findById(player.id)
     if (user == null) {
         context.source.sendMessage(
             Component.text()

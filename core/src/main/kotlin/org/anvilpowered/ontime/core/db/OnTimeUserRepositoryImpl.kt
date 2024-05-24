@@ -19,13 +19,13 @@
 package org.anvilpowered.ontime.core.db
 
 import org.anvilpowered.anvil.core.db.MutableRepository
+import org.anvilpowered.anvil.core.db.SizedIterable
 import org.anvilpowered.ontime.api.user.OnTimeUser
 import org.anvilpowered.ontime.api.user.OnTimeUserRepository
 import org.anvilpowered.ontime.api.user.bonusTimeFormatted
 import org.anvilpowered.ontime.api.user.playTimeFormatted
 import org.anvilpowered.ontime.api.user.totalTimeFormatted
 import org.apache.logging.log4j.Logger
-import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.lowerCase
@@ -35,9 +35,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.UUID
 
-class OnTimeUserRepositoryImpl(
-    private val logger: Logger,
-) : OnTimeUserRepository {
+class OnTimeUserRepositoryImpl(private val logger: Logger) : OnTimeUserRepository {
     override suspend fun create(item: OnTimeUser.CreateDto): OnTimeUser = newSuspendedTransaction {
         val user = DBOnTimeUser.new(item.id) {
             username = item.username
@@ -50,7 +48,7 @@ class OnTimeUserRepositoryImpl(
     }
 
     override suspend fun put(item: OnTimeUser.CreateDto): MutableRepository.PutResult<OnTimeUser> = newSuspendedTransaction {
-        val existingUser = getById(item.id)
+        val existingUser = findById(item.id)
         if (existingUser == null) {
             // create a new OnTimeUser
             val newUser = DBOnTimeUser.new(item.id) {
@@ -74,7 +72,7 @@ class OnTimeUserRepositoryImpl(
 
     override suspend fun getAllUsernames(contains: String): SizedIterable<String> = newSuspendedTransaction {
         DBOnTimeUser.find { OnTimeUsers.username.lowerCase() like "%${contains.lowercase()}%" }.mapLazy { it.username }
-    }
+    }.wrap()
 
     override suspend fun getByUsername(username: String): OnTimeUser? = newSuspendedTransaction {
         DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()
@@ -131,7 +129,7 @@ class OnTimeUserRepositoryImpl(
         DBOnTimeUser.find { OnTimeUsers.username eq username }.firstOrNull()?.setBonusTime(duration) != null
     }
 
-    override suspend fun getById(id: UUID): OnTimeUser? = newSuspendedTransaction {
+    override suspend fun findById(id: UUID): OnTimeUser? = newSuspendedTransaction {
         DBOnTimeUser.findById(id)
     }
 
