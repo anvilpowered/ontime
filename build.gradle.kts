@@ -71,6 +71,10 @@ tasks {
         archiveFileName = "ontime-${project.version}.jar"
 
         mergeServiceFiles()
+
+        exclude("org/intellij/**")
+        exclude("org/slf4j/**")
+
         relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
         relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
         relocate("org.jetbrains", "org.anvilpowered.ontime.relocated.jetbrains")
