@@ -25,7 +25,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ontime
 
   lp:
-    image: ghcr.io/luckperms/luckperms:v5.4.119
+    image: ghcr.io/luckperms/luckperms:v5.4.130
     environment:
       LUCKPERMS_STORAGE_METHOD: postgresql
       LUCKPERMS_DATA_ADDRESS: db
@@ -44,7 +44,7 @@ services:
       EULA: true # By using this environment variable, you are indicating your acceptance of the Minecraft EULA
       ONLINE_MODE: true
       PLUGINS: |
-        https://download.luckperms.net/1532/bukkit/loader/LuckPerms-Bukkit-5.4.119.jar
+        https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar
       ONTIME_DB_URL: jdbc:postgresql://db/ontime_docker_compose
       ONTIME_DB_USER: ontime_docker_compose
       ONTIME_DB_PASSWORD: ontime_docker_compose
