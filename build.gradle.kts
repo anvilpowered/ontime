@@ -74,11 +74,12 @@ tasks {
 
         exclude("org/intellij/**")
         exclude("org/slf4j/**")
+        exclude("kotlin/**") // External kotlin dependency
 
         relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
         relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
         relocate("org.jetbrains", "org.anvilpowered.ontime.relocated.jetbrains")
-        relocate("kotlin", "org.anvilpowered.ontime.relocated.kotlin")
+        relocate("kotlinx", "org.anvilpowered.ontime.relocated.kotlinx")
         relocate("org.koin", "org.anvilpowered.ontime.relocated.koin")
         relocate("co.touchlab.stately", "org.anvilpowered.ontime.relocated.stately")
 
