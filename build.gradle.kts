@@ -74,7 +74,7 @@ tasks {
 
         exclude("org/intellij/**")
         exclude("org/slf4j/**")
-        exclude("kotlin/**") // External kotlin dependency
+        exclude("kotlin/**") // external kotlin dependency
 
         relocate("org.anvilpowered.anvil", "org.anvilpowered.ontime.relocated.anvil")
         relocate("org.anvilpowered.kbrig", "org.anvilpowered.ontime.relocated.kbrig")
