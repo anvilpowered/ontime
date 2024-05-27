@@ -40,5 +40,5 @@ internal class DBOnTimeUser(id: EntityID<UUID>) : UUIDEntity(id), OnTimeUser {
     override var playTime by OnTimeUsers.playTime
     override var bonusTime by OnTimeUsers.bonusTime
 
-    companion object : UUIDEntityClass<DBOnTimeUser>(OnTimeUsers)
+    companion object : UUIDEntityClass<DBOnTimeUser>(OnTimeUsers, DBOnTimeUser::class.java, ::DBOnTimeUser)
 }
